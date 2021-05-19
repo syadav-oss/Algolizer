@@ -16,6 +16,7 @@ export default class PathfindingVisualizer extends Component {
     this.state = {
       grid: [],
       startNodeChange: false,
+      endNodeChange: false,
       mouseIsPressed: false,
     };
   }
@@ -28,34 +29,32 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown(row, col) {
-    //console.log("Mouse Down at", row, col);
     if (row === StartNodeRow && col === StartNodeCol) {
       this.startNodeChange = true;
-      //console.log("Mouse Down at start node", row, col);
+    }
+    if (row === EndNodeRow && col === EndNodeCol) {
+      this.endNodeChange = true;
     }
   }
   handleMouseEnter(row, col) {
-    //console.log("Mouse Enter at", row, col);
     if (this.startNodeChange === true) {
-      this.startNodeChange = false;
       StartNodeRow = row;
       StartNodeCol = col;
     }
-  }
-  handleMouseLeave(row, col) {
-    // console.log("Mouse Leave at", row, col);
-    if (
-      row === StartNodeRow &&
-      col === StartNodeCol &&
-      this.startNodeChange === false
-    ) {
-      this.startNodeChange = true;
+    if (this.endNodeChange === true) {
+      EndNodeRow = row;
+      EndNodeCol = col;
     }
   }
+  handleMouseLeave(row, col) {}
   handleMouseUp(row, col) {
-    console.log("Mouse UP at", row, col);
-    this.startNodeChange = false;
-    console.log("StartNodes", StartNodeRow, StartNodeCol);
+    if (this.startNodeChange === true) {
+      this.startNodeChange = false;
+    }
+    if (this.endNodeChange === true) {
+      this.endNodeChange = false;
+    }
+
     const newGrid = getNewGrid(this.state.grid);
     this.setState({ grid: newGrid });
   }
