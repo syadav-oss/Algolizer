@@ -18,9 +18,7 @@ export default class Node extends Component {
       : "";
 
     return (
-      <div>
-        <h1>Node</h1>
-      </div>
+      <div id={"node-${row}-${col}"} className={"node ${extraClassName}"}></div>
     );
   }
 }
