@@ -118,7 +118,7 @@ const createNode = (row, col) => {
 };
 
 function getNewGrid(grid) {
-  const newGrid = grid.slice(); //assign complete old grid to newGrid
+  const newGrid = []; //assign complete old grid to newGrid
   for (let r = 0; r < GridRowSize; ++r) {
     const row = [];
     for (let c = 0; c < GridColSize; ++c) {
