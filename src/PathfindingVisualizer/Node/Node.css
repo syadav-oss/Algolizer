@@ -6,9 +6,13 @@
 }
 
 .node-finish {
-  background-color: red;
+  background-image: url(../Styling/end.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 
 .node-start {
-  background-color: green;
+  background-image: url(../Styling/start.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
 }

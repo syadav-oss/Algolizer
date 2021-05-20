@@ -33,8 +33,7 @@ export default class PathfindingVisualizer extends Component {
     if (row === StartNodeRow && col === StartNodeCol) {
       this.startNodeChange = true;
       console.log("StartNodes", StartNodeRow, StartNodeCol);
-    }
-    if (row === EndNodeRow && col === EndNodeCol) {
+    } else if (row === EndNodeRow && col === EndNodeCol) {
       this.endNodeChange = true;
     }
   }
