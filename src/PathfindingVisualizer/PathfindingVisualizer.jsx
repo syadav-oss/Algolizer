@@ -29,8 +29,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseDown(row, col) {
+    //console.log("Mouse Down", row, col);
     if (row === StartNodeRow && col === StartNodeCol) {
       this.startNodeChange = true;
+      console.log("StartNodes", StartNodeRow, StartNodeCol);
     }
     if (row === EndNodeRow && col === EndNodeCol) {
       this.endNodeChange = true;
@@ -42,13 +44,21 @@ export default class PathfindingVisualizer extends Component {
       StartNodeRow = row;
       StartNodeCol = col;
       const newGrid = getNewGrid(this.state.grid);
-      this.setState({ grid: newGrid });
+      this.setState({
+        grid: newGrid,
+        startNodeChange: true,
+        endNodeChange: false,
+      });
     }
     if (this.endNodeChange === true) {
       EndNodeRow = row;
       EndNodeCol = col;
       const newGrid = getNewGrid(this.state.grid);
-      this.setState({ grid: newGrid });
+      this.setState({
+        grid: newGrid,
+        startNodeChange: false,
+        endNodeChange: true,
+      });
     }
   }
   handleMouseLeave(row, col) {}
@@ -62,7 +72,11 @@ export default class PathfindingVisualizer extends Component {
     }
 
     const newGrid = getNewGrid(this.state.grid);
-    this.setState({ grid: newGrid });
+    this.setState({
+      grid: newGrid,
+      startNodeChange: false,
+      endNodeChange: false,
+    });
   }
 
   render() {
