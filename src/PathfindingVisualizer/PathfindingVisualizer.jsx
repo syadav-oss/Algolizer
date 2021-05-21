@@ -11,23 +11,10 @@ import {
   Container,
 } from "react-bootstrap";
 
-const GridRowSize = 25;
-const GridColSize = 50;
 let StartNodeRow = 5;
 let StartNodeCol = 5;
 let EndNodeRow = 15;
-let EndNodeCol = 17;
-
-// Specifies whether a node is wall or not
-let wallGrid = [];
-
-for (let i = 0; i < GridRowSize; ++i) {
-  let row = [];
-  for (let j = 0; j < GridColSize; ++j) {
-    row.push(false);
-  }
-  wallGrid.push(row);
-}
+let EndNodeCol = 15;
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -35,6 +22,9 @@ export default class PathfindingVisualizer extends Component {
     //props refer to the properties, special symbol. Used for passing data to one component to another
     this.state = {
       grid: [],
+      wallGrid: [],
+      GridRowSize: 20,
+      GridColSize: 50,
       startNodeChange: false,
       endNodeChange: false,
       mouseIsPressed: false,
@@ -45,8 +35,12 @@ export default class PathfindingVisualizer extends Component {
   // componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
   // Initialization that requires DOM nodes should go here.
   componentDidMount() {
-    const grid = constructGrid();
-    this.setState({ grid });
+    const grid = constructGrid(this.state.GridRowSize, this.state.GridColSize);
+    const wallGrid = initializeWall(
+      this.state.GridRowSize,
+      this.state.GridColSize
+    );
+    this.setState({ grid: grid, wallGrid: wallGrid });
   }
 
   handleMouseDown(row, col) {
@@ -62,29 +56,50 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseEnter(row, col) {
-    if (this.startNodeChange === true && wallGrid[row][col] === false) {
+    if (
+      this.startNodeChange === true &&
+      this.state.wallGrid[row][col] === false
+    ) {
       StartNodeRow = row;
       StartNodeCol = col;
-      const newGrid = getNewGrid(this.state.grid);
+      const newGrid = getNewGrid(
+        this.state.grid,
+        this.state.wallGrid,
+        this.state.GridRowSize,
+        this.state.GridColSize
+      );
       this.setState({
         grid: newGrid,
         startNodeChange: true,
         endNodeChange: false,
       });
     }
-    if (this.endNodeChange === true && wallGrid[row][col] === false) {
+    if (
+      this.endNodeChange === true &&
+      this.state.wallGrid[row][col] === false
+    ) {
       EndNodeRow = row;
       EndNodeCol = col;
-      const newGrid = getNewGrid(this.state.grid);
+      const newGrid = getNewGrid(
+        this.state.grid,
+        this.state.wallGrid,
+        this.state.GridRowSize,
+        this.state.GridColSize
+      );
       this.setState({
         grid: newGrid,
         startNodeChange: false,
         endNodeChange: true,
       });
     } else if (this.wallNodeChange === true) {
-      wallGrid[row][col] = !wallGrid[row][col];
+      this.state.wallGrid[row][col] = !this.state.wallGrid[row][col];
 
-      const newGrid = getNewGrid(this.state.grid);
+      const newGrid = getNewGrid(
+        this.state.grid,
+        this.state.wallGrid,
+        this.state.GridRowSize,
+        this.state.GridColSize
+      );
       this.setState({
         grid: newGrid,
       });
@@ -103,7 +118,12 @@ export default class PathfindingVisualizer extends Component {
       this.wallNodeChange = false;
     }
 
-    const newGrid = getNewGrid(this.state.grid);
+    const newGrid = getNewGrid(
+      this.state.grid,
+      this.state.wallGrid,
+      this.state.GridRowSize,
+      this.state.GridColSize
+    );
     this.setState({
       grid: newGrid,
       startNodeChange: false,
@@ -233,34 +253,46 @@ export default class PathfindingVisualizer extends Component {
   }
 }
 
-function constructGrid() {
+function constructGrid(GridRowSize, GridColSize) {
   const grid = [];
   for (let r = 0; r < GridRowSize; ++r) {
     const row = [];
     for (let c = 0; c < GridColSize; ++c) {
-      row.push(createNode(r, c));
+      row.push(createNode(r, c, false));
     }
     grid.push(row);
   }
   return grid;
 }
 
-const createNode = (row, col) => {
+function initializeWall(GridRowSize, GridColSize) {
+  const wallGrid = [];
+  for (let i = 0; i < GridRowSize; ++i) {
+    let row = [];
+    for (let j = 0; j < GridColSize; ++j) {
+      row.push(false);
+    }
+    wallGrid.push(row);
+  }
+  return wallGrid;
+}
+
+const createNode = (row, col, isWall) => {
   return {
     col,
     row,
     isFinish: row === EndNodeRow && col === EndNodeCol,
     isStart: row === StartNodeRow && col === StartNodeCol,
-    isWall: wallGrid[row][col],
+    isWall: isWall,
   };
 };
 
-function getNewGrid(grid) {
+function getNewGrid(grid, wallGrid, GridRowSize, GridColSize) {
   const newGrid = []; //assign complete old grid to newGrid
   for (let r = 0; r < GridRowSize; ++r) {
     const row = [];
     for (let c = 0; c < GridColSize; ++c) {
-      row.push(createNode(r, c));
+      row.push(createNode(r, c, wallGrid[r][c]));
     }
     newGrid.push(row);
   }
