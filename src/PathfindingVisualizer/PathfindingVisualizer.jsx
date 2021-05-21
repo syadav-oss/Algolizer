@@ -52,6 +52,7 @@ export default class PathfindingVisualizer extends Component {
       this.endNodeChange = true;
     } else {
       this.wallNodeChange = true;
+      this.state.wallGrid[row][col] = !this.state.wallGrid[row][col];
     }
   }
 
