@@ -18,6 +18,17 @@ let StartNodeCol = 5;
 let EndNodeRow = 15;
 let EndNodeCol = 17;
 
+// Specifies whether a node is wall or not
+let wallGrid = [];
+
+for (let i = 0; i < GridRowSize; ++i) {
+  let row = [];
+  for (let j = 0; j < GridColSize; ++j) {
+    row.push(false);
+  }
+  wallGrid.push(row);
+}
+
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
     super(props); //Call Construct To Parent Class
@@ -27,6 +38,7 @@ export default class PathfindingVisualizer extends Component {
       startNodeChange: false,
       endNodeChange: false,
       mouseIsPressed: false,
+      wallNodeChange: false,
     };
   }
 
@@ -44,11 +56,13 @@ export default class PathfindingVisualizer extends Component {
       console.log("StartNodes", StartNodeRow, StartNodeCol);
     } else if (row === EndNodeRow && col === EndNodeCol) {
       this.endNodeChange = true;
+    } else {
+      this.wallNodeChange = true;
     }
   }
 
   handleMouseEnter(row, col) {
-    if (this.startNodeChange === true) {
+    if (this.startNodeChange === true && wallGrid[row][col] === false) {
       StartNodeRow = row;
       StartNodeCol = col;
       const newGrid = getNewGrid(this.state.grid);
@@ -58,7 +72,7 @@ export default class PathfindingVisualizer extends Component {
         endNodeChange: false,
       });
     }
-    if (this.endNodeChange === true) {
+    if (this.endNodeChange === true && wallGrid[row][col] === false) {
       EndNodeRow = row;
       EndNodeCol = col;
       const newGrid = getNewGrid(this.state.grid);
@@ -66,6 +80,13 @@ export default class PathfindingVisualizer extends Component {
         grid: newGrid,
         startNodeChange: false,
         endNodeChange: true,
+      });
+    } else if (this.wallNodeChange === true) {
+      wallGrid[row][col] = !wallGrid[row][col];
+
+      const newGrid = getNewGrid(this.state.grid);
+      this.setState({
+        grid: newGrid,
       });
     }
   }
@@ -78,12 +99,16 @@ export default class PathfindingVisualizer extends Component {
     if (this.endNodeChange === true) {
       this.endNodeChange = false;
     }
+    if (this.wallNodeChange === true) {
+      this.wallNodeChange = false;
+    }
 
     const newGrid = getNewGrid(this.state.grid);
     this.setState({
       grid: newGrid,
       startNodeChange: false,
       endNodeChange: false,
+      wallNodeChange: false,
     });
   }
 
@@ -226,7 +251,7 @@ const createNode = (row, col) => {
     row,
     isFinish: row === EndNodeRow && col === EndNodeCol,
     isStart: row === StartNodeRow && col === StartNodeCol,
-    isWall: false,
+    isWall: wallGrid[row][col],
   };
 };
 

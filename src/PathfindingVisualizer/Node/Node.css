@@ -16,3 +16,9 @@
   background-repeat: no-repeat;
   background-size: contain;
 }
+
+.node-wall {
+  background-color: rgb(12, 53, 71);
+  background-repeat: no-repeat;
+  background-size: contain;
+}
