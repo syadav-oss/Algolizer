@@ -55,7 +55,9 @@ export default class PathfindingVisualizer extends Component {
     } else {
       this.wallNodeChange = true;
       const node = this.state.grid[row][col];
-      this.changeState(row, col, false, false, !node.isWall, "node-wall");
+      let className = "node-wall";
+      if (node.isWall) className = "";
+      this.changeState(row, col, false, false, !node.isWall, className);
     }
   }
 
@@ -67,15 +69,19 @@ export default class PathfindingVisualizer extends Component {
       this.changeState(row, col, false, true, false, "node-start");
       StartNodeRow = row;
       StartNodeCol = col;
-    }
-
-    if (this.endNodeChange === true && node.isWall === false) {
+    } else if (this.endNodeChange === true && node.isWall === false) {
       const node = this.state.grid[row][col];
       this.changeState(row, col, true, false, false, "node-finish");
       EndNodeRow = row;
       EndNodeCol = col;
-    } else if (this.wallNodeChange === true) {
-      this.changeState(row, col, false, false, !node.isWall, "node-wall");
+    } else if (
+      !node.isFinish &&
+      !node.isStart &&
+      this.wallNodeChange === true
+    ) {
+      let className = "node-wall";
+      if (node.isWall) className = "";
+      this.changeState(row, col, false, false, !node.isWall, className);
     }
   }
   handleMouseLeave(row, col) {
