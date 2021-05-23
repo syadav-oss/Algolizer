@@ -83,10 +83,16 @@ export default class PathfindingVisualizer extends Component {
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
       this.changeState(row, col, false, false, false, "node ");
+      if (col === EndNodeCol && row === EndNodeRow) {
+        this.changeState(row, col, true, false, false, "node-finish");
+      }
     }
 
     if (this.endNodeChange === true && node.isWall === false) {
       this.changeState(row, col, false, false, false, "node ");
+      if (col === StartNodeCol && row === StartNodeRow) {
+        this.changeState(row, col, false, true, false, "node-start");
+      }
     }
   }
 
