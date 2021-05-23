@@ -14,7 +14,6 @@ export default class PathfindingVisualizer extends Component {
     //props refer to the properties, special symbol. Used for passing data to one component to another
     this.state = {
       grid: [],
-      wallGrid: [],
       GridRowSize: 20,
       GridColSize: 50,
       startNodeChange: false,
@@ -27,78 +26,72 @@ export default class PathfindingVisualizer extends Component {
   // componentDidMount() is invoked immediately after a component is mounted (inserted into the tree).
   // Initialization that requires DOM nodes should go here.
   componentDidMount() {
-    const grid = constructGrid(this.state.GridRowSize, this.state.GridColSize);
-    const wallGrid = initializeWall(
-      this.state.GridRowSize,
-      this.state.GridColSize
-    );
-    this.setState({ grid: grid, wallGrid: wallGrid });
+    const grid = initializeGrid(this.state.GridRowSize, this.state.GridColSize);
+    this.setState({ grid: grid });
   }
+
+  changeState = (row, col, isFinish, isStart, isWall, extraClassName) => {
+    const node = this.state.grid[row][col];
+    node.isFinish = isFinish;
+    node.isStart = isStart;
+    node.isWall = isWall;
+    const element = document.getElementById(`node-${node.row}-${node.col}`);
+    element.className = `node ${extraClassName}`;
+    element.isFinish = isFinish;
+    element.isStart = isStart;
+    element.isWall = isWall;
+    element.extraClassName = extraClassName;
+    return;
+  };
 
   handleMouseDown(row, col) {
     //console.log("Mouse Down", row, col);
     if (row === StartNodeRow && col === StartNodeCol) {
+      //console.log("Mouse Down");
       this.startNodeChange = true;
-      console.log("StartNodes", StartNodeRow, StartNodeCol);
+      //console.log("StartNodes", StartNodeRow, StartNodeCol);
     } else if (row === EndNodeRow && col === EndNodeCol) {
       this.endNodeChange = true;
     } else {
       this.wallNodeChange = true;
-      this.state.wallGrid[row][col] = !this.state.wallGrid[row][col];
+      const node = this.state.grid[row][col];
+      this.changeState(row, col, false, false, !node.isWall, "node-wall");
     }
   }
 
   handleMouseEnter(row, col) {
-    if (
-      this.startNodeChange === true &&
-      this.state.wallGrid[row][col] === false
-    ) {
+    const node = this.state.grid[row][col];
+    if (this.startNodeChange === true && node.isWall === false) {
+      //console.log("Mouse Enter");
+      const node = this.state.grid[row][col];
+      this.changeState(row, col, false, true, false, "node-start");
       StartNodeRow = row;
       StartNodeCol = col;
-      const newGrid = getNewGrid(
-        this.state.grid,
-        this.state.wallGrid,
-        this.state.GridRowSize,
-        this.state.GridColSize
-      );
-      this.setState({
-        grid: newGrid,
-        startNodeChange: true,
-        endNodeChange: false,
-      });
     }
-    if (
-      this.endNodeChange === true &&
-      this.state.wallGrid[row][col] === false
-    ) {
+
+    if (this.endNodeChange === true && node.isWall === false) {
+      const node = this.state.grid[row][col];
+      this.changeState(row, col, true, false, false, "node-finish");
       EndNodeRow = row;
       EndNodeCol = col;
-      const newGrid = getNewGrid(
-        this.state.grid,
-        this.state.wallGrid,
-        this.state.GridRowSize,
-        this.state.GridColSize
-      );
-      this.setState({
-        grid: newGrid,
-        startNodeChange: false,
-        endNodeChange: true,
-      });
     } else if (this.wallNodeChange === true) {
-      this.state.wallGrid[row][col] = !this.state.wallGrid[row][col];
-
-      const newGrid = getNewGrid(
-        this.state.grid,
-        this.state.wallGrid,
-        this.state.GridRowSize,
-        this.state.GridColSize
-      );
-      this.setState({
-        grid: newGrid,
-      });
+      this.changeState(row, col, false, false, !node.isWall, "node-wall");
     }
   }
-  handleMouseLeave(row, col) {}
+  handleMouseLeave(row, col) {
+    const node = this.state.grid[row][col];
+    if (this.startNodeChange === true && node.isWall === false) {
+      //      console.log("Mouse Leave");
+      const node = this.state.grid[row][col];
+      this.changeState(row, col, false, false, false, "node ");
+    }
+
+    if (this.endNodeChange === true && node.isWall === false) {
+      //     console.log("Mouse Leave");
+      const node = this.state.grid[row][col];
+      this.changeState(row, col, false, false, false, "node ");
+    }
+  }
 
   handleMouseUp(row, col) {
     if (this.startNodeChange === true) {
@@ -110,19 +103,6 @@ export default class PathfindingVisualizer extends Component {
     if (this.wallNodeChange === true) {
       this.wallNodeChange = false;
     }
-
-    const newGrid = getNewGrid(
-      this.state.grid,
-      this.state.wallGrid,
-      this.state.GridRowSize,
-      this.state.GridColSize
-    );
-    this.setState({
-      grid: newGrid,
-      startNodeChange: false,
-      endNodeChange: false,
-      wallNodeChange: false,
-    });
   }
 
   render() {
@@ -134,9 +114,11 @@ export default class PathfindingVisualizer extends Component {
             return (
               <div key={rowId}>
                 {row.map((node, nodeId) => {
-                  const { col, row, isFinish, isStart, isWall } = node;
+                  const { col, row, isFinish, isStart, isWall, refElement } =
+                    node;
                   return (
                     <Node
+                      ref={refElement}
                       key={nodeId}
                       col={col}
                       row={row}
@@ -165,48 +147,25 @@ export default class PathfindingVisualizer extends Component {
   }
 }
 
-function constructGrid(GridRowSize, GridColSize) {
+function initializeGrid(GridRowSize, GridColSize) {
   const grid = [];
   for (let r = 0; r < GridRowSize; ++r) {
     const row = [];
     for (let c = 0; c < GridColSize; ++c) {
-      row.push(createNode(r, c, false));
+      row.push(createNode(r, c));
     }
     grid.push(row);
   }
   return grid;
 }
 
-function initializeWall(GridRowSize, GridColSize) {
-  const wallGrid = [];
-  for (let i = 0; i < GridRowSize; ++i) {
-    let row = [];
-    for (let j = 0; j < GridColSize; ++j) {
-      row.push(false);
-    }
-    wallGrid.push(row);
-  }
-  return wallGrid;
-}
-
-const createNode = (row, col, isWall) => {
+const createNode = (row, col) => {
   return {
     col,
     row,
     isFinish: row === EndNodeRow && col === EndNodeCol,
     isStart: row === StartNodeRow && col === StartNodeCol,
-    isWall: isWall,
+    isWall: false,
+    refElement: React.createRef(),
   };
 };
-
-function getNewGrid(grid, wallGrid, GridRowSize, GridColSize) {
-  const newGrid = []; //assign complete old grid to newGrid
-  for (let r = 0; r < GridRowSize; ++r) {
-    const row = [];
-    for (let c = 0; c < GridColSize; ++c) {
-      row.push(createNode(r, c, wallGrid[r][c]));
-    }
-    newGrid.push(row);
-  }
-  return newGrid;
-}
