@@ -42,23 +42,23 @@ export default class Node extends Component {
       ? "node-wall"
       : "";
 
-    // if (
-    //   prevState.col !== nextProps.col ||
-    //   prevState.row !== nextProps.row ||
-    //   prevState.isFinish !== nextProps.isFinish ||
-    //   prevState.isStart !== nextProps.isStart ||
-    //   prevState.isWall !== nextProps.isWall ||
-    //   prevState.extraClassName !== extraClassName
-    // ) {
-    return {
-      col: nextProps.col,
-      row: nextProps.row,
-      isFinish: nextProps.isFinish,
-      isStart: nextProps.isStart,
-      isWall: nextProps.isWall,
-      extraClassName: extraClassName,
-    };
-    // }
+    if (
+      prevState.col !== nextProps.col ||
+      prevState.row !== nextProps.row ||
+      prevState.isFinish !== nextProps.isFinish ||
+      prevState.isStart !== nextProps.isStart ||
+      prevState.isWall !== nextProps.isWall ||
+      prevState.extraClassName !== extraClassName
+    ) {
+      return {
+        col: nextProps.col,
+        row: nextProps.row,
+        isFinish: nextProps.isFinish,
+        isStart: nextProps.isStart,
+        isWall: nextProps.isWall,
+        extraClassName: extraClassName,
+      };
+    }
     return null;
   }
 
