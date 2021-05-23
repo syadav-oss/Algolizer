@@ -12,7 +12,6 @@
 }
 
 .node-start {
-  background-color: blue;
   background-image: url(../Styling/start.svg);
   background-repeat: no-repeat;
   background-size: contain;

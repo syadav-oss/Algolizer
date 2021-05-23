@@ -1,0 +1,14 @@
+.col-centered {
+  margin-left: 200px;
+}
+
+.col-centered1 {
+  margin-left: 10px;
+}
+
+.logo {
+  background-image: url(../Styling/route.svg);
+  background-repeat: no-repeat;
+  background-size: 3%;
+  background-position-y: center;
+}
