@@ -21,4 +21,5 @@
   background-color: rgb(12, 53, 71);
   background-repeat: no-repeat;
   background-size: contain;
+  transition: transform 0.35s ease-in-out;
 }

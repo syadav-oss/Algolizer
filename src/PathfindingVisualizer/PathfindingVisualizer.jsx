@@ -93,9 +93,17 @@ export default class PathfindingVisualizer extends Component {
   handleMouseUp(row, col) {
     if (this.startNodeChange === true) {
       this.startNodeChange = false;
+      // In case up node is a wall
+      this.changeState(row, col, false, true, false, "node-start");
+      StartNodeRow = row;
+      StartNodeCol = col;
     }
     if (this.endNodeChange === true) {
       this.endNodeChange = false;
+      // In case up node is a wall
+      this.changeState(row, col, true, false, false, "node-finish");
+      EndNodeRow = row;
+      EndNodeCol = col;
     }
     if (this.wallNodeChange === true) {
       this.wallNodeChange = false;
