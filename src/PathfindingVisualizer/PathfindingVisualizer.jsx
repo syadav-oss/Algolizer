@@ -6,7 +6,7 @@ import "./PathfindingVisualizer.css";
 let StartNodeRow = 5;
 let StartNodeCol = 5;
 let EndNodeRow = 15;
-let EndNodeCol = 15;
+let EndNodeCol = 45;
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -14,8 +14,8 @@ export default class PathfindingVisualizer extends Component {
     //props refer to the properties, special symbol. Used for passing data to one component to another
     this.state = {
       grid: [],
-      GridRowSize: 20,
-      GridColSize: 50,
+      GridRowSize: 21,
+      GridColSize: 60,
       startNodeChange: false,
       endNodeChange: false,
       mouseIsPressed: false,
@@ -47,9 +47,7 @@ export default class PathfindingVisualizer extends Component {
   handleMouseDown(row, col) {
     //console.log("Mouse Down", row, col);
     if (row === StartNodeRow && col === StartNodeCol) {
-      //console.log("Mouse Down");
       this.startNodeChange = true;
-      //console.log("StartNodes", StartNodeRow, StartNodeCol);
     } else if (row === EndNodeRow && col === EndNodeCol) {
       this.endNodeChange = true;
     } else {
@@ -64,13 +62,10 @@ export default class PathfindingVisualizer extends Component {
   handleMouseEnter(row, col) {
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
-      //console.log("Mouse Enter");
-      const node = this.state.grid[row][col];
       this.changeState(row, col, false, true, false, "node-start");
       StartNodeRow = row;
       StartNodeCol = col;
     } else if (this.endNodeChange === true && node.isWall === false) {
-      const node = this.state.grid[row][col];
       this.changeState(row, col, true, false, false, "node-finish");
       EndNodeRow = row;
       EndNodeCol = col;
@@ -87,14 +82,10 @@ export default class PathfindingVisualizer extends Component {
   handleMouseLeave(row, col) {
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
-      //      console.log("Mouse Leave");
-      const node = this.state.grid[row][col];
       this.changeState(row, col, false, false, false, "node ");
     }
 
     if (this.endNodeChange === true && node.isWall === false) {
-      //     console.log("Mouse Leave");
-      const node = this.state.grid[row][col];
       this.changeState(row, col, false, false, false, "node ");
     }
   }
@@ -118,7 +109,7 @@ export default class PathfindingVisualizer extends Component {
         <div className="grid">
           {this.state.grid.map((row, rowId) => {
             return (
-              <div key={rowId}>
+              <div key={rowId} className="mar">
                 {row.map((node, nodeId) => {
                   const { col, row, isFinish, isStart, isWall, refElement } =
                     node;
