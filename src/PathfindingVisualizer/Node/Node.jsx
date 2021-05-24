@@ -12,7 +12,6 @@ export default class Node extends Component {
       isWall: false,
       extraClassName: "",
     };
-    this.state = {};
   }
 
   componentDidMount() {

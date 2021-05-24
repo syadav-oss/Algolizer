@@ -80,8 +80,6 @@ export default class PathfindingVisualizer extends Component {
     }
   }
   handleMouseLeave(row, col) {
-    console.log("Start Node r", StartNodeRow, " Start Node c", StartNodeCol);
-    console.log("End Node r", EndNodeRow, " End Node c", EndNodeCol);
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
       if (row === EndNodeRow && col === EndNodeCol) {
@@ -124,10 +122,24 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  clearBoard = () => {
+    for (let r = 0; r < this.state.GridRowSize; ++r) {
+      for (let c = 0; c < this.state.GridColSize; ++c) {
+        if (r === EndNodeRow && c === EndNodeCol) {
+          this.changeState(r, c, true, false, false, "node-finish");
+        } else if (r === StartNodeRow && c === StartNodeCol) {
+          this.changeState(r, c, false, true, false, "node-start");
+        } else {
+          this.changeState(r, c, false, false, false, "node ");
+        }
+      }
+    }
+  };
+
   render() {
     return (
       <div>
-        <ControlPanel></ControlPanel>
+        <ControlPanel onClickClear_={() => this.clearBoard()}></ControlPanel>
         <div className="grid">
           {this.state.grid.map((row, rowId) => {
             return (

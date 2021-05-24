@@ -1,21 +1,15 @@
 import React, { Component } from "react";
 import "./ControlPanel.css";
 
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Form,
-  FormControl,
-  Button,
-  Container,
-} from "react-bootstrap";
+import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 export default class ControlPanel extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
   render() {
+    const { onClickClear_ } = this.props;
+
     return (
       <div>
         <Navbar bg="dark" expand="lg" variant="dark" className="logo">
@@ -65,7 +59,11 @@ export default class ControlPanel extends Component {
               <Button variant="outline-success" className="mr-3">
                 Visualise
               </Button>
-              <Nav.Link href="#board" className="mr-3">
+              <Nav.Link
+                href="#"
+                onClick={() => onClickClear_()}
+                className="mr-3"
+              >
                 Clear Board
               </Nav.Link>
               <Nav.Link href="#wall" className="mr-3">
