@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./Node.css";
+import { motion } from "framer-motion";
 
 export default class Node extends Component {
   constructor(props) {
@@ -85,16 +86,27 @@ export default class Node extends Component {
   render() {
     const { onMouseDown_, onMouseUp_, onMouseEnter_, onMouseLeave_ } =
       this.props;
-
+    const variants = {
+      visible: { opacity: 1, scale: 1 },
+      hidden: { opacity: 0.5, scale: 0.5 },
+    };
+    const isWall = this.state.isWall;
     return (
-      <div
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        transition={{ type: "tween", stiffness: 100 }}
+        variants={variants}
+        whileHover={{
+          scale: 0.7,
+        }}
         id={`node-${this.state.row}-${this.state.col}`}
         className={`node ${this.state.extraClassName}`}
         onMouseDown={() => onMouseDown_(this.state.row, this.state.col)}
         onMouseUp={() => onMouseUp_(this.state.row, this.state.col)}
         onMouseEnter={() => onMouseEnter_(this.state.row, this.state.col)}
         onMouseLeave={() => onMouseLeave_(this.state.row, this.state.col)}
-      ></div>
+      />
     );
   }
 }
