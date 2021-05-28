@@ -93,12 +93,12 @@ export default class Node extends Component {
     const isWall = this.state.isWall;
     return (
       <motion.div
-        initial="hidden"
+        initial="visible"
         animate="visible"
-        transition={{ type: "tween", stiffness: 100 }}
+        transition={{ type: "tween", stiffness: 50 }}
         variants={variants}
         whileHover={{
-          scale: 0.7,
+          scale: 1.7,
         }}
         id={`node-${this.state.row}-${this.state.col}`}
         className={`node ${this.state.extraClassName}`}
