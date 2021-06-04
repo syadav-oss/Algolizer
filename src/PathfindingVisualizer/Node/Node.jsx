@@ -90,7 +90,6 @@ export default class Node extends Component {
       visible: { opacity: 1, scale: 1 },
       hidden: { opacity: 0.5, scale: 0.5 },
     };
-    const isWall = this.state.isWall;
     return (
       <motion.div
         initial="visible"

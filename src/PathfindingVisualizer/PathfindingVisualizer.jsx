@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import Node from "./Node/Node";
 import ControlPanel from "./ControlPanel/ControlPanel";
 import "./PathfindingVisualizer.css";
+import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 
 let StartNodeRow = 5;
 let StartNodeCol = 5;
@@ -35,6 +36,9 @@ export default class PathfindingVisualizer extends Component {
     node.isFinish = isFinish;
     node.isStart = isStart;
     node.isWall = isWall;
+    node.isVisited = false;
+    node.distance = Infinity;
+    node.previousNode = null;
     const element = document.getElementById(`node-${node.row}-${node.col}`);
     element.className = `node ${extraClassName}`;
     element.isFinish = isFinish;
@@ -80,6 +84,7 @@ export default class PathfindingVisualizer extends Component {
     }
   }
   handleMouseLeave(row, col) {
+    console.log(StartNodeRow, StartNodeCol);
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
       if (row === EndNodeRow && col === EndNodeCol) {
@@ -136,10 +141,97 @@ export default class PathfindingVisualizer extends Component {
     }
   };
 
+  // Clearing the board if user wants to run algorithm again to make visited node unvisited
+  removePrevForNextAlgo = () => {
+    for (let r = 0; r < this.state.GridRowSize; ++r) {
+      for (let c = 0; c < this.state.GridColSize; ++c) {
+        if (r === EndNodeRow && c === EndNodeCol) {
+          this.changeState(r, c, true, false, false, "node-finish");
+        } else if (r === StartNodeRow && c === StartNodeCol) {
+          this.changeState(r, c, false, true, false, "node-start");
+        } else {
+          const element = document.getElementById(`node-${r}-${c}`);
+          let class_name = "node ";
+          if (element.isWall === true) {
+            class_name = "node-wall";
+          }
+          this.changeState(r, c, false, false, element.isWall, class_name);
+        }
+      }
+    }
+  };
+
+  // We have all the visited nodes in order and the path vector just have to animate it using appropriate timing
+  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+    for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+      if (i === visitedNodesInOrder.length) {
+        setTimeout(() => {
+          this.animateShortestPath(nodesInShortestPathOrder);
+        }, 10 * i);
+        return;
+      }
+      setTimeout(() => {
+        const node = visitedNodesInOrder[i];
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        if (
+          element.className !== "node node-start" &&
+          element.className !== "node node-finish"
+        ) {
+          // element.className = "node node-visited";
+          this.changeState(
+            node.row,
+            node.col,
+            false,
+            false,
+            false,
+            "node-visited"
+          );
+        }
+      }, 10 * i);
+    }
+  }
+
+  animateShortestPath(nodesInShortestPathOrder) {
+    for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
+      setTimeout(() => {
+        const node = nodesInShortestPathOrder[i];
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        if (
+          element.className !== "node node-start" &&
+          element.className !== "node node-finish"
+        ) {
+          // element.className = "node node-shortest-path";
+          this.changeState(
+            node.row,
+            node.col,
+            false,
+            false,
+            false,
+            "node-shortest-path"
+          );
+        }
+      }, 30 * i);
+    }
+  }
+
+  // Visualizing Dijkstra Algorithm
+  visualizeDijkstra = () => {
+    this.removePrevForNextAlgo();
+    const { grid } = this.state;
+    const startNode = grid[StartNodeRow][StartNodeCol];
+    const finishNode = grid[EndNodeRow][EndNodeCol];
+    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+  };
+
   render() {
     return (
       <div>
-        <ControlPanel onClickClear_={() => this.clearBoard()}></ControlPanel>
+        <ControlPanel
+          onClickClear_={() => this.clearBoard()}
+          onClickVisualize_={() => this.visualizeDijkstra()}
+        ></ControlPanel>
         <div className="grid">
           {this.state.grid.map((row, rowId) => {
             return (
@@ -197,6 +289,9 @@ const createNode = (row, col) => {
     isFinish: row === EndNodeRow && col === EndNodeCol,
     isStart: row === StartNodeRow && col === StartNodeCol,
     isWall: false,
+    distance: Infinity,
+    isVisited: false,
+    previousNode: null,
     refElement: React.createRef(),
   };
 };

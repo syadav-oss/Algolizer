@@ -21,5 +21,66 @@
   background-color: rgb(12, 53, 71);
   background-repeat: no-repeat;
   background-size: contain;
-  transition: transform 0.0005s ease-in-out;
+  transition: transform 0.0005s ease-out;
+}
+
+.node-visited {
+  animation-name: visitedAnimation;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes visitedAnimation {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(32, 2, 44, 0.75);
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: rgba(77, 17, 217, 0.75);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(112, 0, 217, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(0, 218, 207, 0.75);
+  }
+}
+
+.node-shortest-path {
+  animation-name: shortestPath;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
+@keyframes shortestPath {
+  0% {
+    transform: scale(0.6);
+    background-color: rgb(106, 188, 255);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgb(195, 106, 255);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(112, 0, 217, 0.75);
+  }
 }

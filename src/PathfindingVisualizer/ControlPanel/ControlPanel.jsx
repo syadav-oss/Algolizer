@@ -8,7 +8,7 @@ export default class ControlPanel extends Component {
     this.state = {};
   }
   render() {
-    const { onClickClear_ } = this.props;
+    const { onClickClear_, onClickVisualize_ } = this.props;
 
     return (
       <div>
@@ -56,7 +56,11 @@ export default class ControlPanel extends Component {
               <Nav.Link href="#add" className="mr-3">
                 Add Bomb
               </Nav.Link>
-              <Button variant="outline-success" className="mr-3">
+              <Button
+                variant="outline-success"
+                className="mr-3"
+                onClick={() => onClickVisualize_()}
+              >
                 Visualise
               </Button>
               <Nav.Link
