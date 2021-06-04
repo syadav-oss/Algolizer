@@ -21,6 +21,8 @@ export default class PathfindingVisualizer extends Component {
       endNodeChange: false,
       mouseIsPressed: false,
       wallNodeChange: false,
+      addingStations: false,
+      stationsPresent: true,
     };
   }
 
@@ -31,11 +33,20 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ grid: grid });
   }
 
-  changeState = (row, col, isFinish, isStart, isWall, extraClassName) => {
+  changeState = (
+    row,
+    col,
+    isFinish,
+    isStart,
+    isWall,
+    extraClassName,
+    isStation = false
+  ) => {
     const node = this.state.grid[row][col];
     node.isFinish = isFinish;
     node.isStart = isStart;
     node.isWall = isWall;
+    node.isStation = isStation;
     node.isVisited = false;
     node.distance = Infinity;
     node.previousNode = null;
@@ -44,6 +55,7 @@ export default class PathfindingVisualizer extends Component {
     element.isFinish = isFinish;
     element.isStart = isStart;
     element.isWall = isWall;
+    element.isStation = isStation;
     element.extraClassName = extraClassName;
     return;
   };
@@ -54,6 +66,10 @@ export default class PathfindingVisualizer extends Component {
       this.startNodeChange = true;
     } else if (row === EndNodeRow && col === EndNodeCol) {
       this.endNodeChange = true;
+    } else if (this.addingStations == true) {
+      console.log("Adding Station");
+      this.stationsPresent = true;
+      this.changeState(row, col, false, false, false, "node-station", true);
     } else {
       this.wallNodeChange = true;
       const node = this.state.grid[row][col];
@@ -114,16 +130,22 @@ export default class PathfindingVisualizer extends Component {
       this.changeState(row, col, false, true, false, "node-start");
       StartNodeRow = row;
       StartNodeCol = col;
-    }
-    if (this.endNodeChange === true) {
+    } else if (this.endNodeChange === true) {
       this.endNodeChange = false;
       // In case up node is a wall
       this.changeState(row, col, true, false, false, "node-finish");
       EndNodeRow = row;
       EndNodeCol = col;
-    }
-    if (this.wallNodeChange === true) {
+    } else if (this.wallNodeChange === true) {
       this.wallNodeChange = false;
+    } else if (
+      StartNodeRow != row &&
+      StartNodeCol != col &&
+      StartNodeRow != row &&
+      StartNodeCol != col &&
+      this.addingStations
+    ) {
+      this.addingStations = false;
     }
   }
 
@@ -141,6 +163,10 @@ export default class PathfindingVisualizer extends Component {
     }
   };
 
+  addStation = () => {
+    this.addingStations = true;
+    console.log("Adding Station1");
+  };
   // Clearing the board if user wants to run algorithm again to make visited node unvisited
   removePrevForNextAlgo = () => {
     for (let r = 0; r < this.state.GridRowSize; ++r) {
@@ -231,14 +257,22 @@ export default class PathfindingVisualizer extends Component {
         <ControlPanel
           onClickClear_={() => this.clearBoard()}
           onClickVisualize_={() => this.visualizeDijkstra()}
+          onClickAddStation_={() => this.addStation()}
         ></ControlPanel>
         <div className="grid">
           {this.state.grid.map((row, rowId) => {
             return (
               <div key={rowId} className="mar">
                 {row.map((node, nodeId) => {
-                  const { col, row, isFinish, isStart, isWall, refElement } =
-                    node;
+                  const {
+                    col,
+                    row,
+                    isFinish,
+                    isStart,
+                    isWall,
+                    isStation,
+                    refElement,
+                  } = node;
                   return (
                     <Node
                       ref={refElement}
@@ -248,6 +282,7 @@ export default class PathfindingVisualizer extends Component {
                       isFinish={isFinish}
                       isStart={isStart}
                       isWall={isWall}
+                      isStation={isStation}
                       onMouseDown_={(row, col) =>
                         this.handleMouseDown(row, col)
                       }
@@ -289,6 +324,7 @@ const createNode = (row, col) => {
     isFinish: row === EndNodeRow && col === EndNodeCol,
     isStart: row === StartNodeRow && col === StartNodeCol,
     isWall: false,
+    isStation: false,
     distance: Infinity,
     isVisited: false,
     previousNode: null,

@@ -8,7 +8,7 @@ export default class ControlPanel extends Component {
     this.state = {};
   }
   render() {
-    const { onClickClear_, onClickVisualize_ } = this.props;
+    const { onClickClear_, onClickVisualize_, onClickAddStation_ } = this.props;
 
     return (
       <div>
@@ -53,11 +53,15 @@ export default class ControlPanel extends Component {
                   Simple Stair Pattern
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link href="#add" className="mr-3">
-                Add Bomb
+              <Nav.Link
+                href="#add"
+                className="mr-3"
+                onClick={() => onClickAddStation_()}
+              >
+                Add Station
               </Nav.Link>
               <Button
-                variant="outline-success"
+                variant="outline-primary"
                 className="mr-3"
                 onClick={() => onClickVisualize_()}
               >

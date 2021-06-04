@@ -11,12 +11,13 @@ export default class Node extends Component {
       isFinish: false,
       isStart: false,
       isWall: false,
+      isStation: false,
       extraClassName: "",
     };
   }
 
   componentDidMount() {
-    const { col, row, isFinish, isStart, isWall } = this.props;
+    const { col, row, isFinish, isStart, isWall, isStation } = this.props;
 
     const extraClassName = isFinish
       ? "node-finish"
@@ -24,6 +25,8 @@ export default class Node extends Component {
       ? "node-start"
       : isWall
       ? "node-wall"
+      : isStation
+      ? "node-station"
       : "";
     this.setState({
       col: col,
@@ -31,6 +34,7 @@ export default class Node extends Component {
       isFinish: isFinish,
       isStart: isStart,
       isWall: isWall,
+      isStation: isStation,
       extraClassName: extraClassName,
     });
   }
@@ -42,6 +46,8 @@ export default class Node extends Component {
       ? "node-start"
       : nextProps.isWall
       ? "node-wall"
+      : nextProps.isStation
+      ? "node-station"
       : "";
 
     if (
@@ -50,6 +56,7 @@ export default class Node extends Component {
       prevState.isFinish !== nextProps.isFinish ||
       prevState.isStart !== nextProps.isStart ||
       prevState.isWall !== nextProps.isWall ||
+      prevState.isStation !== nextProps.isStation ||
       prevState.extraClassName !== extraClassName
     ) {
       return {
@@ -58,6 +65,7 @@ export default class Node extends Component {
         isFinish: nextProps.isFinish,
         isStart: nextProps.isStart,
         isWall: nextProps.isWall,
+        isStation: nextProps.isStation,
         extraClassName: extraClassName,
       };
     }
