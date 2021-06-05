@@ -4,8 +4,9 @@ import ControlPanel from "./ControlPanel/ControlPanel";
 import "./PathfindingVisualizer.css";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 import { dfs } from "../algorithms/dfs";
+import { bfs } from "../algorithms/bfs";
 import { aStar } from "../algorithms/aStar";
-import { dijkstraOld } from "../algorithms/dijkstraOld";
+// import { dijkstraOld } from "../algorithms/dijkstraOld";
 
 let StartNodeRow = 5;
 let StartNodeCol = 5;
@@ -270,7 +271,7 @@ export default class PathfindingVisualizer extends Component {
     } else if (AlgorithmSelected === 3) {
       visitedNodesInOrder = dfs(grid, startNode, finishNode);
     } else if (AlgorithmSelected === 4) {
-      visitedNodesInOrder = dijkstraOld(grid, startNode, finishNode);
+      visitedNodesInOrder = bfs(grid, startNode, finishNode);
     } else {
       const buttonElement = document.getElementById("visualise-button");
       buttonElement.innerHTML = "!!! Select An Algorithm !!!";
@@ -291,6 +292,8 @@ export default class PathfindingVisualizer extends Component {
       algoName = "A* Star";
     } else if (algo === 3) {
       algoName = "DFS";
+    } else if (algo === 4) {
+      algoName = "BFS";
     }
 
     buttonElement.innerHTML = `Visualise ${algoName}`;

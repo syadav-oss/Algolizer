@@ -49,19 +49,29 @@ export function dijkstra(grid, startNode, finishNode) {
     }
   }
 
-  return [];
+  return visitedNodesForAnimation;
 }
 
 function getAllUnvisitedNeighbors(node, grid) {
   const neighbors = [];
+  const xdir = [1, 1, 1, -1, -1, -1, 0, 0];
+  const ydir = [1, -1, 0, 1, -1, 0, 1, -1];
   const { col, row } = node;
-  if (row > 0) neighbors.push(grid[row - 1][col]);
-  if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
-  if (col > 0) neighbors.push(grid[row][col - 1]);
-  if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-  return neighbors.filter(
-    (neighbor) => !neighbor.isVisited && !neighbor.isWall
-  );
+
+  for (let i = 0; i < xdir.length; ++i) {
+    let nextrow = row + xdir[i];
+    let nextcol = col + ydir[i];
+    if (
+      nextrow >= 0 &&
+      nextrow < grid.length &&
+      nextcol >= 0 &&
+      nextcol < grid[0].length &&
+      !grid[nextrow][nextcol].isVisited &&
+      !grid[nextrow][nextcol].isWall
+    ) neighbors.push(grid[nextrow][nextcol]);
+  }
+
+  return neighbors;
 }
 
 // Backtracks from the finishNode to find the shortest path.

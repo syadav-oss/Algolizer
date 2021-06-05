@@ -9,8 +9,8 @@ export function dfs(grid, startNode, finishNode) {
   const nodesStack = [];
   nodesStack.push(startNode);
   // getAllFromGrid(grid);
-  const xdir = [1, 1, 1, -1, -1, -1, 0, 0];
-  const ydir = [1, -1, 0, 1, -1, 0, 1, -1];
+  const xdir = [1, 0, -1, 0, 1, -1, -1, 1];
+  const ydir = [0, 1, 0, -1, 1, -1, 1, -1];
 
   while (nodesStack.length) {
     const currentNode = nodesStack.pop();
@@ -26,7 +26,7 @@ export function dfs(grid, startNode, finishNode) {
       let nextNode;
       let nextrow, nextcol;
 
-      for (let i = 0; i < 8; ++i) {
+      for (let i = 0; i < xdir.length; ++i) {
         nextrow = row + xdir[i];
         nextcol = col + ydir[i];
 

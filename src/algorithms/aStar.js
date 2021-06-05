@@ -65,7 +65,7 @@ export function aStar(grid, startNode, finishNode) {
       }
     }
   }
-  return [];
+  return visitedNodesForAnimation;
 }
 
 function getHeap() {
@@ -89,7 +89,7 @@ function getNeighbors(node) {
   var x = [1, 0, -1, 0, 1, -1, -1, 1];
   var y = [0, 1, 0, -1, 1, -1, 1, -1];
 
-  for (var i = 0; i < 8; ++i) {
+  for (var i = 0; i < x.length; ++i) {
     if (isValid(r + x[i], c + y[i])) {
       ret.push(Grid[r + x[i]][c + y[i]]);
     }

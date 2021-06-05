@@ -48,10 +48,7 @@ export default class ControlPanel extends Component {
                 <NavDropdown.Item href="#DFS" onClick={() => onClickSelect_(3)}>
                   Depth-First Search
                 </NavDropdown.Item>
-                <NavDropdown.Item
-                  href="#action/3.4"
-                  onClick={() => onClickSelect_(4)}
-                >
+                <NavDropdown.Item href="#BFS" onClick={() => onClickSelect_(4)}>
                   Breadth-First Search
                 </NavDropdown.Item>
               </NavDropdown>
