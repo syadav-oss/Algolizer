@@ -8,7 +8,12 @@ export default class ControlPanel extends Component {
     this.state = {};
   }
   render() {
-    const { onClickClear_, onClickVisualize_, onClickAddStation_ } = this.props;
+    const {
+      onClickClear_,
+      onClickVisualize_,
+      onClickSelect_,
+      onClickAddStation_,
+    } = this.props;
 
     return (
       <div>
@@ -24,17 +29,29 @@ export default class ControlPanel extends Component {
                 id="basic-nav-dropdown"
                 className="mr-3"
               >
-                <NavDropdown.Item href="#action/3.1">
+                <NavDropdown.Item
+                  href="#action/3.1"
+                  onClick={() => onClickSelect_(1)}
+                >
                   Dijkstra's Algorithm
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
+                <NavDropdown.Item
+                  href="#action/3.2"
+                  onClick={() => onClickSelect_(3)}
+                >
                   A* Algorithm
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item href="#action/3.3">
+                <NavDropdown.Item
+                  href="#action/3.3"
+                  onClick={() => onClickSelect_(2)}
+                >
                   Depth-First Search
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.4">
+                <NavDropdown.Item
+                  href="#action/3.4"
+                  onClick={() => onClickSelect_(4)}
+                >
                   Breadth-First Search
                 </NavDropdown.Item>
               </NavDropdown>

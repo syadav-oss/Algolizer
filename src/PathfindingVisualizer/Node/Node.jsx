@@ -102,7 +102,7 @@ export default class Node extends Component {
       <motion.div
         initial="visible"
         animate="visible"
-        transition={{ type: "tween", stiffness: 50 }}
+        transition={{ type: "tween", stiffness: 10 }}
         variants={variants}
         whileHover={{
           scale: 1.7,

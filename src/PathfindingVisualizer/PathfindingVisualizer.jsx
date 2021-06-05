@@ -9,6 +9,7 @@ let StartNodeRow = 5;
 let StartNodeCol = 5;
 let EndNodeRow = 15;
 let EndNodeCol = 45;
+let AlgorithmSelected = 0;
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -247,9 +248,21 @@ export default class PathfindingVisualizer extends Component {
     const { grid } = this.state;
     const startNode = grid[StartNodeRow][StartNodeCol];
     const finishNode = grid[EndNodeRow][EndNodeCol];
-    const visitedNodesInOrder = dfs(grid, startNode, finishNode);
+    let visitedNodesInOrder = [];
+    if (AlgorithmSelected === 1) {
+      visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    } else if (AlgorithmSelected === 2) {
+      visitedNodesInOrder = dfs(grid, startNode, finishNode);
+    } else {
+      alert("Please Select an Algorithm to Visualize");
+      return;
+    }
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
     this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+  };
+
+  selectAnAlgorithm = (algo) => {
+    AlgorithmSelected = algo;
   };
 
   render() {
@@ -258,6 +271,7 @@ export default class PathfindingVisualizer extends Component {
         <ControlPanel
           onClickClear_={() => this.clearBoard()}
           onClickVisualize_={() => this.visulalizeAlgorithm()}
+          onClickSelect_={(algo) => this.selectAnAlgorithm(algo)}
           onClickAddStation_={() => this.addStation()}
         ></ControlPanel>
         <div className="grid">
