@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import "./ControlPanel.css";
+import startSvg from "../Styling/start.svg";
+import endSvg from "../Styling/end.svg";
+import stationSvg from "../Styling/station.svg";
 
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 export default class ControlPanel extends Component {
@@ -17,7 +20,7 @@ export default class ControlPanel extends Component {
 
     return (
       <div>
-        <Navbar bg="dark" expand="lg" variant="dark" className="logo">
+        <Navbar expand="lg" variant="dark" className="logo">
           <Navbar.Brand href="#" className="ml-5">
             Path Finding Visualizer
           </Navbar.Brand>
@@ -108,15 +111,114 @@ export default class ControlPanel extends Component {
           </Navbar.Collapse>
         </Navbar>
 
-        <Navbar bg="light" expand="lg" variant="light">
-          <Navbar.Brand className="col-centered">Start Node</Navbar.Brand>
-          <Navbar.Brand>Target Node</Navbar.Brand>
-          <Navbar.Brand>Bomb Node</Navbar.Brand>
-          <Navbar.Brand>Weight Node</Navbar.Brand>
-          <Navbar.Brand>Unvisited Node</Navbar.Brand>
-          <Navbar.Brand>Visited Node</Navbar.Brand>
-          <Navbar.Brand>Shortest Path Node</Navbar.Brand>
-          <Navbar.Brand>Wall Node</Navbar.Brand>
+        <Navbar bg="light" expand="lg" variant="light" className="centered">
+          <Navbar.Brand>
+            <img
+              alt=""
+              src={startSvg}
+              width="25"
+              height="25"
+              className="d-inline-block align-top"
+              style={{ marginRight: "10px" }}
+            />
+            {""}
+            Start Node
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <img
+              alt=""
+              src={endSvg}
+              width="25"
+              height="25"
+              className="d-inline-block align-top"
+              style={{ marginRight: "10px" }}
+            />{" "}
+            Target Node
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <img
+              alt=""
+              src={stationSvg}
+              width="25"
+              height="25"
+              className="d-inline-block align-top"
+              style={{ marginRight: "10px" }}
+            />{" "}
+            Station Node
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <div className="d-flex flex-row">
+              <div
+                className="p-2"
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  backgroundColor: `rgb(12, 53, 71)`,
+                  marginRight: "10px",
+                }}
+              />
+              Weight Node
+            </div>
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <div className="d-flex flex-row">
+              <div
+                className="p-2"
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  outline: "1px solid rgb(175, 216, 248)",
+                  backgroundColor: `rgb(255, 255, 255)`,
+                  display: "inline-block",
+                  marginRight: "10px",
+                }}
+              />
+              Unvisited Node
+            </div>{" "}
+          </Navbar.Brand>
+
+          <Navbar.Brand>
+            <div className="d-flex flex-row">
+              <div
+                className="p-2"
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  backgroundColor: `rgba(0, 218, 207, 0.75)`,
+                  marginRight: "10px",
+                }}
+              />
+              Visited Node
+            </div>
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <div className="d-flex flex-row">
+              <div
+                className="p-2"
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  backgroundColor: `rgba(112, 0, 217, 0.75)`,
+                  marginRight: "10px",
+                }}
+              />
+              Shortest Path Node
+            </div>
+          </Navbar.Brand>
+          <Navbar.Brand>
+            <div className="d-flex flex-row">
+              <div
+                className="p-2"
+                style={{
+                  width: "25px",
+                  height: "25px",
+                  backgroundColor: `rgb(12, 53, 71)`,
+                  marginRight: "10px",
+                }}
+              />
+              Wall Node
+            </div>
+          </Navbar.Brand>
         </Navbar>
 
         <br />
