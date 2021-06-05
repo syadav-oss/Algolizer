@@ -13,12 +13,12 @@ function getHeap() {
 
 export function dijkstra(grid, startNode, finishNode) {
   const visitedNodesForAnimation = [];
-  var heap = getHeap()
+  var heap = getHeap();
 
   startNode.distance = 0;
   heap.push(startNode);
 
-  while(heap.size() > 0){
+  while (heap.size() > 0) {
     var closestNode = heap.pop();
     // If we encounter a wall, we skip it.
     if (closestNode.isWall) continue;
@@ -26,7 +26,7 @@ export function dijkstra(grid, startNode, finishNode) {
     // If the closest node is at a distance of infinity,
     // we must be trapped and should therefore stop.
     if (closestNode.distance === Infinity) return visitedNodesForAnimation;
-    
+
     // Else we visit this node and update/relax the distance of its neighbors
     closestNode.isVisited = true;
     visitedNodesForAnimation.push(closestNode);
@@ -35,29 +35,22 @@ export function dijkstra(grid, startNode, finishNode) {
     if (closestNode === finishNode) return visitedNodesForAnimation;
 
     const unvisitedNeighbors = getAllUnvisitedNeighbors(closestNode, grid);
-    
+
     for (const neighbor of unvisitedNeighbors) {
       if (neighbor.distance > closestNode.distance + 1) {
-            neighbor.distance = closestNode.distance + 1;
-            neighbor.previousNode = closestNode;
-            if(heap.find(neighbor)){
-              heap.updateElement(neighbor);
-            }
-            else{ 
-              heap.push(neighbor);
-            }
+        neighbor.distance = closestNode.distance + 1;
+        neighbor.previousNode = closestNode;
+        if (heap.find(neighbor)) {
+          heap.updateElement(neighbor);
+        } else {
+          heap.push(neighbor);
         }
       }
-  
-
+    }
   }
 
   return [];
-
 }
-
-
-
 
 function getAllUnvisitedNeighbors(node, grid) {
   const neighbors = [];

@@ -230,14 +230,27 @@ export default class PathfindingVisualizer extends Component {
           element.className !== "node node-finish"
         ) {
           // element.className = "node node-shortest-path";
-          this.changeState(
-            node.row,
-            node.col,
-            false,
-            false,
-            false,
-            "node-shortest-path"
-          );
+          const next_col = nodesInShortestPathOrder[i + 1].col;
+          const next_row = nodesInShortestPathOrder[i + 1].row;
+          let class_name = "";
+          if (next_col === node.col && next_row === node.row + 1) {
+            class_name = "node-shortest-path node-down";
+          } else if (next_col === node.col && next_row === node.row - 1) {
+            class_name = "node-shortest-path node-up";
+          } else if (next_col === node.col - 1 && next_row === node.row) {
+            class_name = "node-shortest-path node-left";
+          } else if (next_col === node.col + 1 && next_row === node.row) {
+            class_name = "node-shortest-path node-right";
+          } else if (next_col === node.col + 1 && next_row === node.row + 1) {
+            class_name = "node-shortest-path node-downright";
+          } else if (next_col === node.col - 1 && next_row === node.row + 1) {
+            class_name = "node-shortest-path node-downleft";
+          } else if (next_col === node.col + 1 && next_row === node.row - 1) {
+            class_name = "node-shortest-path node-upright";
+          } else if (next_col === node.col - 1 && next_row === node.row - 1) {
+            class_name = "node-shortest-path node-upleft";
+          }
+          this.changeState(node.row, node.col, false, false, false, class_name);
         }
       }, 30 * i);
     }

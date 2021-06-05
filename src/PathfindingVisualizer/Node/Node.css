@@ -40,7 +40,69 @@
   animation-fill-mode: forwards;
   animation-play-state: running;
 }
+.node-down {
+  background-image: url(../Styling/down-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
 
+.node-up {
+  background-image: url(../Styling/up-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.node-left {
+  background-image: url(../Styling/left-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.node-right {
+  background-image: url(../Styling/right-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.node-upright {
+  background-image: url(../Styling/upright-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.node-downright {
+  background-image: url(../Styling/downright-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.node-upleft {
+  background-image: url(../Styling/upleft-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.node-downleft {
+  background-image: url(../Styling/downleft-arrow.png);
+  background-size: 13px;
+  background-repeat: no-repeat;
+  background-position-x: center;
+  background-position-y: center;
+}
 @keyframes visitedAnimation {
   0% {
     transform: scale(0.3);

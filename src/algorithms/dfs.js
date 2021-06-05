@@ -9,6 +9,8 @@ export function dfs(grid, startNode, finishNode) {
   const nodesStack = [];
   nodesStack.push(startNode);
   // getAllFromGrid(grid);
+  const xdir = [1, 1, 1, -1, -1, -1, 0, 0];
+  const ydir = [1, -1, 0, 1, -1, 0, 1, -1];
 
   while (nodesStack.length) {
     const currentNode = nodesStack.pop();
@@ -22,32 +24,23 @@ export function dfs(grid, startNode, finishNode) {
 
       const { col, row } = currentNode;
       let nextNode;
-      if (row > 0) {
-        nextNode = grid[row - 1][col];
-        if (!nextNode.isVisited && !nextNode.isWall) {
-          nextNode.previousNode = currentNode;
-          nodesStack.push(nextNode);
-        }
-      }
-      if (row < grid.length - 1) {
-        nextNode = grid[row + 1][col];
-        if (!nextNode.isVisited && !nextNode.isWall) {
-          nextNode.previousNode = currentNode;
-          nodesStack.push(nextNode);
-        }
-      }
-      if (col > 0) {
-        nextNode = grid[row][col - 1];
-        if (!nextNode.isVisited && !nextNode.isWall) {
-          nextNode.previousNode = currentNode;
-          nodesStack.push(nextNode);
-        }
-      }
-      if (col < grid[0].length - 1) {
-        nextNode = grid[row][col + 1];
-        if (!nextNode.isVisited && !nextNode.isWall) {
-          nextNode.previousNode = currentNode;
-          nodesStack.push(nextNode);
+      let nextrow, nextcol;
+
+      for (let i = 0; i < 8; ++i) {
+        nextrow = row + xdir[i];
+        nextcol = col + ydir[i];
+
+        if (
+          nextrow >= 0 &&
+          nextrow < grid.length &&
+          nextcol >= 0 &&
+          nextcol < grid[0].length
+        ) {
+          nextNode = grid[nextrow][nextcol];
+          if (!nextNode.isVisited && !nextNode.isWall) {
+            nextNode.previousNode = currentNode;
+            nodesStack.push(nextNode);
+          }
         }
       }
     }
