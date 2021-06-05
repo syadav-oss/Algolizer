@@ -3,6 +3,7 @@ import Node from "./Node/Node";
 import ControlPanel from "./ControlPanel/ControlPanel";
 import "./PathfindingVisualizer.css";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
+import { dfs } from "../algorithms/dfs";
 
 let StartNodeRow = 5;
 let StartNodeCol = 5;
@@ -66,7 +67,7 @@ export default class PathfindingVisualizer extends Component {
       this.startNodeChange = true;
     } else if (row === EndNodeRow && col === EndNodeCol) {
       this.endNodeChange = true;
-    } else if (this.addingStations == true) {
+    } else if (this.addingStations === true) {
       console.log("Adding Station");
       this.stationsPresent = true;
       this.changeState(row, col, false, false, false, "node-station", true);
@@ -139,10 +140,10 @@ export default class PathfindingVisualizer extends Component {
     } else if (this.wallNodeChange === true) {
       this.wallNodeChange = false;
     } else if (
-      StartNodeRow != row &&
-      StartNodeCol != col &&
-      StartNodeRow != row &&
-      StartNodeCol != col &&
+      StartNodeRow !== row &&
+      StartNodeCol !== col &&
+      StartNodeRow !== row &&
+      StartNodeCol !== col &&
       this.addingStations
     ) {
       this.addingStations = false;
@@ -188,7 +189,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   // We have all the visited nodes in order and the path vector just have to animate it using appropriate timing
-  animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder) {
+  animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -240,15 +241,15 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  // Visualizing Dijkstra Algorithm
-  visualizeDijkstra = () => {
+  // Visualizing Path Algorithm
+  visulalizeAlgorithm = () => {
     this.removePrevForNextAlgo();
     const { grid } = this.state;
     const startNode = grid[StartNodeRow][StartNodeCol];
     const finishNode = grid[EndNodeRow][EndNodeCol];
-    const visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+    const visitedNodesInOrder = dfs(grid, startNode, finishNode);
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateDijkstra(visitedNodesInOrder, nodesInShortestPathOrder);
+    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
   };
 
   render() {
@@ -256,7 +257,7 @@ export default class PathfindingVisualizer extends Component {
       <div>
         <ControlPanel
           onClickClear_={() => this.clearBoard()}
-          onClickVisualize_={() => this.visualizeDijkstra()}
+          onClickVisualize_={() => this.visulalizeAlgorithm()}
           onClickAddStation_={() => this.addStation()}
         ></ControlPanel>
         <div className="grid">
