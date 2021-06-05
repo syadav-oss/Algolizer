@@ -46,6 +46,11 @@ BinaryHeap.prototype = {
     size: function() {
         return this.heap.length;
     },
+    find : function(node) {
+        var i = this.heap.indexOf(node);
+        if(i==-1) return 0;
+        else return 1;
+    },
     updateElement: function(node) {
         this.heapify(this.heap.indexOf(node));
     },

@@ -3,30 +3,26 @@
 // previous node, effectively allowing us to compute the shortest path
 // by backtracking from the finish node.
 
-import { BinaryHeap } from "./binaryHeap";
-
-function getHeap() {
-  return new BinaryHeap(function (node) {
-    return node.distance;
-  });
-}
-
-export function dijkstra(grid, startNode, finishNode) {
+export function dijkstraOld(grid, startNode, finishNode) {
   const visitedNodesForAnimation = [];
-  var heap = getHeap()
 
   startNode.distance = 0;
-  heap.push(startNode);
 
-  while(heap.size() > 0){
-    var closestNode = heap.pop();
+  const unvisitedNodes = getAllFromGrid(grid);
+
+  while (!!unvisitedNodes.length) {
+    // sortNodesByDistance(unvisitedNodes);
+    // const closestNode = unvisitedNodes.deque();
+    sortNodesByDistance(unvisitedNodes);
+    const closestNode = unvisitedNodes.shift();
+
     // If we encounter a wall, we skip it.
     if (closestNode.isWall) continue;
 
     // If the closest node is at a distance of infinity,
     // we must be trapped and should therefore stop.
     if (closestNode.distance === Infinity) return visitedNodesForAnimation;
-    
+
     // Else we visit this node and update/relax the distance of its neighbors
     closestNode.isVisited = true;
     visitedNodesForAnimation.push(closestNode);
@@ -34,30 +30,23 @@ export function dijkstra(grid, startNode, finishNode) {
     // If finish node then we reach the destination
     if (closestNode === finishNode) return visitedNodesForAnimation;
 
-    const unvisitedNeighbors = getAllUnvisitedNeighbors(closestNode, grid);
-    
-    for (const neighbor of unvisitedNeighbors) {
-      if (neighbor.distance > closestNode.distance + 1) {
-            neighbor.distance = closestNode.distance + 1;
-            neighbor.previousNode = closestNode;
-            if(heap.find(neighbor)){
-              heap.updateElement(neighbor);
-            }
-            else{ 
-              heap.push(neighbor);
-            }
-        }
-      }
-  
-
+    updateAllUnvisitedNeighbors(closestNode, grid);
   }
-
-  return [];
-
 }
 
+function sortNodesByDistance(unvisitedNodes) {
+  unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
+}
 
-
+function updateAllUnvisitedNeighbors(node, grid) {
+  const unvisitedNeighbors = getAllUnvisitedNeighbors(node, grid);
+  for (const neighbor of unvisitedNeighbors) {
+    if (neighbor.distance > node.distance + 1) {
+      neighbor.distance = node.distance + 1;
+      neighbor.previousNode = node;
+    }
+  }
+}
 
 function getAllUnvisitedNeighbors(node, grid) {
   const neighbors = [];
@@ -71,14 +60,18 @@ function getAllUnvisitedNeighbors(node, grid) {
   );
 }
 
-// Backtracks from the finishNode to find the shortest path.
-// Only works when called *after* the dijkstra method above.
-export function getNodesInShortestPathOrder(finishNode) {
-  const nodesInShortestPathOrder = [];
-  let currentNode = finishNode;
-  while (currentNode !== null) {
-    nodesInShortestPathOrder.unshift(currentNode);
-    currentNode = currentNode.previousNode;
+function getAllFromGrid(grid) {
+  //   const allNodes = new PriorityQueue({
+  //     comparator: function (a, b) {
+  //       return b.distance - a.distance;
+  //     },
+  //   });
+  const allNodes = [];
+  for (const rows of grid) {
+    for (const cell of rows) {
+      allNodes.push(cell);
+    }
   }
-  return nodesInShortestPathOrder;
+  return allNodes;
 }
+

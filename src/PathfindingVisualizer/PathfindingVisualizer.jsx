@@ -5,6 +5,7 @@ import "./PathfindingVisualizer.css";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 import { dfs } from "../algorithms/dfs";
 import { aStar } from "../algorithms/aStar";
+import { dijkstraOld } from "../algorithms/dijkstraOld";
 
 let StartNodeRow = 5;
 let StartNodeCol = 5;
@@ -255,6 +256,8 @@ export default class PathfindingVisualizer extends Component {
       visitedNodesInOrder = aStar(grid, startNode, finishNode);
     } else if (AlgorithmSelected === 3) {
       visitedNodesInOrder = dfs(grid, startNode, finishNode);
+    } else if (AlgorithmSelected === 4) {
+      visitedNodesInOrder = dijkstraOld(grid, startNode, finishNode);
     } else {
       alert("Please Select an Algorithm to Visualize");
       return;
