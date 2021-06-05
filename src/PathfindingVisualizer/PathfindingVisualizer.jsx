@@ -259,7 +259,9 @@ export default class PathfindingVisualizer extends Component {
     } else if (AlgorithmSelected === 4) {
       visitedNodesInOrder = dijkstraOld(grid, startNode, finishNode);
     } else {
-      alert("Please Select an Algorithm to Visualize");
+      const buttonElement = document.getElementById("visualise-button");
+      buttonElement.innerHTML = "!!! Select An Algorithm !!!";
+
       return;
     }
     const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
