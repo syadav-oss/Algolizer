@@ -30,22 +30,19 @@ export default class ControlPanel extends Component {
                 className="mr-3"
               >
                 <NavDropdown.Item
-                  href="#action/3.1"
+                  href="#Dijkstra"
                   onClick={() => onClickSelect_(1)}
                 >
                   Dijkstra's Algorithm
                 </NavDropdown.Item>
                 <NavDropdown.Item
-                  href="#action/3.2"
-                  onClick={() => onClickSelect_(3)}
+                  href="#AStar"
+                  onClick={() => onClickSelect_(2)}
                 >
                   A* Algorithm
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
-                <NavDropdown.Item
-                  href="#action/3.3"
-                  onClick={() => onClickSelect_(2)}
-                >
+                <NavDropdown.Item href="#DFS" onClick={() => onClickSelect_(3)}>
                   Depth-First Search
                 </NavDropdown.Item>
                 <NavDropdown.Item
@@ -78,6 +75,7 @@ export default class ControlPanel extends Component {
                 Add Station
               </Nav.Link>
               <Button
+                id="visualise-button"
                 variant="outline-primary"
                 className="mr-3"
                 onClick={() => onClickVisualize_()}

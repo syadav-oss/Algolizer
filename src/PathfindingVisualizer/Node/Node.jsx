@@ -72,25 +72,6 @@ export default class Node extends Component {
     return null;
   }
 
-  // modifyState(col, row, isFinish, isStart, isWall) {
-  //   // console.log("Modify State for", col, row);
-  //   const extraClassName = isFinish
-  //     ? "node-finish"
-  //     : isStart
-  //     ? "node-start"
-  //     : isWall
-  //     ? "node-wall"
-  //     : "";
-  //   //console.log(this.state.col, col, this.state.row, row);
-
-  //   this.state.col = col;
-  //   this.state.row = row;
-  //   this.state.isFinish = isFinish;
-  //   this.state.isStart = isStart;
-  //   this.state.isWall = isWall;
-  //   this.state.extraClassName = extraClassName;
-  // }
-
   render() {
     const { onMouseDown_, onMouseUp_, onMouseEnter_, onMouseLeave_ } =
       this.props;

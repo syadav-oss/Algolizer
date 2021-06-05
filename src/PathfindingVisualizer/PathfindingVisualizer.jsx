@@ -4,6 +4,7 @@ import ControlPanel from "./ControlPanel/ControlPanel";
 import "./PathfindingVisualizer.css";
 import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 import { dfs } from "../algorithms/dfs";
+import { aStar } from "../algorithms/aStar";
 
 let StartNodeRow = 5;
 let StartNodeCol = 5;
@@ -167,7 +168,6 @@ export default class PathfindingVisualizer extends Component {
 
   addStation = () => {
     this.addingStations = true;
-    console.log("Adding Station1");
   };
   // Clearing the board if user wants to run algorithm again to make visited node unvisited
   removePrevForNextAlgo = () => {
@@ -252,6 +252,8 @@ export default class PathfindingVisualizer extends Component {
     if (AlgorithmSelected === 1) {
       visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     } else if (AlgorithmSelected === 2) {
+      visitedNodesInOrder = aStar(grid, startNode, finishNode);
+    } else if (AlgorithmSelected === 3) {
       visitedNodesInOrder = dfs(grid, startNode, finishNode);
     } else {
       alert("Please Select an Algorithm to Visualize");
@@ -263,6 +265,17 @@ export default class PathfindingVisualizer extends Component {
 
   selectAnAlgorithm = (algo) => {
     AlgorithmSelected = algo;
+    const buttonElement = document.getElementById("visualise-button");
+    var algoName = "";
+    if (algo === 1) {
+      algoName = "Djikstra";
+    } else if (algo === 2) {
+      algoName = "A* Star";
+    } else if (algo === 3) {
+      algoName = "DFS";
+    }
+
+    buttonElement.innerHTML = `Visualise ${algoName}`;
   };
 
   render() {
