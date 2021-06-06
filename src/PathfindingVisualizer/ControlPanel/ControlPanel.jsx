@@ -22,13 +22,13 @@ export default class ControlPanel extends Component {
       <div>
         <Navbar expand="lg" variant="dark" className="logo">
           <Navbar.Brand href="#" className="ml-5">
-            Path Finding Visualizer
+            <b>PathFindingVisualizer</b>
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="nav" id="basic-navbar-nav">
             <Nav className="mr-auto col-centered1">
               <NavDropdown
-                title="Algorithm"
+                title={<b className="text-light">Algorithm</b>}
                 id="basic-nav-dropdown"
                 className="mr-3"
               >
@@ -53,7 +53,7 @@ export default class ControlPanel extends Component {
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
-                title="Mazes & Patterns"
+                title={<b className="text-light">Mazes & Patterns</b>}
                 id="basic-nav-dropdown"
                 className="mr-3"
               >
@@ -72,7 +72,7 @@ export default class ControlPanel extends Component {
                 className="mr-3"
                 onClick={() => onClickAddStation_()}
               >
-                Add Station
+                <b className="text-light">Add Station</b>
               </Nav.Link>
               <Button
                 id="visualise-button"
@@ -87,16 +87,16 @@ export default class ControlPanel extends Component {
                 onClick={() => onClickClear_()}
                 className="mr-3"
               >
-                Clear Board
+                <b className="text-light">Clear Board</b>
               </Nav.Link>
               <Nav.Link href="#wall" className="mr-3">
-                Clear Walls & Weights
+                <b className="text-light">Clear Walls & weights</b>
               </Nav.Link>
               <Nav.Link href="#path" className="mr-3">
-                Clear Path
+                <b className="text-light">Clear Path</b>
               </Nav.Link>
               <NavDropdown
-                title="Speed"
+                title={<b className="text-light">Speed</b>}
                 id="basic-nav-dropdown"
                 className="mr-3"
               >
@@ -108,53 +108,69 @@ export default class ControlPanel extends Component {
           </Navbar.Collapse>
         </Navbar>
 
-        <Navbar bg="light" expand="lg" variant="light" className="centered">
+        <Navbar bg="light" expand="lg" variant="light" className="col-centered">
           <Navbar.Brand>
             <img
               alt=""
               src={startSvg}
-              width="25"
-              height="25"
+              width="20"
+              height="20"
               className="d-inline-block align-top"
               style={{ marginRight: "10px" }}
             />
             {""}
-            Start Node
+            <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+              {" "}
+              Start Node{" "}
+            </p>
           </Navbar.Brand>
           <Navbar.Brand>
             <img
               alt=""
               src={endSvg}
-              width="25"
-              height="25"
+              width="20"
+              height="20"
               className="d-inline-block align-top"
               style={{ marginRight: "10px" }}
             />{" "}
-            Target Node
+            <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+              {" "}
+              Target Node{" "}
+            </p>
           </Navbar.Brand>
           <Navbar.Brand>
             <img
               alt=""
               src={stationSvg}
-              width="25"
-              height="25"
+              width="20"
+              height="20"
               className="d-inline-block align-top"
               style={{ marginRight: "10px" }}
             />{" "}
-            Station Node
+            <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+              {" "}
+              Station Node{" "}
+            </p>
           </Navbar.Brand>
           <Navbar.Brand>
             <div className="d-flex flex-row">
               <div
                 className="p-2"
                 style={{
-                  width: "25px",
-                  height: "25px",
-                  backgroundColor: `rgb(12, 53, 71)`,
+                  width: "20px",
+                  height: "20px",
+                  outline: "1px solid rgb(175, 216, 248)",
+                  backgroundColor: `rgb(255, 255, 255)`,
+                  display: "inline-block",
                   marginRight: "10px",
+                  borderRadius: "2px",
                 }}
               />
-              Weight Node
+
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Weight Node{" "}
+              </p>
             </div>
           </Navbar.Brand>
           <Navbar.Brand>
@@ -162,15 +178,19 @@ export default class ControlPanel extends Component {
               <div
                 className="p-2"
                 style={{
-                  width: "25px",
-                  height: "25px",
+                  width: "20px",
+                  height: "20px",
                   outline: "1px solid rgb(175, 216, 248)",
                   backgroundColor: `rgb(255, 255, 255)`,
                   display: "inline-block",
                   marginRight: "10px",
+                  borderRadius: "2px",
                 }}
               />
-              Unvisited Node
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Unvisited Node{" "}
+              </p>
             </div>{" "}
           </Navbar.Brand>
 
@@ -179,13 +199,17 @@ export default class ControlPanel extends Component {
               <div
                 className="p-2"
                 style={{
-                  width: "25px",
-                  height: "25px",
+                  width: "20px",
+                  height: "20px",
                   backgroundColor: `rgba(0, 218, 207, 0.75)`,
                   marginRight: "10px",
+                  borderRadius: "2px",
                 }}
               />
-              Visited Node
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Visited Node{" "}
+              </p>
             </div>
           </Navbar.Brand>
           <Navbar.Brand>
@@ -193,13 +217,17 @@ export default class ControlPanel extends Component {
               <div
                 className="p-2"
                 style={{
-                  width: "25px",
-                  height: "25px",
+                  width: "20px",
+                  height: "20px",
                   backgroundColor: `rgba(112, 0, 217, 0.75)`,
                   marginRight: "10px",
+                  borderRadius: "2px",
                 }}
               />
-              Shortest Path Node
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Shortest-path Node{" "}
+              </p>
             </div>
           </Navbar.Brand>
           <Navbar.Brand>
@@ -207,13 +235,17 @@ export default class ControlPanel extends Component {
               <div
                 className="p-2"
                 style={{
-                  width: "25px",
-                  height: "25px",
+                  width: "20px",
+                  height: "20px",
                   backgroundColor: `rgb(12, 53, 71)`,
                   marginRight: "10px",
+                  borderRadius: "2px",
                 }}
               />
-              Wall Node
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Wall Node{" "}
+              </p>
             </div>
           </Navbar.Brand>
         </Navbar>
