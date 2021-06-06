@@ -13,6 +13,7 @@ let StartNodeCol = 5;
 let EndNodeRow = 15;
 let EndNodeCol = 45;
 let AlgorithmSelected = 0;
+let weight = 0;
 let speed_selected = 1;
 let isAlgoRunning = 0;
 
@@ -30,6 +31,7 @@ export default class PathfindingVisualizer extends Component {
       wallNodeChange: false,
       addingStations: false,
       stationsPresent: true,
+      addingWeights: 0,
     };
   }
 
@@ -47,7 +49,8 @@ export default class PathfindingVisualizer extends Component {
     isStart,
     isWall,
     extraClassName,
-    isStation = false
+    isStation = false,
+    weight = 0
   ) => {
     const node = this.state.grid[row][col];
     node.isFinish = isFinish;
@@ -57,7 +60,17 @@ export default class PathfindingVisualizer extends Component {
     node.isVisited = false;
     node.distance = Infinity;
     node.previousNode = null;
+    if (weight) node.weight = weight;
     const element = document.getElementById(`node-${node.row}-${node.col}`);
+    const prevClassName = element.className;
+    if (weight > 1) {
+      extraClassName = `${extraClassName}-${weight}`;
+      //console.log(extraClassName);
+    } else if (weight === 1) {
+      extraClassName = "";
+    } else if (weight === 0 && node.weight > 1) {
+      extraClassName = `${prevClassName} ${extraClassName}`;
+    }
     element.className = `node ${extraClassName}`;
     element.isFinish = isFinish;
     element.isStart = isStart;
@@ -70,15 +83,41 @@ export default class PathfindingVisualizer extends Component {
   handleMouseDown(row, col) {
     //console.log("Mouse Down", row, col);
     if (isAlgoRunning === 1) return;
-    if (row === StartNodeRow && col === StartNodeCol) {
+    const node = this.state.grid[row][col];
+    if (node.isStart && !this.addingWeights && !this.addingStations) {
       this.startNodeChange = true;
-    } else if (row === EndNodeRow && col === EndNodeCol) {
+    } else if (node.isFinish && !this.addingWeights && !this.addingStations) {
       this.endNodeChange = true;
-    } else if (this.addingStations === true) {
-      console.log("Adding Station");
+    } else if (
+      !node.isFinish &&
+      !node.isStart &&
+      !node.isStation &&
+      !node.isWall &&
+      this.addingWeights === 1
+    ) {
+      this.addingWeights = 2;
+      this.changeState(
+        row,
+        col,
+        false,
+        false,
+        false,
+        "node-weight",
+        false,
+        weight
+      );
+      console.log("Adding Weights");
+    } else if (
+      !node.isFinish &&
+      !node.isStart &&
+      !node.isStation &&
+      !node.isWall &&
+      this.addingStations === true
+    ) {
       this.stationsPresent = true;
       this.changeState(row, col, false, false, false, "node-station", true);
     } else {
+      console.log("Adding Walls");
       this.wallNodeChange = true;
       const node = this.state.grid[row][col];
       let className = "node-wall";
@@ -88,7 +127,6 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseEnter(row, col) {
-    console.log(isAlgoRunning);
     if (isAlgoRunning === 1) return;
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
@@ -99,6 +137,23 @@ export default class PathfindingVisualizer extends Component {
       this.changeState(row, col, true, false, false, "node-finish");
       EndNodeRow = row;
       EndNodeCol = col;
+    } else if (
+      !node.isFinish &&
+      !node.isStart &&
+      !node.isStation &&
+      !node.isWall &&
+      this.addingWeights === 2
+    ) {
+      this.changeState(
+        row,
+        col,
+        false,
+        false,
+        false,
+        "node-weight",
+        false,
+        weight
+      );
     } else if (
       !node.isFinish &&
       !node.isStart &&
@@ -150,6 +205,8 @@ export default class PathfindingVisualizer extends Component {
       EndNodeCol = col;
     } else if (this.wallNodeChange === true) {
       this.wallNodeChange = false;
+    } else if (this.addingWeights === 2) {
+      this.addingWeights = 0;
     } else if (
       StartNodeRow !== row &&
       StartNodeCol !== col &&
@@ -178,6 +235,7 @@ export default class PathfindingVisualizer extends Component {
 
   addStation = () => {
     this.addingStations = true;
+    this.addingWeights = 0;
   };
   // Clearing the board if user wants to run algorithm again to make visited node unvisited
   removePrevForNextAlgo = () => {
@@ -243,7 +301,9 @@ export default class PathfindingVisualizer extends Component {
           const next_col = nodesInShortestPathOrder[i + 1].col;
           const next_row = nodesInShortestPathOrder[i + 1].row;
           let class_name = "";
-          if (next_col === node.col && next_row === node.row + 1) {
+          if (node.weight > 1) {
+            class_name = "node-shortest-path";
+          } else if (next_col === node.col && next_row === node.row + 1) {
             class_name = "node-shortest-path node-down";
           } else if (next_col === node.col && next_row === node.row - 1) {
             class_name = "node-shortest-path node-up";
@@ -260,6 +320,7 @@ export default class PathfindingVisualizer extends Component {
           } else if (next_col === node.col - 1 && next_row === node.row - 1) {
             class_name = "node-shortest-path node-upleft";
           }
+
           this.changeState(node.row, node.col, false, false, false, class_name);
         }
       }, 30 * i * speed_selected);
@@ -310,6 +371,13 @@ export default class PathfindingVisualizer extends Component {
     buttonElement.innerHTML = `Visualise ${algoName}`;
   };
 
+  addWeight = (wht) => {
+    console.log("Adding Weight", wht);
+    this.addingWeights = 1;
+    this.addingStations = false;
+    weight = wht;
+  };
+
   selectSpeedOfVisualization = (speed) => {
     speed_selected = speed;
   };
@@ -327,6 +395,7 @@ export default class PathfindingVisualizer extends Component {
           onClickVisualize_={() => this.visulalizeAlgorithm()}
           onClickSelect_={(algo) => this.selectAnAlgorithm(algo)}
           onClickAddStation_={() => this.addStation()}
+          onClickAddWeight_={(weight) => this.addWeight(weight)}
           onClickChangeSpeed_={(speed) =>
             this.selectSpeedOfVisualization(speed)
           }
@@ -401,6 +470,7 @@ const createNode = (row, col) => {
     distance: Infinity,
     isVisited: false,
     previousNode: null,
+    weight: 1,
     refElement: React.createRef(),
   };
 };

@@ -94,7 +94,7 @@ export default class Node extends Component {
         onMouseUp={() => onMouseUp_(this.state.row, this.state.col)}
         onMouseEnter={() => onMouseEnter_(this.state.row, this.state.col)}
         onMouseLeave={() => onMouseLeave_(this.state.row, this.state.col)}
-      />
+      ></motion.div>
     );
   }
 }

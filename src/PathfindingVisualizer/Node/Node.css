@@ -30,6 +30,38 @@
   background-size: contain;
 }
 
+.node-weight-2 {
+  background-image: url(../Styling/two.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+}
+
+.node-weight-3 {
+  background-image: url(../Styling/three.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+}
+.node-weight-4 {
+  background-image: url(../Styling/four.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+}
+
+.node-weight-5 {
+  background-image: url(../Styling/five.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+}
+.node-weight-6 {
+  background-image: url(../Styling/six.svg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 75%;
+}
 .node-visited {
   animation-name: visitedAnimation;
   animation-duration: 1.5s;

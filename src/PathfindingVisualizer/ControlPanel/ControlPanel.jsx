@@ -18,6 +18,7 @@ export default class ControlPanel extends Component {
       onClickAddStation_,
       onClickChangeSpeed_,
       onClickClearPath_,
+      onClickAddWeight_,
     } = this.props;
 
     return (
@@ -69,13 +70,49 @@ export default class ControlPanel extends Component {
                   Simple Stair Pattern
                 </NavDropdown.Item>
               </NavDropdown>
-              <Nav.Link
-                href="#add"
+              <NavDropdown
+                title={<b className="text-light">Add Weight</b>}
+                id="basic-nav-dropdown"
                 className="mr-3"
-                onClick={() => onClickAddStation_()}
               >
-                <b className="text-light">Add Station</b>
-              </Nav.Link>
+                <NavDropdown.Item
+                  href="#weight1"
+                  onClick={() => onClickAddWeight_(1)}
+                >
+                  1
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#weight2"
+                  onClick={() => onClickAddWeight_(2)}
+                >
+                  2
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#weight3"
+                  onClick={() => onClickAddWeight_(3)}
+                >
+                  3
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item
+                  href="#weight4"
+                  onClick={() => onClickAddWeight_(4)}
+                >
+                  4
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#weight5"
+                  onClick={() => onClickAddWeight_(5)}
+                >
+                  5
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#weight6"
+                  onClick={() => onClickAddWeight_(6)}
+                >
+                  6
+                </NavDropdown.Item>
+              </NavDropdown>
               <Button
                 id="visualise-button"
                 variant="outline-primary"
@@ -84,6 +121,13 @@ export default class ControlPanel extends Component {
               >
                 Visualise
               </Button>
+              <Nav.Link
+                href="#add"
+                className="mr-3"
+                onClick={() => onClickAddStation_()}
+              >
+                <b className="text-light">Add Station</b>
+              </Nav.Link>
               <Nav.Link
                 href="#"
                 onClick={() => onClickClear_()}
@@ -184,7 +228,18 @@ export default class ControlPanel extends Component {
                   marginRight: "10px",
                   borderRadius: "2px",
                 }}
-              />
+              >
+                {/* <p
+                  style={{
+                    fontSize: "10px",
+                    position: "relative",
+                    top: "50%",
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  <b>80</b>
+                </p> */}
+              </div>
 
               <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
                 {" "}
