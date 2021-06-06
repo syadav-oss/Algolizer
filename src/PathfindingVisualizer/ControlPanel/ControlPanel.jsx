@@ -16,6 +16,8 @@ export default class ControlPanel extends Component {
       onClickVisualize_,
       onClickSelect_,
       onClickAddStation_,
+      onClickChangeSpeed_,
+      onClickClearPath_,
     } = this.props;
 
     return (
@@ -93,23 +95,40 @@ export default class ControlPanel extends Component {
                 <b className="text-light">Clear Walls & weights</b>
               </Nav.Link>
               <Nav.Link href="#path" className="mr-3">
-                <b className="text-light">Clear Path</b>
+                <b className="text-light" onClick={() => onClickClearPath_()}>
+                  Clear Path
+                </b>
               </Nav.Link>
               <NavDropdown
                 title={<b className="text-light">Speed</b>}
                 id="basic-nav-dropdown"
                 className="mr-3"
               >
-                <NavDropdown.Item href="#action/3.1">Slow</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">Average</NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">Fast</NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#action/3.1"
+                  onClick={() => onClickChangeSpeed_(1.8)}
+                >
+                  Slow
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#action/3.2"
+                  onClick={() => onClickChangeSpeed_(1.2)}
+                >
+                  Average
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#action/3.3"
+                  onClick={() => onClickChangeSpeed_(0.6)}
+                >
+                  Fast
+                </NavDropdown.Item>
               </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
 
-        <Navbar bg="light" expand="lg" variant="light" className="col-centered">
-          <Navbar.Brand>
+        <Navbar bg="white" expand="lg" variant="light">
+          <Navbar.Brand className="col-centered">
             <img
               alt=""
               src={startSvg}

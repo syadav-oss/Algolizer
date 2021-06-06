@@ -13,6 +13,8 @@ let StartNodeCol = 5;
 let EndNodeRow = 15;
 let EndNodeCol = 45;
 let AlgorithmSelected = 0;
+let speed_selected = 1;
+let isAlgoRunning = 0;
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -67,6 +69,7 @@ export default class PathfindingVisualizer extends Component {
 
   handleMouseDown(row, col) {
     //console.log("Mouse Down", row, col);
+    if (isAlgoRunning === 1) return;
     if (row === StartNodeRow && col === StartNodeCol) {
       this.startNodeChange = true;
     } else if (row === EndNodeRow && col === EndNodeCol) {
@@ -85,6 +88,8 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseEnter(row, col) {
+    console.log(isAlgoRunning);
+    if (isAlgoRunning === 1) return;
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
       this.changeState(row, col, false, true, false, "node-start");
@@ -105,6 +110,7 @@ export default class PathfindingVisualizer extends Component {
     }
   }
   handleMouseLeave(row, col) {
+    if (isAlgoRunning === 1) return;
     console.log(StartNodeRow, StartNodeCol);
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
@@ -129,6 +135,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseUp(row, col) {
+    if (isAlgoRunning === 1) return;
     if (this.startNodeChange === true) {
       this.startNodeChange = false;
       // In case up node is a wall
@@ -155,6 +162,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   clearBoard = () => {
+    if (isAlgoRunning === 1) return;
     for (let r = 0; r < this.state.GridRowSize; ++r) {
       for (let c = 0; c < this.state.GridColSize; ++c) {
         if (r === EndNodeRow && c === EndNodeCol) {
@@ -173,6 +181,7 @@ export default class PathfindingVisualizer extends Component {
   };
   // Clearing the board if user wants to run algorithm again to make visited node unvisited
   removePrevForNextAlgo = () => {
+    isAlgoRunning = 0;
     for (let r = 0; r < this.state.GridRowSize; ++r) {
       for (let c = 0; c < this.state.GridColSize; ++c) {
         if (r === EndNodeRow && c === EndNodeCol) {
@@ -197,7 +206,7 @@ export default class PathfindingVisualizer extends Component {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
           this.animateShortestPath(nodesInShortestPathOrder);
-        }, 10 * i);
+        }, 10 * i * speed_selected);
         return;
       }
       setTimeout(() => {
@@ -217,7 +226,7 @@ export default class PathfindingVisualizer extends Component {
             "node-visited"
           );
         }
-      }, 10 * i);
+      }, 10 * i * speed_selected);
     }
   }
 
@@ -253,8 +262,9 @@ export default class PathfindingVisualizer extends Component {
           }
           this.changeState(node.row, node.col, false, false, false, class_name);
         }
-      }, 30 * i);
+      }, 30 * i * speed_selected);
     }
+    isAlgoRunning = 0;
   }
 
   // Visualizing Path Algorithm
@@ -264,6 +274,7 @@ export default class PathfindingVisualizer extends Component {
     const startNode = grid[StartNodeRow][StartNodeCol];
     const finishNode = grid[EndNodeRow][EndNodeCol];
     let visitedNodesInOrder = [];
+    isAlgoRunning = 1;
     if (AlgorithmSelected === 1) {
       visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
     } else if (AlgorithmSelected === 2) {
@@ -299,6 +310,15 @@ export default class PathfindingVisualizer extends Component {
     buttonElement.innerHTML = `Visualise ${algoName}`;
   };
 
+  selectSpeedOfVisualization = (speed) => {
+    speed_selected = speed;
+  };
+
+  clearPath = () => {
+    if (isAlgoRunning === 1) return;
+    this.removePrevForNextAlgo();
+  };
+
   render() {
     return (
       <div>
@@ -307,6 +327,10 @@ export default class PathfindingVisualizer extends Component {
           onClickVisualize_={() => this.visulalizeAlgorithm()}
           onClickSelect_={(algo) => this.selectAnAlgorithm(algo)}
           onClickAddStation_={() => this.addStation()}
+          onClickChangeSpeed_={(speed) =>
+            this.selectSpeedOfVisualization(speed)
+          }
+          onClickClearPath_={() => this.clearPath()}
         ></ControlPanel>
         <div className="grid">
           {this.state.grid.map((row, rowId) => {
