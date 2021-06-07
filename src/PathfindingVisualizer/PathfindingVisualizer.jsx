@@ -67,11 +67,14 @@ export default class PathfindingVisualizer extends Component {
     if (weight > 1) {
       extraClassName = `${extraClassName}-${weight}`;
       //console.log(extraClassName);
-    } else if (weight === 1) {
+    } else if (!isFinish && !isStart && !isWall && !isStation && weight === 1) {
       extraClassName = "";
-    } else if (weight === 0 && node.weight > 1) {
-      extraClassName = `${prevClassName} ${extraClassName}`;
     }
+    if (weight > 1) console.log(extraClassName);
+    //  else if (weight === 0 && node.weight > 1) {
+    //   extraClassName = `${prevClassName} ${extraClassName}`;
+    //   console.log(extraClassName);
+    // }
     element.className = `node ${extraClassName}`;
     element.isFinish = isFinish;
     element.isStart = isStart;
@@ -82,14 +85,19 @@ export default class PathfindingVisualizer extends Component {
   };
 
   handleMouseDown(row, col) {
-    //console.log("Mouse Down", row, col);
+    //If algo is running no mouse event will be entertained
     if (isAlgoRunning === 1) return;
+
     const node = this.state.grid[row][col];
+
+    //Start & End Node Change is only allowed when weights and stations are not being added
     if (node.isStart && !this.addingWeights && !this.addingStations) {
       this.startNodeChange = true;
     } else if (node.isFinish && !this.addingWeights && !this.addingStations) {
       this.endNodeChange = true;
-    } else if (
+    }
+    //Adding weights & stations only when the node is not a special node
+    else if (
       !node.isFinish &&
       !node.isStart &&
       !node.isStation &&
@@ -107,7 +115,6 @@ export default class PathfindingVisualizer extends Component {
         false,
         weight
       );
-      console.log("Adding Weights");
     } else if (
       !node.isFinish &&
       !node.isStart &&
@@ -117,10 +124,18 @@ export default class PathfindingVisualizer extends Component {
     ) {
       this.stationsPresent = true;
       this.changeState(row, col, false, false, false, "node-station", true);
-    } else {
-      console.log("Adding Walls");
-      this.wallNodeChange = true;
+    }
+    //Allowing wall addition only when adding station and adding weight task are not performed
+    else if (!this.addingStations && !this.addingWeights && node.weight < 2) {
       const node = this.state.grid[row][col];
+      console.log(
+        node.isStart,
+        node.isFinish,
+        node.isStation,
+        node.isWall,
+        this.addingWeights
+      );
+      this.wallNodeChange = true;
       let className = "node-wall";
       if (node.isWall) className = "";
       this.changeState(row, col, false, false, !node.isWall, className);
@@ -130,11 +145,21 @@ export default class PathfindingVisualizer extends Component {
   handleMouseEnter(row, col) {
     if (isAlgoRunning === 1) return;
     const node = this.state.grid[row][col];
-    if (this.startNodeChange === true && node.isWall === false) {
+    if (
+      this.startNodeChange === true &&
+      node.isWall === false &&
+      node.isStation === false &&
+      node.weight < 2
+    ) {
       this.changeState(row, col, false, true, false, "node-start");
       StartNodeRow = row;
       StartNodeCol = col;
-    } else if (this.endNodeChange === true && node.isWall === false) {
+    } else if (
+      this.endNodeChange === true &&
+      node.isWall === false &&
+      node.isStation === false &&
+      node.weight < 2
+    ) {
       this.changeState(row, col, true, false, false, "node-finish");
       EndNodeRow = row;
       EndNodeCol = col;
@@ -158,7 +183,10 @@ export default class PathfindingVisualizer extends Component {
     } else if (
       !node.isFinish &&
       !node.isStart &&
-      this.wallNodeChange === true
+      this.wallNodeChange === true &&
+      !this.addingStations &&
+      !this.addingWeights &&
+      node.weight < 2
     ) {
       let className = "node-wall";
       if (node.isWall) className = "";
@@ -167,7 +195,7 @@ export default class PathfindingVisualizer extends Component {
   }
   handleMouseLeave(row, col) {
     if (isAlgoRunning === 1) return;
-    console.log(StartNodeRow, StartNodeCol);
+
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
       if (row === EndNodeRow && col === EndNodeCol) {
@@ -224,11 +252,11 @@ export default class PathfindingVisualizer extends Component {
     for (let r = 0; r < this.state.GridRowSize; ++r) {
       for (let c = 0; c < this.state.GridColSize; ++c) {
         if (r === EndNodeRow && c === EndNodeCol) {
-          this.changeState(r, c, true, false, false, "node-finish");
+          this.changeState(r, c, true, false, false, "node-finish", false, 1);
         } else if (r === StartNodeRow && c === StartNodeCol) {
-          this.changeState(r, c, false, true, false, "node-start");
+          this.changeState(r, c, false, true, false, "node-start", false, 1);
         } else {
-          this.changeState(r, c, false, false, false, "node ");
+          this.changeState(r, c, false, false, false, "node ", false, 1);
         }
       }
     }
@@ -243,17 +271,31 @@ export default class PathfindingVisualizer extends Component {
     isAlgoRunning = 0;
     for (let r = 0; r < this.state.GridRowSize; ++r) {
       for (let c = 0; c < this.state.GridColSize; ++c) {
+        const node = this.state.grid[r][c];
         if (r === EndNodeRow && c === EndNodeCol) {
           this.changeState(r, c, true, false, false, "node-finish");
         } else if (r === StartNodeRow && c === StartNodeCol) {
           this.changeState(r, c, false, true, false, "node-start");
         } else {
           const element = document.getElementById(`node-${r}-${c}`);
-          let class_name = "node ";
-          if (element.isWall === true) {
+          let class_name = "";
+          if (node.isWall === true) {
             class_name = "node-wall";
+          } else if (node.isStation === true) {
+            class_name = "node-station";
+          } else if (node.weight > 1) {
+            class_name = "node-weight";
           }
-          this.changeState(r, c, false, false, element.isWall, class_name);
+          this.changeState(
+            r,
+            c,
+            false,
+            false,
+            node.isWall,
+            class_name,
+            node.isStation,
+            node.weight
+          );
         }
       }
     }
@@ -275,15 +317,29 @@ export default class PathfindingVisualizer extends Component {
           element.className !== "node node-start" &&
           element.className !== "node node-finish"
         ) {
-          // element.className = "node node-visited";
-          this.changeState(
-            node.row,
-            node.col,
-            false,
-            false,
-            false,
-            "node-visited"
-          );
+          let class_name = "node-visited";
+          if (node.weight > 1) {
+            class_name = "node-visited node-weight";
+            this.changeState(
+              node.row,
+              node.col,
+              false,
+              false,
+              node.isWall,
+              class_name,
+              node.isStation,
+              node.weight
+            );
+          } else {
+            this.changeState(
+              node.row,
+              node.col,
+              false,
+              false,
+              node.isWall,
+              class_name
+            );
+          }
         }
       }, 10 * i * speed_selected);
     }
@@ -303,7 +359,7 @@ export default class PathfindingVisualizer extends Component {
           const next_row = nodesInShortestPathOrder[i + 1].row;
           let class_name = "";
           if (node.weight > 1) {
-            class_name = "node-shortest-path";
+            class_name = `node-shortest-path node-weight-${node.weight}`;
           } else if (next_col === node.col && next_row === node.row + 1) {
             class_name = "node-shortest-path node-down";
           } else if (next_col === node.col && next_row === node.row - 1) {
@@ -376,6 +432,7 @@ export default class PathfindingVisualizer extends Component {
     console.log("Adding Weight", wht);
     this.addingWeights = 1;
     this.addingStations = false;
+    this.wallNodeChange = false;
     weight = wht;
   };
 
