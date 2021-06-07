@@ -6,6 +6,7 @@ import { dijkstra, getNodesInShortestPathOrder } from "../algorithms/dijkstra";
 import { dfs } from "../algorithms/dfs";
 import { bfs } from "../algorithms/bfs";
 import { aStar } from "../algorithms/aStar";
+import { RecursiveDivision } from "../mazes/recursiveDiv";
 // import { dijkstraOld } from "../algorithms/dijkstraOld";
 
 let StartNodeRow = 5;
@@ -387,6 +388,38 @@ export default class PathfindingVisualizer extends Component {
     this.removePrevForNextAlgo();
   };
 
+  mazeGenerate = (mazeAlgo) => {
+    this.clearBoard();
+    const { grid } = this.state;
+    var forWalls;
+    if (mazeAlgo === 1) {
+      forWalls = RecursiveDivision(grid);
+    } else {
+      alert("Only Recursive division is Working till now");
+      return;
+    }
+    for (let i = 0; i < forWalls.length; i++) {
+      setTimeout(() => {
+        const node = forWalls[i];
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        if (
+          element.className !== "node node-start" &&
+          element.className !== "node node-finish"
+        ) {
+          // element.className = "node node-visited";
+          this.changeState(
+            node.row,
+            node.col,
+            false,
+            false,
+            true,
+            "node-wall wall-animate"
+          );
+        }
+      }, 20 * i);
+    }
+  };
+
   render() {
     return (
       <div>
@@ -400,6 +433,7 @@ export default class PathfindingVisualizer extends Component {
             this.selectSpeedOfVisualization(speed)
           }
           onClickClearPath_={() => this.clearPath()}
+          onClickGenerateMaze_={(mazeAlgo) => this.mazeGenerate(mazeAlgo)}
         ></ControlPanel>
         <div className="grid">
           {this.state.grid.map((row, rowId) => {

@@ -37,7 +37,7 @@ export function dijkstra(grid, startNode, finishNode) {
     const unvisitedNeighbors = getAllUnvisitedNeighbors(closestNode, grid);
 
     for (const neighbor of unvisitedNeighbors) {
-      if (neighbor.distance > closestNode.distance + 1) {
+      if (neighbor.distance > closestNode.distance + neighbor.weight) {
         neighbor.distance = closestNode.distance + neighbor.weight;
         neighbor.previousNode = closestNode;
         if (heap.find(neighbor)) {
@@ -56,8 +56,8 @@ function getAllUnvisitedNeighbors(node, grid) {
   const neighbors = [];
   // const xdir = [1, 1, 1, -1, -1, -1, 0, 0];
   // const ydir = [1, -1, 0, 1, -1, 0, 1, -1];
-  const xdir = [ 1,  -1, 0, 0];
-  const ydir = [ 0,   0, 1, -1];
+  const xdir = [1, -1, 0, 0];
+  const ydir = [0, 0, 1, -1];
 
   const { col, row } = node;
 
@@ -71,7 +71,8 @@ function getAllUnvisitedNeighbors(node, grid) {
       nextcol < grid[0].length &&
       !grid[nextrow][nextcol].isVisited &&
       !grid[nextrow][nextcol].isWall
-    ) neighbors.push(grid[nextrow][nextcol]);
+    )
+      neighbors.push(grid[nextrow][nextcol]);
   }
 
   return neighbors;

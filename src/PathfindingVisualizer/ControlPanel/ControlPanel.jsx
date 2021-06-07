@@ -19,6 +19,7 @@ export default class ControlPanel extends Component {
       onClickChangeSpeed_,
       onClickClearPath_,
       onClickAddWeight_,
+      onClickGenerateMaze_,
     } = this.props;
 
     return (
@@ -60,13 +61,22 @@ export default class ControlPanel extends Component {
                 id="basic-nav-dropdown"
                 className="mr-3"
               >
-                <NavDropdown.Item href="#action/3.1">
+                <NavDropdown.Item
+                  href="#action/3.1"
+                  onClick={() => onClickGenerateMaze_(1)}
+                >
                   Recursive Division
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.2">
+                <NavDropdown.Item
+                  href="#action/3.2"
+                  onClick={() => onClickGenerateMaze_(2)}
+                >
                   Basic Random Maze
                 </NavDropdown.Item>
-                <NavDropdown.Item href="#action/3.3">
+                <NavDropdown.Item
+                  href="#action/3.3"
+                  onClick={() => onClickGenerateMaze_(3)}
+                >
                   Simple Stair Pattern
                 </NavDropdown.Item>
               </NavDropdown>
@@ -134,9 +144,6 @@ export default class ControlPanel extends Component {
                 className="mr-3"
               >
                 <b className="text-light">Clear Board</b>
-              </Nav.Link>
-              <Nav.Link href="#wall" className="mr-3">
-                <b className="text-light">Clear Walls & weights</b>
               </Nav.Link>
               <Nav.Link href="#path" className="mr-3">
                 <b className="text-light" onClick={() => onClickClearPath_()}>
