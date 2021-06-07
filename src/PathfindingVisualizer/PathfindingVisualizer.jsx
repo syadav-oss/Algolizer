@@ -398,6 +398,32 @@ export default class PathfindingVisualizer extends Component {
       alert("Only Recursive division is Working till now");
       return;
     }
+    for (let i = 0; i < grid.length; i++) {
+      for (let j = 0; j < grid[0].length; j++) {
+        if (i !== 0 && i !== grid.length - 1 && j !== 0 && j !== grid[0].length)
+          continue;
+        setTimeout(() => {
+          const node = grid[i][j];
+          const element = document.getElementById(
+            `node-${node.row}-${node.col}`
+          );
+          if (
+            element.className !== "node node-start" &&
+            element.className !== "node node-finish"
+          ) {
+            // element.className = "node node-visited";
+            this.changeState(
+              node.row,
+              node.col,
+              false,
+              false,
+              true,
+              "node-wall wall-animate"
+            );
+          }
+        }, 20 * i);
+      }
+    }
     for (let i = 0; i < forWalls.length; i++) {
       setTimeout(() => {
         const node = forWalls[i];

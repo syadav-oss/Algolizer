@@ -1,14 +1,11 @@
 export function RecursiveDivision(grid) {
   let order = [];
-  let holes = [];
-
   function randomNumber(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
-
   function checkInside(array, element) {
     for (let i = 0; i < array.length; i++) {
-      if (array[i].row === element[0] && array[i].col === element[1]) {
+      if (array[i][0] === element[0] && array[i][1] === element[1]) {
         return true;
       }
     }
@@ -16,22 +13,17 @@ export function RecursiveDivision(grid) {
   }
 
   function addHorizontalWall(minX, maxX, y) {
-    // On this element there will not be a wall it is randomly selected
-    var hole = Math.floor(randomNumber(minX, maxX)) + 1;
-    holes.push([hole, y]);
-    // Adding Walls On the line other than the hole
+    var hole = Math.floor(randomNumber(minX, maxX) / 2) * 2 + 1;
+
     for (var i = minX; i <= maxX; i++) {
-      if (i !== hole && !checkInside(holes, [i, y])) order.push(grid[i][y]);
+      if (i !== hole && !checkInside(order, [i, y])) order.push(grid[i][y]);
     }
   }
-
   function addVerticalWall(minY, maxY, x) {
-    // On this element there will not be a wall it is randomly selected
-    var hole = Math.floor(randomNumber(minY, maxY)) + 1;
-    holes.push([x, hole]);
-    // Adding Walls On the line other than the hole
+    var hole = Math.floor(randomNumber(minY, maxY) / 2) * 2 + 1;
+
     for (var i = minY; i <= maxY; i++) {
-      if (i !== hole && !checkInside(holes, [x, hole])) order.push(grid[x][i]);
+      if (i !== hole && !checkInside(order, [x, i])) order.push(grid[x][i]);
     }
   }
 
@@ -42,7 +34,7 @@ export function RecursiveDivision(grid) {
       if (diff[0] < 1) {
         return;
       }
-      var y = Math.floor(randomNumber(start[1], end[1]));
+      var y = Math.floor(randomNumber(start[1], end[1]) / 2) * 2;
       addHorizontalWall(start[0], end[0], y);
       divide(grid, !horizontal, start, [end[0], y - 1]);
       divide(grid, !horizontal, [start[0], y + 1], end);
@@ -50,14 +42,13 @@ export function RecursiveDivision(grid) {
       if (diff[1] < 1) {
         return;
       }
-      var x = Math.floor(randomNumber(start[0], end[0]));
+      var x = Math.floor(randomNumber(start[0], end[0]) / 2) * 2;
       addVerticalWall(start[1], end[1], x);
       divide(grid, !horizontal, start, [x - 1, end[1]]);
       divide(grid, !horizontal, [x + 1, start[1]], end);
     }
   }
 
-  // Range is from starting to end of maze
-  divide(grid, false, [0, 0], [grid.length - 1, grid[0].length - 1]);
+  divide(grid, false, [1, 1], [grid.length - 2, grid[0].length - 2]);
   return order;
 }
