@@ -400,7 +400,12 @@ export default class PathfindingVisualizer extends Component {
     }
     for (let i = 0; i < grid.length; i++) {
       for (let j = 0; j < grid[0].length; j++) {
-        if (i !== 0 && i !== grid.length - 1 && j !== 0 && j !== grid[0].length)
+        if (
+          i !== 0 &&
+          i !== grid.length - 1 &&
+          j !== 0 &&
+          j !== grid[0].length - 1
+        )
           continue;
         setTimeout(() => {
           const node = grid[i][j];

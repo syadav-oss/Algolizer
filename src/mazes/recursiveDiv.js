@@ -5,7 +5,7 @@ export function RecursiveDivision(grid) {
   }
   function checkInside(array, element) {
     for (let i = 0; i < array.length; i++) {
-      if (array[i][0] === element[0] && array[i][1] === element[1]) {
+      if (array[i].row === element[0] && array[i].col === element[1]) {
         return true;
       }
     }
