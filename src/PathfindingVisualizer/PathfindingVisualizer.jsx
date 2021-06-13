@@ -1,3 +1,4 @@
+// import React, { Component, forwardRef } from "react";
 import React, { Component } from "react";
 import Node from "./Node/Node";
 import ControlPanel from "./ControlPanel/ControlPanel";
@@ -7,6 +8,9 @@ import { dfs } from "../algorithms/dfs";
 import { bfs } from "../algorithms/bfs";
 import { aStar } from "../algorithms/aStar";
 import { RecursiveDivision } from "../mazes/recursiveDiv";
+import { basicRandom } from "../mazes/basicRandom";
+import { simpleStair } from "../mazes/simpleStair";
+import { basicWeight } from "../mazes/basicWeight";
 // import { dijkstraOld } from "../algorithms/dijkstraOld";
 
 let StartNodeRow = 5;
@@ -63,7 +67,7 @@ export default class PathfindingVisualizer extends Component {
     node.previousNode = null;
     if (weight) node.weight = weight;
     const element = document.getElementById(`node-${node.row}-${node.col}`);
-    const prevClassName = element.className;
+    // const prevClassName = element.className;
     if (weight > 1) {
       extraClassName = `${extraClassName}-${weight}`;
       //console.log(extraClassName);
@@ -277,7 +281,7 @@ export default class PathfindingVisualizer extends Component {
         } else if (r === StartNodeRow && c === StartNodeCol) {
           this.changeState(r, c, false, true, false, "node-start");
         } else {
-          const element = document.getElementById(`node-${r}-${c}`);
+          // const element = document.getElementById(`node-${r}-${c}`);
           let class_name = "";
           if (node.isWall === true) {
             class_name = "node-wall";
@@ -451,41 +455,16 @@ export default class PathfindingVisualizer extends Component {
     var forWalls;
     if (mazeAlgo === 1) {
       forWalls = RecursiveDivision(grid);
+    } else if (mazeAlgo === 2) {
+      forWalls = basicRandom(grid);
+    } else if (mazeAlgo === 3) {
+      forWalls = basicWeight(grid);
+    } else if (mazeAlgo === 4) {
+      forWalls = simpleStair(grid);
     } else {
-      alert("Only Recursive division is Working till now");
       return;
     }
-    for (let i = 0; i < grid.length; i++) {
-      for (let j = 0; j < grid[0].length; j++) {
-        if (
-          i !== 0 &&
-          i !== grid.length - 1 &&
-          j !== 0 &&
-          j !== grid[0].length - 1
-        )
-          continue;
-        setTimeout(() => {
-          const node = grid[i][j];
-          const element = document.getElementById(
-            `node-${node.row}-${node.col}`
-          );
-          if (
-            element.className !== "node node-start" &&
-            element.className !== "node node-finish"
-          ) {
-            // element.className = "node node-visited";
-            this.changeState(
-              node.row,
-              node.col,
-              false,
-              false,
-              true,
-              "node-wall wall-animate"
-            );
-          }
-        }, 20 * i);
-      }
-    }
+
     for (let i = 0; i < forWalls.length; i++) {
       setTimeout(() => {
         const node = forWalls[i];
@@ -495,14 +474,27 @@ export default class PathfindingVisualizer extends Component {
           element.className !== "node node-finish"
         ) {
           // element.className = "node node-visited";
-          this.changeState(
-            node.row,
-            node.col,
-            false,
-            false,
-            true,
-            "node-wall wall-animate"
-          );
+          if (mazeAlgo === 3) {
+            this.changeState(
+              node.row,
+              node.col,
+              false,
+              false,
+              false,
+              "node-weight",
+              false,
+              node.weight
+            );
+          } else {
+            this.changeState(
+              node.row,
+              node.col,
+              false,
+              false,
+              true,
+              "node-wall wall-animate"
+            );
+          }
         }
       }, 20 * i);
     }

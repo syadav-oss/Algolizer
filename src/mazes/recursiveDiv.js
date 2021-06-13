@@ -49,6 +49,14 @@ export function RecursiveDivision(grid) {
     }
   }
 
+  for (var i = 0; i < grid[0].length - 1; i++) order.push(grid[0][i]);
+
+  for (i = 0; i < grid.length - 1; i++) order.push(grid[i][grid[0].length - 1]);
+
+  for (i = grid[0].length - 1; i > 0; i--) order.push(grid[grid.length - 1][i]);
+
+  for (i = grid.length - 1; i > 0; i--) order.push(grid[i][0]);
+
   divide(grid, false, [1, 1], [grid.length - 2, grid[0].length - 2]);
   return order;
 }

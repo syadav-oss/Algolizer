@@ -77,6 +77,12 @@ export default class ControlPanel extends Component {
                   href="#action/3.3"
                   onClick={() => onClickGenerateMaze_(3)}
                 >
+                  Basic Weight Maze
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#action/3.4"
+                  onClick={() => onClickGenerateMaze_(4)}
+                >
                   Simple Stair Pattern
                 </NavDropdown.Item>
               </NavDropdown>
