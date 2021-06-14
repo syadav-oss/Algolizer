@@ -142,7 +142,9 @@ export default class ControlPanel extends Component {
                 className="mr-3"
                 onClick={() => onClickAddStation_()}
               >
-                <b className="text-light">Add Station</b>
+                <b className="text-light" id="station-button">
+                  Add Station
+                </b>
               </Nav.Link>
               <Nav.Link
                 href="#"

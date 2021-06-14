@@ -72,6 +72,18 @@
   animation-fill-mode: forwards;
   animation-play-state: running;
 }
+
+.node-visited-station {
+  animation-name: visitedAnimationForStationToFinish;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
+
 .node-down {
   background-image: url(../Styling/down-arrow.png);
   background-size: 13px;
@@ -161,6 +173,28 @@
   75% {
     transform: scale(1.2);
     background-color: rgba(112, 0, 217, 0.75);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgba(0, 218, 207, 0.75);
+  }
+}
+
+@keyframes visitedAnimationForStationToFinish {
+  0% {
+    transform: scale(0.3);
+    background-color: rgba(32, 2, 44, 0.75);
+    border-radius: 100%;
+  }
+
+  50% {
+    background-color: rgba(17, 217, 50, 0.75);
+  }
+
+  75% {
+    transform: scale(1.2);
+    background-color: rgba(0, 217, 181, 0.75);
   }
 
   100% {

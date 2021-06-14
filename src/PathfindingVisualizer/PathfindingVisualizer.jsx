@@ -21,6 +21,8 @@ let AlgorithmSelected = 0;
 let weight = 0;
 let speed_selected = 1;
 let isAlgoRunning = 0;
+let stationNodeRow = -1;
+let stationNodeCol = -1;
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -124,13 +126,24 @@ export default class PathfindingVisualizer extends Component {
       !node.isStart &&
       !node.isStation &&
       !node.isWall &&
-      this.addingStations === true
+      this.addingStations === true &&
+      stationNodeRow === -1 &&
+      node.weight <= 1
     ) {
       this.stationsPresent = true;
+      stationNodeRow = row;
+      stationNodeCol = col;
+      const buttonElement = document.getElementById("station-button");
+      buttonElement.innerHTML = "Remove Station";
       this.changeState(row, col, false, false, false, "node-station", true);
     }
     //Allowing wall addition only when adding station and adding weight task are not performed
-    else if (!this.addingStations && !this.addingWeights && node.weight < 2) {
+    else if (
+      (row !== stationNodeRow || col !== stationNodeCol) &&
+      !this.addingStations &&
+      !this.addingWeights &&
+      node.weight < 2
+    ) {
       const node = this.state.grid[row][col];
       console.log(
         node.isStart,
@@ -187,6 +200,7 @@ export default class PathfindingVisualizer extends Component {
     } else if (
       !node.isFinish &&
       !node.isStart &&
+      (row !== stationNodeRow || col !== stationNodeCol) &&
       this.wallNodeChange === true &&
       !this.addingStations &&
       !this.addingWeights &&
@@ -253,6 +267,8 @@ export default class PathfindingVisualizer extends Component {
 
   clearBoard = () => {
     if (isAlgoRunning === 1) return;
+    stationNodeCol = -1;
+    stationNodeRow = -1;
     for (let r = 0; r < this.state.GridRowSize; ++r) {
       for (let c = 0; c < this.state.GridColSize; ++c) {
         if (r === EndNodeRow && c === EndNodeCol) {
@@ -267,9 +283,27 @@ export default class PathfindingVisualizer extends Component {
   };
 
   addStation = () => {
-    this.addingStations = true;
-    this.addingWeights = 0;
+    if (stationNodeRow !== -1) {
+      this.changeState(
+        stationNodeRow,
+        stationNodeCol,
+        false,
+        false,
+        false,
+        "node ",
+        false,
+        1
+      );
+      stationNodeRow = -1;
+      stationNodeCol = -1;
+      const buttonElement = document.getElementById("station-button");
+      buttonElement.innerHTML = "Add Station";
+    } else {
+      this.addingStations = true;
+      this.addingWeights = 0;
+    }
   };
+
   // Clearing the board if user wants to run algorithm again to make visited node unvisited
   removePrevForNextAlgo = () => {
     isAlgoRunning = 0;
@@ -305,8 +339,24 @@ export default class PathfindingVisualizer extends Component {
     }
   };
 
+  // Resetting visiting distance and previous properties for station feature
+  resetForStationPath = () => {
+    for (let r = 0; r < this.state.GridRowSize; ++r) {
+      for (let c = 0; c < this.state.GridColSize; ++c) {
+        const node = this.state.grid[r][c];
+        node.isVisited = false;
+        node.distance = Infinity;
+        node.previousNode = null;
+      }
+    }
+  };
+
   // We have all the visited nodes in order and the path vector just have to animate it using appropriate timing
-  animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder) {
+  animateAlgorithm(
+    visitedNodesInOrder,
+    nodesInShortestPathOrder,
+    startToStation
+  ) {
     for (let i = 0; i <= visitedNodesInOrder.length; i++) {
       if (i === visitedNodesInOrder.length) {
         setTimeout(() => {
@@ -319,9 +369,13 @@ export default class PathfindingVisualizer extends Component {
         const element = document.getElementById(`node-${node.row}-${node.col}`);
         if (
           element.className !== "node node-start" &&
-          element.className !== "node node-finish"
+          element.className !== "node node-finish" &&
+          node.isStation === false
         ) {
           let class_name = "node-visited";
+          if (i > startToStation) {
+            class_name = "node-visited-station";
+          }
           if (node.weight > 1) {
             class_name = "node-visited node-weight";
             this.changeState(
@@ -356,7 +410,8 @@ export default class PathfindingVisualizer extends Component {
         const element = document.getElementById(`node-${node.row}-${node.col}`);
         if (
           element.className !== "node node-start" &&
-          element.className !== "node node-finish"
+          element.className !== "node node-finish" &&
+          node.isStation === false
         ) {
           // element.className = "node node-shortest-path";
           const next_col = nodesInShortestPathOrder[i + 1].col;
@@ -395,24 +450,99 @@ export default class PathfindingVisualizer extends Component {
     const { grid } = this.state;
     const startNode = grid[StartNodeRow][StartNodeCol];
     const finishNode = grid[EndNodeRow][EndNodeCol];
+    let visitedNodesInOrderToStation = [];
+    let nodesInShotestPathOrderToStation = [];
+    let isStation = false;
+    let startToStation = Infinity;
+    if (stationNodeRow !== -1) {
+      isStation = true;
+    }
+    let stationNode;
+
+    if (isStation) {
+      stationNode = grid[stationNodeRow][stationNodeCol];
+    }
+
     let visitedNodesInOrder = [];
     isAlgoRunning = 1;
     if (AlgorithmSelected === 1) {
-      visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+      if (isStation) {
+        visitedNodesInOrderToStation = dijkstra(grid, startNode, stationNode);
+        nodesInShotestPathOrderToStation =
+          getNodesInShortestPathOrder(stationNode);
+        startToStation = visitedNodesInOrderToStation.length;
+        this.resetForStationPath();
+      }
+      if (isStation) {
+        visitedNodesInOrder = dijkstra(grid, stationNode, finishNode);
+        visitedNodesInOrder =
+          visitedNodesInOrderToStation.concat(visitedNodesInOrder);
+      } else {
+        visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+      }
     } else if (AlgorithmSelected === 2) {
-      visitedNodesInOrder = aStar(grid, startNode, finishNode);
+      if (isStation) {
+        visitedNodesInOrderToStation = aStar(grid, startNode, stationNode);
+        nodesInShotestPathOrderToStation =
+          getNodesInShortestPathOrder(stationNode);
+        startToStation = visitedNodesInOrderToStation.length;
+        this.resetForStationPath();
+      }
+      if (isStation) {
+        visitedNodesInOrder = aStar(grid, stationNode, finishNode);
+        visitedNodesInOrder =
+          visitedNodesInOrderToStation.concat(visitedNodesInOrder);
+      } else {
+        visitedNodesInOrder = aStar(grid, startNode, finishNode);
+      }
     } else if (AlgorithmSelected === 3) {
-      visitedNodesInOrder = dfs(grid, startNode, finishNode);
+      if (isStation) {
+        visitedNodesInOrderToStation = dfs(grid, startNode, stationNode);
+        nodesInShotestPathOrderToStation =
+          getNodesInShortestPathOrder(stationNode);
+        startToStation = visitedNodesInOrderToStation.length;
+        this.resetForStationPath();
+      }
+      if (isStation) {
+        visitedNodesInOrder = dfs(grid, stationNode, finishNode);
+        visitedNodesInOrder =
+          visitedNodesInOrderToStation.concat(visitedNodesInOrder);
+      } else {
+        visitedNodesInOrder = dfs(grid, startNode, finishNode);
+      }
     } else if (AlgorithmSelected === 4) {
-      visitedNodesInOrder = bfs(grid, startNode, finishNode);
+      if (isStation) {
+        visitedNodesInOrderToStation = bfs(grid, startNode, stationNode);
+        nodesInShotestPathOrderToStation =
+          getNodesInShortestPathOrder(stationNode);
+        startToStation = visitedNodesInOrderToStation.length;
+        this.resetForStationPath();
+      }
+      if (isStation) {
+        visitedNodesInOrder = bfs(grid, stationNode, finishNode);
+        visitedNodesInOrder =
+          visitedNodesInOrderToStation.concat(visitedNodesInOrder);
+      } else {
+        visitedNodesInOrder = bfs(grid, startNode, finishNode);
+      }
     } else {
       const buttonElement = document.getElementById("visualise-button");
       buttonElement.innerHTML = "!!! Select An Algorithm !!!";
 
       return;
     }
-    const nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
-    this.animateAlgorithm(visitedNodesInOrder, nodesInShortestPathOrder);
+    let nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
+
+    if (isStation) {
+      nodesInShortestPathOrder = nodesInShotestPathOrderToStation.concat(
+        nodesInShortestPathOrder
+      );
+    }
+    this.animateAlgorithm(
+      visitedNodesInOrder,
+      nodesInShortestPathOrder,
+      startToStation
+    );
   };
 
   selectAnAlgorithm = (algo) => {
