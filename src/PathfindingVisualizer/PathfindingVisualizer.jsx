@@ -38,6 +38,7 @@ export default class PathfindingVisualizer extends Component {
       wallNodeChange: false,
       addingStations: false,
       stationsPresent: true,
+      stationNodeChange: false,
       addingWeights: 0,
     };
   }
@@ -101,6 +102,14 @@ export default class PathfindingVisualizer extends Component {
       this.startNodeChange = true;
     } else if (node.isFinish && !this.addingWeights && !this.addingStations) {
       this.endNodeChange = true;
+    } else if (
+      node.isStation &&
+      !this.addingWeights &&
+      !this.addingStations &&
+      !this.startNodeChange &&
+      !this.endNodeChange
+    ) {
+      this.stationNodeChange = true;
     }
     //Adding weights & stations only when the node is not a special node
     else if (
@@ -181,6 +190,28 @@ export default class PathfindingVisualizer extends Component {
       EndNodeRow = row;
       EndNodeCol = col;
     } else if (
+      this.stationNodeChange === true &&
+      node.isWall === false &&
+      node.weight < 2
+    ) {
+      if (node.isStart || node.isFinish) {
+        let classTemp = node.isStart ? "node-start" : "node-finish";
+        this.changeState(
+          row,
+          col,
+          node.isFinish,
+          node.isStart,
+          false,
+          classTemp
+        );
+        this.stationNodeChange = false;
+        this.addStation();
+      } else {
+        stationNodeRow = row;
+        stationNodeCol = col;
+        this.changeState(row, col, false, false, false, "node-station", true);
+      }
+    } else if (
       !node.isFinish &&
       !node.isStart &&
       !node.isStation &&
@@ -234,6 +265,16 @@ export default class PathfindingVisualizer extends Component {
         this.changeState(row, col, false, false, false, "node ");
       }
     }
+
+    if (this.stationNodeChange === true && node.isWall === false) {
+      if (row === StartNodeRow && col === StartNodeCol) {
+        this.changeState(row, col, false, true, false, "node-start");
+      } else if (row === EndNodeRow && col === EndNodeCol) {
+        this.changeState(row, col, true, false, false, "node-finish");
+      } else {
+        this.changeState(row, col, false, false, false, "node ", false);
+      }
+    }
   }
 
   handleMouseUp(row, col) {
@@ -254,6 +295,8 @@ export default class PathfindingVisualizer extends Component {
       this.wallNodeChange = false;
     } else if (this.addingWeights === 2) {
       this.addingWeights = 0;
+    } else if (this.stationNodeChange === true) {
+      this.stationNodeChange = false;
     } else if (
       StartNodeRow !== row &&
       StartNodeCol !== col &&
