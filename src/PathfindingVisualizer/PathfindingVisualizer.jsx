@@ -1,4 +1,5 @@
 // import React, { Component, forwardRef } from "react";
+import { Alert } from "reactstrap";
 import React, { Component } from "react";
 import Node from "./Node/Node";
 import ControlPanel from "./ControlPanel/ControlPanel";
@@ -11,6 +12,7 @@ import { RecursiveDivision } from "../mazes/recursiveDiv";
 import { basicRandom } from "../mazes/basicRandom";
 import { simpleStair } from "../mazes/simpleStair";
 import { basicWeight } from "../mazes/basicWeight";
+// import { Alert } from "bootstrap";
 // import { dijkstraOld } from "../algorithms/dijkstraOld";
 
 let StartNodeRow = 5;
@@ -21,9 +23,10 @@ let AlgorithmSelected = 0;
 let weight = 0;
 let speed_selected = 1;
 let isAlgoRunning = 0;
+let generatingGrid = 0;
 let stationNodeRow = -1;
 let stationNodeCol = -1;
-
+let navExtraClassName = "";
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
     super(props); //Call Construct To Parent Class
@@ -70,18 +73,13 @@ export default class PathfindingVisualizer extends Component {
     node.previousNode = null;
     if (weight) node.weight = weight;
     const element = document.getElementById(`node-${node.row}-${node.col}`);
-    // const prevClassName = element.className;
+
     if (weight > 1) {
       extraClassName = `${extraClassName}-${weight}`;
-      //console.log(extraClassName);
     } else if (!isFinish && !isStart && !isWall && !isStation && weight === 1) {
       extraClassName = "";
     }
-    if (weight > 1) console.log(extraClassName);
-    //  else if (weight === 0 && node.weight > 1) {
-    //   extraClassName = `${prevClassName} ${extraClassName}`;
-    //   console.log(extraClassName);
-    // }
+
     element.className = `node ${extraClassName}`;
     element.isFinish = isFinish;
     element.isStart = isStart;
@@ -93,7 +91,9 @@ export default class PathfindingVisualizer extends Component {
 
   handleMouseDown(row, col) {
     //If algo is running no mouse event will be entertained
-    if (isAlgoRunning === 1) return;
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
 
     const node = this.state.grid[row][col];
 
@@ -169,7 +169,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseEnter(row, col) {
-    if (isAlgoRunning === 1) return;
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+
     const node = this.state.grid[row][col];
     if (
       this.startNodeChange === true &&
@@ -243,7 +246,9 @@ export default class PathfindingVisualizer extends Component {
     }
   }
   handleMouseLeave(row, col) {
-    if (isAlgoRunning === 1) return;
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
 
     const node = this.state.grid[row][col];
     if (this.startNodeChange === true && node.isWall === false) {
@@ -278,7 +283,10 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseUp(row, col) {
-    if (isAlgoRunning === 1) return;
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+
     if (this.startNodeChange === true) {
       this.startNodeChange = false;
       // In case up node is a wall
@@ -309,7 +317,12 @@ export default class PathfindingVisualizer extends Component {
   }
 
   clearBoard = () => {
-    if (isAlgoRunning === 1) return;
+    // console.log("In ClearBoard", generatingGrid);
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+    // alert("Please Select an Algorithm to Visualize");
+
     stationNodeCol = -1;
     stationNodeRow = -1;
     for (let r = 0; r < this.state.GridRowSize; ++r) {
@@ -326,6 +339,9 @@ export default class PathfindingVisualizer extends Component {
   };
 
   addStation = () => {
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
     if (stationNodeRow !== -1) {
       this.changeState(
         stationNodeRow,
@@ -483,12 +499,18 @@ export default class PathfindingVisualizer extends Component {
           this.changeState(node.row, node.col, false, false, false, class_name);
         }
       }, 30 * i * speed_selected);
+      if (i === nodesInShortestPathOrder.length - 1) {
+        isAlgoRunning = 0;
+        document.getElementById("alert-box").style.display = "none";
+      }
     }
-    isAlgoRunning = 0;
   }
 
   // Visualizing Path Algorithm
   visulalizeAlgorithm = () => {
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
     this.removePrevForNextAlgo();
     const { grid } = this.state;
     const startNode = grid[StartNodeRow][StartNodeCol];
@@ -508,6 +530,7 @@ export default class PathfindingVisualizer extends Component {
 
     let visitedNodesInOrder = [];
     isAlgoRunning = 1;
+    // updateButtonState("text-danger");
     if (AlgorithmSelected === 1) {
       if (isStation) {
         visitedNodesInOrderToStation = dijkstra(grid, startNode, stationNode);
@@ -571,9 +594,10 @@ export default class PathfindingVisualizer extends Component {
     } else {
       const buttonElement = document.getElementById("visualise-button");
       buttonElement.innerHTML = "!!! Select An Algorithm !!!";
-
+      isAlgoRunning = 0;
       return;
     }
+    document.getElementById("alert-box").style.display = "block";
     let nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
 
     if (isStation) {
@@ -589,6 +613,10 @@ export default class PathfindingVisualizer extends Component {
   };
 
   selectAnAlgorithm = (algo) => {
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+
     AlgorithmSelected = algo;
     const buttonElement = document.getElementById("visualise-button");
     var algoName = "";
@@ -606,7 +634,10 @@ export default class PathfindingVisualizer extends Component {
   };
 
   addWeight = (wht) => {
-    console.log("Adding Weight", wht);
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+
     this.addingWeights = 1;
     this.addingStations = false;
     this.wallNodeChange = false;
@@ -614,16 +645,31 @@ export default class PathfindingVisualizer extends Component {
   };
 
   selectSpeedOfVisualization = (speed) => {
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+
     speed_selected = speed;
   };
 
   clearPath = () => {
-    if (isAlgoRunning === 1) return;
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+
     this.removePrevForNextAlgo();
   };
 
   mazeGenerate = (mazeAlgo) => {
+    if (isAlgoRunning === 1 || generatingGrid === 1) {
+      return;
+    }
+
     this.clearBoard();
+    generatingGrid = 1;
+    // updateButtonState("text-danger");
+    document.getElementById("alert-box").style.display = "block";
+
     const { grid } = this.state;
     var forWalls;
     if (mazeAlgo === 1) {
@@ -637,9 +683,9 @@ export default class PathfindingVisualizer extends Component {
     } else {
       return;
     }
-
     for (let i = 0; i < forWalls.length; i++) {
       setTimeout(() => {
+        generatingGrid = 1;
         const node = forWalls[i];
         const element = document.getElementById(`node-${node.row}-${node.col}`);
         if (
@@ -669,8 +715,14 @@ export default class PathfindingVisualizer extends Component {
             );
           }
         }
+        if (i === forWalls.length - 1) {
+          generatingGrid = 0;
+          document.getElementById("alert-box").style.display = "none";
+        }
       }, 20 * i);
     }
+
+    return;
   };
 
   render() {
@@ -687,6 +739,7 @@ export default class PathfindingVisualizer extends Component {
           }
           onClickClearPath_={() => this.clearPath()}
           onClickGenerateMaze_={(mazeAlgo) => this.mazeGenerate(mazeAlgo)}
+          extraNavLinkClassName={navExtraClassName}
         ></ControlPanel>
         <div className="grid">
           {this.state.grid.map((row, rowId) => {
@@ -761,3 +814,21 @@ const createNode = (row, col) => {
     refElement: React.createRef(),
   };
 };
+
+// const updateButtonState = (colorName) => {
+//   let navbarElementIds = [
+//     "select-algorithm-toggle",
+//     "maze-generate-toggle",
+//     "add-weight-toggle",
+//     "station-button-text",
+//     "clear-board-text",
+//     "clear-path-text",
+//     "select-speed-toggle",
+//   ];
+
+//   for (const elementId of navbarElementIds) {
+//     const element = document.getElementById(elementId);
+//     console.log(element);
+//     element.className = `${colorName} + "mr-3"`;
+//   }
+// };

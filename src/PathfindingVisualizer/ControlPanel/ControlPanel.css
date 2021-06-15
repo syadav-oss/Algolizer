@@ -13,3 +13,63 @@
   background-size: 2.5%;
   background-position-y: center;
 }
+
+.nav-links:hover {
+  border-radius: 5px;
+  background-color: rgb(
+    18,
+    102,
+    241
+  ); /*will change background-color of element on hover */
+}
+
+.nav-links-inactive:hover {
+  border-radius: 5px;
+  background-color: rgb(
+    249,
+    49,
+    84
+  ); /*will change background-color of element on hover */
+}
+
+.shallow-container {
+  display: none;
+}
+
+.shallow-bulge {
+  background: white;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+
+  justify-content: center;
+  cursor: pointer;
+  transition: all 400ms;
+
+  box-shadow: 7px 7px 10px #bbcfda, -4px -4px 13px #fff,
+    inset 4px 4px 8px rgba(209, 217, 230, 0.2),
+    inset -8px -8px 8px rgba(255, 255, 255, 0.2);
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.shallow-bulge span {
+  font-size: 15px;
+  transition: all 400ms;
+  text-decoration: none;
+}
+
+.shallow-bulge:hover span {
+  transform: scale(0.96);
+  text-decoration: none;
+}
+
+.shallow-bulge:hover {
+  box-shadow: 4px 2px 18px #bbcfda, -4px -4px 13px #fff,
+    inset 6px 6px 16px rgba(209, 217, 230, 0.8),
+    inset -8px -8px 8px rgba(255, 255, 255, 0.2);
+
+  transform: translateY(2px);
+}

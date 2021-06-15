@@ -5,6 +5,7 @@ import endSvg from "../Styling/end.svg";
 import stationSvg from "../Styling/station.svg";
 
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
+let navLinkClassName = "nav-links";
 export default class ControlPanel extends Component {
   constructor(props) {
     super(props);
@@ -20,7 +21,10 @@ export default class ControlPanel extends Component {
       onClickClearPath_,
       onClickAddWeight_,
       onClickGenerateMaze_,
+      extraNavLinkClassName,
     } = this.props;
+
+    navLinkClassName = "nav-links" + extraNavLinkClassName;
 
     return (
       <div>
@@ -33,8 +37,8 @@ export default class ControlPanel extends Component {
             <Nav className="mr-auto col-centered1">
               <NavDropdown
                 title={<b className="text-light">Algorithm</b>}
-                id="basic-nav-dropdown"
-                className="mr-3"
+                id="select-algorithm-toggle"
+                className={`${navLinkClassName} mr-3`}
               >
                 <NavDropdown.Item
                   href="#Dijkstra"
@@ -58,8 +62,8 @@ export default class ControlPanel extends Component {
               </NavDropdown>
               <NavDropdown
                 title={<b className="text-light">Mazes & Patterns</b>}
-                id="basic-nav-dropdown"
-                className="mr-3"
+                id="maze-generate-toggle"
+                className={`${navLinkClassName} mr-3`}
               >
                 <NavDropdown.Item
                   href="#action/3.1"
@@ -88,8 +92,8 @@ export default class ControlPanel extends Component {
               </NavDropdown>
               <NavDropdown
                 title={<b className="text-light">Add Weight</b>}
-                id="basic-nav-dropdown"
-                className="mr-3"
+                id="add-weight-toggle"
+                className={`${navLinkClassName} mr-3`}
               >
                 <NavDropdown.Item
                   href="#weight1"
@@ -139,29 +143,36 @@ export default class ControlPanel extends Component {
               </Button>
               <Nav.Link
                 href="#add"
-                className="mr-3"
+                className={`${navLinkClassName} mr-3`}
                 onClick={() => onClickAddStation_()}
               >
-                <b className="text-light" id="station-button">
+                <b className="text-light" id="station-button-text">
                   Add Station
                 </b>
               </Nav.Link>
               <Nav.Link
-                href="#"
+                href="#clear-board"
+                id="clear-board"
                 onClick={() => onClickClear_()}
-                className="mr-3"
+                className={`${navLinkClassName}  mr-3`}
               >
-                <b className="text-light">Clear Board</b>
+                <b id="clear-board-text" className="text-light">
+                  Clear Board
+                </b>
               </Nav.Link>
-              <Nav.Link href="#path" className="mr-3">
-                <b className="text-light" onClick={() => onClickClearPath_()}>
+              <Nav.Link href="#path" className={`${navLinkClassName} mr-3`}>
+                <b
+                  className="text-light"
+                  id="clear-path-text"
+                  onClick={() => onClickClearPath_()}
+                >
                   Clear Path
                 </b>
               </Nav.Link>
               <NavDropdown
                 title={<b className="text-light">Speed</b>}
-                id="basic-nav-dropdown"
-                className="mr-3"
+                id="select-speed-toggle"
+                className={`${navLinkClassName} mr-3`}
               >
                 <NavDropdown.Item
                   href="#action/3.1"
@@ -187,64 +198,84 @@ export default class ControlPanel extends Component {
         </Navbar>
 
         <Navbar bg="white" expand="lg" variant="light">
-          <Navbar.Brand className="col-centered">
-            <img
-              alt=""
-              src={startSvg}
-              width="20"
-              height="20"
-              className="d-inline-block align-top"
-              style={{ marginRight: "10px" }}
-            />
-            {""}
-            <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-              {" "}
-              Start Node{" "}
-            </p>
+          <Navbar.Brand className="col-left">
+            <div
+              id="alert-box"
+              className="shallow-container"
+              style={{ marginLeft: "5px" }}
+            >
+              <div className="shallow-bulge">
+                <span
+                  style={{
+                    color: "#868b8f",
+                    fontFamily: "sans-serif",
+                    verticalAlign: "middle",
+                  }}
+                >
+                  Buttons Disabled
+                </span>
+              </div>
+            </div>
           </Navbar.Brand>
-          <Navbar.Brand>
-            <img
-              alt=""
-              src={endSvg}
-              width="20"
-              height="20"
-              className="d-inline-block align-top"
-              style={{ marginRight: "10px" }}
-            />{" "}
-            <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-              {" "}
-              Target Node{" "}
-            </p>
-          </Navbar.Brand>
-          <Navbar.Brand>
-            <img
-              alt=""
-              src={stationSvg}
-              width="20"
-              height="20"
-              className="d-inline-block align-top"
-              style={{ marginRight: "10px" }}
-            />{" "}
-            <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-              {" "}
-              Station Node{" "}
-            </p>
-          </Navbar.Brand>
-          <Navbar.Brand>
-            <div className="d-flex flex-row">
-              <div
-                className="p-2"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  outline: "1px solid rgb(175, 216, 248)",
-                  backgroundColor: `rgb(255, 255, 255)`,
-                  display: "inline-block",
-                  marginRight: "10px",
-                  borderRadius: "2px",
-                }}
-              >
-                {/* <p
+          <Navbar.Collapse className="nav" id="basic-navbar-nav">
+            <Navbar.Brand className="col-centered">
+              <img
+                alt=""
+                src={startSvg}
+                width="20"
+                height="20"
+                className="d-inline-block align-top"
+                style={{ marginRight: "10px" }}
+              />
+              {""}
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Start Node{" "}
+              </p>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <img
+                alt=""
+                src={endSvg}
+                width="20"
+                height="20"
+                className="d-inline-block align-top"
+                style={{ marginRight: "10px" }}
+              />{" "}
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Target Node{" "}
+              </p>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <img
+                alt=""
+                src={stationSvg}
+                width="20"
+                height="20"
+                className="d-inline-block align-top"
+                style={{ marginRight: "10px" }}
+              />{" "}
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Station Node{" "}
+              </p>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <div className="d-flex flex-row">
+                <div
+                  className="p-2"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    outline: "1px solid rgb(175, 216, 248)",
+                    backgroundColor: `rgb(255, 255, 255)`,
+                    display: "inline-block",
+                    marginRight: "10px",
+                    borderRadius: "2px",
+                  }}
+                >
+                  {/* <p
                   style={{
                     fontSize: "10px",
                     position: "relative",
@@ -254,89 +285,90 @@ export default class ControlPanel extends Component {
                 >
                   <b>80</b>
                 </p> */}
+                </div>
+
+                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                  {" "}
+                  Weight Node{" "}
+                </p>
               </div>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <div className="d-flex flex-row">
+                <div
+                  className="p-2"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    outline: "1px solid rgb(175, 216, 248)",
+                    backgroundColor: `rgb(255, 255, 255)`,
+                    display: "inline-block",
+                    marginRight: "10px",
+                    borderRadius: "2px",
+                  }}
+                />
+                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                  {" "}
+                  Unvisited Node{" "}
+                </p>
+              </div>{" "}
+            </Navbar.Brand>
 
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-                {" "}
-                Weight Node{" "}
-              </p>
-            </div>
-          </Navbar.Brand>
-          <Navbar.Brand>
-            <div className="d-flex flex-row">
-              <div
-                className="p-2"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  outline: "1px solid rgb(175, 216, 248)",
-                  backgroundColor: `rgb(255, 255, 255)`,
-                  display: "inline-block",
-                  marginRight: "10px",
-                  borderRadius: "2px",
-                }}
-              />
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-                {" "}
-                Unvisited Node{" "}
-              </p>
-            </div>{" "}
-          </Navbar.Brand>
-
-          <Navbar.Brand>
-            <div className="d-flex flex-row">
-              <div
-                className="p-2"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  backgroundColor: `rgba(0, 218, 207, 0.75)`,
-                  marginRight: "10px",
-                  borderRadius: "2px",
-                }}
-              />
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-                {" "}
-                Visited Node{" "}
-              </p>
-            </div>
-          </Navbar.Brand>
-          <Navbar.Brand>
-            <div className="d-flex flex-row">
-              <div
-                className="p-2"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  backgroundColor: `rgba(112, 0, 217, 0.75)`,
-                  marginRight: "10px",
-                  borderRadius: "2px",
-                }}
-              />
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-                {" "}
-                Shortest-path Node{" "}
-              </p>
-            </div>
-          </Navbar.Brand>
-          <Navbar.Brand>
-            <div className="d-flex flex-row">
-              <div
-                className="p-2"
-                style={{
-                  width: "20px",
-                  height: "20px",
-                  backgroundColor: `rgb(12, 53, 71)`,
-                  marginRight: "10px",
-                  borderRadius: "2px",
-                }}
-              />
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-                {" "}
-                Wall Node{" "}
-              </p>
-            </div>
-          </Navbar.Brand>
+            <Navbar.Brand>
+              <div className="d-flex flex-row">
+                <div
+                  className="p-2"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    backgroundColor: `rgba(0, 218, 207, 0.75)`,
+                    marginRight: "10px",
+                    borderRadius: "2px",
+                  }}
+                />
+                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                  {" "}
+                  Visited Node{" "}
+                </p>
+              </div>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <div className="d-flex flex-row">
+                <div
+                  className="p-2"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    backgroundColor: `rgba(112, 0, 217, 0.75)`,
+                    marginRight: "10px",
+                    borderRadius: "2px",
+                  }}
+                />
+                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                  {" "}
+                  Shortest-path Node{" "}
+                </p>
+              </div>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <div className="d-flex flex-row">
+                <div
+                  className="p-2"
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    backgroundColor: `rgb(12, 53, 71)`,
+                    marginRight: "10px",
+                    borderRadius: "2px",
+                  }}
+                />
+                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                  {" "}
+                  Wall Node{" "}
+                </p>
+              </div>
+            </Navbar.Brand>
+          </Navbar.Collapse>
         </Navbar>
 
         <br />
