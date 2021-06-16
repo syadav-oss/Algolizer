@@ -86,8 +86,10 @@ function getNeighbors(node) {
   var r = node.row;
   var c = node.col;
   var ret = [];
-  var x = [1, 0, -1, 0, 1, -1, -1, 1];
-  var y = [0, 1, 0, -1, 1, -1, 1, -1];
+  var x = [1, 0, -1, 0];
+  var y = [0, 1, 0, -1];
+//  var x = [1, 0, -1, 0, 1, -1, -1, 1];
+//  var y = [0, 1, 0, -1, 1, -1, 1, -1];
 
   for (var i = 0; i < x.length; ++i) {
     if (isValid(r + x[i], c + y[i])) {
@@ -99,7 +101,7 @@ function getNeighbors(node) {
 }
 
 function getCost(src, dest) {
-  return 1;
+  return dest.weight;
 }
 
 function heuristicScore(node, endNode) {
