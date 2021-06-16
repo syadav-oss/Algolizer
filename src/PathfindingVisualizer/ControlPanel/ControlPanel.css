@@ -6,6 +6,12 @@
   margin-left: 10px;
 }
 
+.col-centered2 {
+  margin-top: -30px;
+  margin-left: 670px;
+  margin-bottom: -30px;
+}
+
 .logo {
   background-image: url(../Styling/route.png);
   background-color: #212529;

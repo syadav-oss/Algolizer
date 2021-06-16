@@ -198,25 +198,6 @@ export default class ControlPanel extends Component {
         </Navbar>
 
         <Navbar bg="white" expand="lg" variant="light">
-          <Navbar.Brand className="col-left">
-            <div
-              id="alert-box"
-              className="shallow-container"
-              style={{ marginLeft: "5px" }}
-            >
-              <div className="shallow-bulge">
-                <span
-                  style={{
-                    color: "#868b8f",
-                    fontFamily: "sans-serif",
-                    verticalAlign: "middle",
-                  }}
-                >
-                  Buttons Disabled
-                </span>
-              </div>
-            </div>
-          </Navbar.Brand>
           <Navbar.Collapse className="nav" id="basic-navbar-nav">
             <Navbar.Brand className="col-centered">
               <img
@@ -369,6 +350,28 @@ export default class ControlPanel extends Component {
               </div>
             </Navbar.Brand>
           </Navbar.Collapse>
+        </Navbar>
+
+        <Navbar>
+          <Navbar.Brand className="col-centered2">
+            <div
+              id="alert-box"
+              className="shallow-container"
+              style={{ marginLeft: "5px" }}
+            >
+              <div className="shallow-bulge">
+                <span
+                  style={{
+                    color: "#868b8f",
+                    fontFamily: "sans-serif",
+                    verticalAlign: "middle",
+                  }}
+                >
+                  Buttons Disabled
+                </span>
+              </div>
+            </div>
+          </Navbar.Brand>
         </Navbar>
 
         <br />
