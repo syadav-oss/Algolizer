@@ -1,5 +1,5 @@
 // import React, { Component, forwardRef } from "react";
-import { Alert } from "reactstrap";
+
 import React, { Component } from "react";
 import Node from "./Node/Node";
 import ControlPanel from "./ControlPanel/ControlPanel";
@@ -91,7 +91,7 @@ export default class PathfindingVisualizer extends Component {
 
   handleMouseDown(row, col) {
     //If algo is running no mouse event will be entertained
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -169,7 +169,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseEnter(row, col) {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -246,7 +246,7 @@ export default class PathfindingVisualizer extends Component {
     }
   }
   handleMouseLeave(row, col) {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -283,7 +283,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseUp(row, col) {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -318,7 +318,7 @@ export default class PathfindingVisualizer extends Component {
 
   clearBoard = () => {
     // console.log("In ClearBoard", generatingGrid);
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
     // alert("Please Select an Algorithm to Visualize");
@@ -339,7 +339,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   addStation = () => {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
     if (stationNodeRow !== -1) {
@@ -498,17 +498,18 @@ export default class PathfindingVisualizer extends Component {
 
           this.changeState(node.row, node.col, false, false, false, class_name);
         }
+        if (i === nodesInShortestPathOrder.length - 1) {
+          isAlgoRunning = 0;
+          updateAlertBox("none", isAlgoRunning, generatingGrid);
+        }
       }, 30 * i * speed_selected);
-      if (i === nodesInShortestPathOrder.length - 1) {
-        isAlgoRunning = 0;
-        document.getElementById("alert-box").style.display = "none";
-      }
+
     }
   }
 
   // Visualizing Path Algorithm
   visulalizeAlgorithm = () => {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
     this.removePrevForNextAlgo();
@@ -532,6 +533,7 @@ export default class PathfindingVisualizer extends Component {
     isAlgoRunning = 1;
     // updateButtonState("text-danger");
     if (AlgorithmSelected === 1) {
+      isAlgoRunning = 1;
       if (isStation) {
         visitedNodesInOrderToStation = dijkstra(grid, startNode, stationNode);
         nodesInShotestPathOrderToStation =
@@ -547,6 +549,7 @@ export default class PathfindingVisualizer extends Component {
         visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
       }
     } else if (AlgorithmSelected === 2) {
+      isAlgoRunning = 2;
       if (isStation) {
         visitedNodesInOrderToStation = aStar(grid, startNode, stationNode);
         nodesInShotestPathOrderToStation =
@@ -562,6 +565,7 @@ export default class PathfindingVisualizer extends Component {
         visitedNodesInOrder = aStar(grid, startNode, finishNode);
       }
     } else if (AlgorithmSelected === 3) {
+      isAlgoRunning = 3;
       if (isStation) {
         visitedNodesInOrderToStation = dfs(grid, startNode, stationNode);
         nodesInShotestPathOrderToStation =
@@ -577,6 +581,7 @@ export default class PathfindingVisualizer extends Component {
         visitedNodesInOrder = dfs(grid, startNode, finishNode);
       }
     } else if (AlgorithmSelected === 4) {
+      isAlgoRunning = 4;
       if (isStation) {
         visitedNodesInOrderToStation = bfs(grid, startNode, stationNode);
         nodesInShotestPathOrderToStation =
@@ -597,7 +602,7 @@ export default class PathfindingVisualizer extends Component {
       isAlgoRunning = 0;
       return;
     }
-    document.getElementById("alert-box").style.display = "block";
+    updateAlertBox("block", isAlgoRunning, generatingGrid);
     let nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
 
     if (isStation) {
@@ -613,7 +618,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   selectAnAlgorithm = (algo) => {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -634,7 +639,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   addWeight = (wht) => {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -645,7 +650,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   selectSpeedOfVisualization = (speed) => {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -653,7 +658,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   clearPath = () => {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
@@ -661,14 +666,14 @@ export default class PathfindingVisualizer extends Component {
   };
 
   mazeGenerate = (mazeAlgo) => {
-    if (isAlgoRunning === 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || generatingGrid === 1) {
       return;
     }
 
     this.clearBoard();
     generatingGrid = 1;
     // updateButtonState("text-danger");
-    document.getElementById("alert-box").style.display = "block";
+    updateAlertBox("block", isAlgoRunning, generatingGrid);
 
     const { grid } = this.state;
     var forWalls;
@@ -717,7 +722,7 @@ export default class PathfindingVisualizer extends Component {
         }
         if (i === forWalls.length - 1) {
           generatingGrid = 0;
-          document.getElementById("alert-box").style.display = "none";
+          updateAlertBox("none", isAlgoRunning, generatingGrid);
         }
       }, 20 * i);
     }
@@ -815,20 +820,22 @@ const createNode = (row, col) => {
   };
 };
 
-// const updateButtonState = (colorName) => {
-//   let navbarElementIds = [
-//     "select-algorithm-toggle",
-//     "maze-generate-toggle",
-//     "add-weight-toggle",
-//     "station-button-text",
-//     "clear-board-text",
-//     "clear-path-text",
-//     "select-speed-toggle",
-//   ];
+const updateAlertBox = (display, algoRun, gridGeneration) => {
+  document.getElementById("alert-box").style.display = display;
+  if(algoRun === 0 && gridGeneration >=1 ) {
+    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. Generating Grid."
+  }
+  else if(algoRun === 1 && gridGeneration === 0 ) {
+    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. Running Djikstra, a weighted algorithm."
+  }
+  else if(algoRun === 2 && gridGeneration === 0 ) {
+    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. Running A*, a weighted algorithm."
+  }
+  else if(algoRun === 3 && gridGeneration === 0) {
+    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. DFS is an unweighted algorithm which does not gaurantee shortest path."
+  }
+  else if(algoRun === 4 && gridGeneration === 0) {
+    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. BFS is an unweighted Algorithm."
+  }
 
-//   for (const elementId of navbarElementIds) {
-//     const element = document.getElementById(elementId);
-//     console.log(element);
-//     element.className = `${colorName} + "mr-3"`;
-//   }
-// };
+}

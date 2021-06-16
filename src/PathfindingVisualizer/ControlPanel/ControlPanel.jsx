@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./ControlPanel.css";
 import startSvg from "../Styling/start.svg";
 import endSvg from "../Styling/end.svg";
+import weightpng from "../Styling/one.png";
 import stationSvg from "../Styling/station.svg";
 
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
@@ -243,36 +244,19 @@ export default class ControlPanel extends Component {
               </p>
             </Navbar.Brand>
             <Navbar.Brand>
-              <div className="d-flex flex-row">
-                <div
-                  className="p-2"
-                  style={{
-                    width: "20px",
-                    height: "20px",
-                    outline: "1px solid rgb(175, 216, 248)",
-                    backgroundColor: `rgb(255, 255, 255)`,
-                    display: "inline-block",
-                    marginRight: "10px",
-                    borderRadius: "2px",
-                  }}
-                >
-                  {/* <p
-                  style={{
-                    fontSize: "10px",
-                    position: "relative",
-                    top: "50%",
-                    transform: "translate(-50%, -50%)",
-                  }}
-                >
-                  <b>80</b>
-                </p> */}
-                </div>
-
-                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
-                  {" "}
-                  Weight Node{" "}
-                </p>
-              </div>
+            
+            <img
+                alt=""
+                src={weightpng}
+                width="20"
+                height="20"
+                className="d-inline-block align-top"
+                style={{ marginRight: "10px" }}
+              />{" "}
+              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                {" "}
+                Weight Node{" "}
+              </p>
             </Navbar.Brand>
             <Navbar.Brand>
               <div className="d-flex flex-row">
@@ -357,10 +341,10 @@ export default class ControlPanel extends Component {
             <div
               id="alert-box"
               className="shallow-container"
-              style={{ marginLeft: "5px" }}
             >
               <div className="shallow-bulge">
                 <span
+                  id = "alert-box-text"
                   style={{
                     color: "#868b8f",
                     fontFamily: "sans-serif",

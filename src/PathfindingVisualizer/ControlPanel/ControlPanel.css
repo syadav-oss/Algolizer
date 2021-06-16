@@ -8,8 +8,9 @@
 
 .col-centered2 {
   margin-top: -30px;
-  margin-left: 670px;
+  margin-left: 50%;
   margin-bottom: -30px;
+  transform: translateX(-50%);
 }
 
 .logo {
@@ -49,7 +50,6 @@
   display: flex;
   align-items: center;
   text-align: center;
-
   justify-content: center;
   cursor: pointer;
   transition: all 400ms;
