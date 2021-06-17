@@ -20,6 +20,8 @@ export default class ControlPanel extends Component {
       onClickAddStation_,
       onClickChangeSpeed_,
       onClickClearPath_,
+      onClickClearWeight_,
+      onClickClearWalls_,
       onClickAddWeight_,
       onClickGenerateMaze_,
       extraNavLinkClassName,
@@ -151,44 +153,60 @@ export default class ControlPanel extends Component {
                   Add Station
                 </b>
               </Nav.Link>
-              <Nav.Link
-                href="#clear-board"
-                id="clear-board"
-                onClick={() => onClickClear_()}
-                className={`${navLinkClassName}  mr-3`}
+
+              <NavDropdown
+                title={<b id="clear" className="text-light">Clear</b>}
+                id="clear-toggle"
+                className={`${navLinkClassName} mr-3`}
               >
-                <b id="clear-board-text" className="text-light">
+                <NavDropdown.Item
+                  href="#clear-board"
+                  id="clear-board"
+                  onClick={() => onClickClear_()}
+                >
                   Clear Board
-                </b>
-              </Nav.Link>
-              <Nav.Link href="#path" className={`${navLinkClassName} mr-3`}>
-                <b
-                  className="text-light"
-                  id="clear-path-text"
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#clear-weights"
+                  id="clear-weights"
+                  onClick={() => onClickClearWeight_()}
+                >
+                  Clear Weight
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#clear-walls"
+                  id="clear-walls"
+                  onClick={() => onClickClearWalls_()}
+                >
+                  Clear Walls
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#clear-path"
+                  id="clear-path"
                   onClick={() => onClickClearPath_()}
                 >
                   Clear Path
-                </b>
-              </Nav.Link>
+                </NavDropdown.Item>
+              </NavDropdown>
               <NavDropdown
                 title={<b className="text-light">Speed</b>}
                 id="select-speed-toggle"
                 className={`${navLinkClassName} mr-3`}
               >
                 <NavDropdown.Item
-                  href="#action/3.1"
+                  href="#slow"
                   onClick={() => onClickChangeSpeed_(1.8)}
                 >
                   Slow
                 </NavDropdown.Item>
                 <NavDropdown.Item
-                  href="#action/3.2"
+                  href="#average"
                   onClick={() => onClickChangeSpeed_(1.2)}
                 >
                   Average
                 </NavDropdown.Item>
                 <NavDropdown.Item
-                  href="#action/3.3"
+                  href="#fast"
                   onClick={() => onClickChangeSpeed_(0.6)}
                 >
                   Fast

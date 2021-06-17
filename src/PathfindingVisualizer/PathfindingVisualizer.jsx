@@ -684,6 +684,44 @@ export default class PathfindingVisualizer extends Component {
     this.removePrevForNextAlgo();
   };
 
+  clearWeight = () => {
+    for (let r = 0; r < this.state.grid.length; ++r) {
+      for (let c = 0; c < this.state.grid[r].length; ++c) {
+        if(this.state.grid[r][c].weight > 1)  {
+          this.changeState(
+            r,
+            c,
+            false,
+            false,
+            false,
+            "",
+            false,
+            1
+          );
+        }
+      }
+    }
+  };
+
+  clearWalls = () => {
+    for (let r = 0; r < this.state.grid.length; ++r) {
+      for (let c = 0; c < this.state.grid[r].length; ++c) {
+        if(this.state.grid[r][c].isWall)  {
+          this.changeState(
+            r,
+            c,
+            false,
+            false,
+            false,
+            "",
+            false,
+            1
+          );
+        }
+      }
+    }
+  };
+
   mazeGenerate = (mazeAlgo) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
@@ -762,6 +800,8 @@ export default class PathfindingVisualizer extends Component {
             this.selectSpeedOfVisualization(speed)
           }
           onClickClearPath_={() => this.clearPath()}
+          onClickClearWeight_={() => this.clearWeight()}
+          onClickClearWalls_={() => this.clearWalls()}
           onClickGenerateMaze_={(mazeAlgo) => this.mazeGenerate(mazeAlgo)}
           extraNavLinkClassName={navExtraClassName}
         ></ControlPanel>
