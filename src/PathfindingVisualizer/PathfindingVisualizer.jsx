@@ -743,7 +743,18 @@ export default class PathfindingVisualizer extends Component {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
+    
+    if(speed === 1.5){
+      // console.log( document.getElementById("select-speed-toggle-text").innerHTML);
+      document.getElementById("select-speed-toggle-text").innerHTML = "Speed-Slow";
+    }
+    else if(speed === 1.0){
+      document.getElementById("select-speed-toggle-text").innerHTML = "Speed-Avg";
 
+    }
+    else if(speed === 0.5){
+      document.getElementById("select-speed-toggle-text").innerHTML = "Speed-Fast";
+    }
     speed_selected = speed;
   };
 
@@ -783,6 +794,12 @@ export default class PathfindingVisualizer extends Component {
   changeDirection = (directionCount) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
+    }
+    if(directionCount === 4 ){
+      document.getElementById("select-directions-toggle-text").innerHTML = "Directions-4";
+    }
+    else if(directionCount === 8 ){
+      document.getElementById("select-directions-toggle-text").innerHTML = "Directions-8";
     }
     allowedDirections = directionCount;
   };

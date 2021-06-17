@@ -194,7 +194,7 @@ export default class ControlPanel extends Component {
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
-                title={<b className="text-light">Select Directions</b>}
+                title={<b id="select-directions-toggle-text" className="text-light">Directions-4</b>}
                 id="select-directions-toggle"
                 className={`${navLinkClassName} mr-3`}
               >
@@ -212,25 +212,25 @@ export default class ControlPanel extends Component {
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
-                title={<b className="text-light">Speed</b>}
+                title={<b id="select-speed-toggle-text" className="text-light">Speed-Avg</b>}
                 id="select-speed-toggle"
                 className={`${navLinkClassName} mr-3`}
               >
                 <NavDropdown.Item
                   href="#slow"
-                  onClick={() => onClickChangeSpeed_(1.8)}
+                  onClick={() => onClickChangeSpeed_(1.5)}
                 >
                   Slow
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   href="#average"
-                  onClick={() => onClickChangeSpeed_(1.2)}
+                  onClick={() => onClickChangeSpeed_(1.0)}
                 >
                   Average
                 </NavDropdown.Item>
                 <NavDropdown.Item
                   href="#fast"
-                  onClick={() => onClickChangeSpeed_(0.6)}
+                  onClick={() => onClickChangeSpeed_(0.5)}
                 >
                   Fast
                 </NavDropdown.Item>
