@@ -156,7 +156,11 @@ export default class ControlPanel extends Component {
               </Nav.Link>
 
               <NavDropdown
-                title={<b id="clear" className="text-light">Clear</b>}
+                title={
+                  <b id="clear" className="text-light">
+                    Clear
+                  </b>
+                }
                 id="clear-toggle"
                 className={`${navLinkClassName} mr-3`}
               >
@@ -231,6 +235,12 @@ export default class ControlPanel extends Component {
                   Fast
                 </NavDropdown.Item>
               </NavDropdown>
+              <Nav.Link>
+                <b style={{ color: "white" }}>Distance = </b>
+                <b className="text-light" id="distance">
+                  0
+                </b>
+              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
@@ -281,8 +291,7 @@ export default class ControlPanel extends Component {
               </p>
             </Navbar.Brand>
             <Navbar.Brand>
-            
-            <img
+              <img
                 alt=""
                 src={weightpng}
                 width="20"
@@ -375,13 +384,10 @@ export default class ControlPanel extends Component {
 
         <Navbar>
           <Navbar.Brand className="col-centered2">
-            <div
-              id="alert-box"
-              className="shallow-container"
-            >
+            <div id="alert-box" className="shallow-container">
               <div className="shallow-bulge">
                 <span
-                  id = "alert-box-text"
+                  id="alert-box-text"
                   style={{
                     color: "#868b8f",
                     fontFamily: "sans-serif",

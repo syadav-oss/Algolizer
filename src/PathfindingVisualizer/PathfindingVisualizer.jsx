@@ -319,6 +319,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   clearBoard = () => {
+    document.getElementById("distance").innerHTML = 0;
     // console.log("In ClearBoard", isGeneratingGrid);
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
@@ -371,6 +372,7 @@ export default class PathfindingVisualizer extends Component {
   // Clearing the board if user wants to run algorithm again to make visited node unvisited
   removePrevForNextAlgo = () => {
     isAlgoRunning = 0;
+    document.getElementById("distance").innerHTML = 0;
     for (let r = 0; r < this.state.GridRowSize; ++r) {
       for (let c = 0; c < this.state.GridColSize; ++c) {
         const node = this.state.grid[r][c];
@@ -471,6 +473,8 @@ export default class PathfindingVisualizer extends Component {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
         const node = nodesInShortestPathOrder[i];
+        document.getElementById("distance").innerHTML =
+          parseInt(document.getElementById("distance").innerHTML) + node.weight;
         const element = document.getElementById(`node-${node.row}-${node.col}`);
         if (
           element.className !== "node node-start" &&
@@ -517,6 +521,7 @@ export default class PathfindingVisualizer extends Component {
       return;
     }
     this.removePrevForNextAlgo();
+    document.getElementById("distance").innerHTML = 0;
     const { grid } = this.state;
     const startNode = grid[StartNodeRow][StartNodeCol];
     const finishNode = grid[EndNodeRow][EndNodeCol];
@@ -548,6 +553,7 @@ export default class PathfindingVisualizer extends Component {
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
+        nodesInShotestPathOrderToStation.pop();
         this.resetForStationPath();
       }
       if (isStation) {
@@ -579,6 +585,7 @@ export default class PathfindingVisualizer extends Component {
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
+        nodesInShotestPathOrderToStation.pop();
         this.resetForStationPath();
       }
       if (isStation) {
@@ -610,6 +617,7 @@ export default class PathfindingVisualizer extends Component {
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
+        nodesInShotestPathOrderToStation.pop();
         this.resetForStationPath();
       }
       if (isStation) {
@@ -641,6 +649,7 @@ export default class PathfindingVisualizer extends Component {
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
+        nodesInShotestPathOrderToStation.pop();
         this.resetForStationPath();
       }
       if (isStation) {
@@ -662,7 +671,7 @@ export default class PathfindingVisualizer extends Component {
       }
     } else {
       const buttonElement = document.getElementById("visualise-button");
-      buttonElement.innerHTML = "!!! Select An Algorithm !!!";
+      buttonElement.innerHTML = "!!! Select Algorithm !!!";
       isAlgoRunning = 0;
       return;
     }
