@@ -23,7 +23,8 @@ let AlgorithmSelected = 0;
 let weight = 0;
 let speed_selected = 1;
 let isAlgoRunning = 0;
-let generatingGrid = 0;
+let isGeneratingGrid = 0;
+let isGridWeighted = 0;
 let stationNodeRow = -1;
 let stationNodeCol = -1;
 let navExtraClassName = "";
@@ -91,7 +92,7 @@ export default class PathfindingVisualizer extends Component {
 
   handleMouseDown(row, col) {
     //If algo is running no mouse event will be entertained
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
@@ -169,7 +170,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseEnter(row, col) {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
@@ -246,7 +247,7 @@ export default class PathfindingVisualizer extends Component {
     }
   }
   handleMouseLeave(row, col) {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
@@ -283,7 +284,7 @@ export default class PathfindingVisualizer extends Component {
   }
 
   handleMouseUp(row, col) {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
@@ -317,8 +318,8 @@ export default class PathfindingVisualizer extends Component {
   }
 
   clearBoard = () => {
-    // console.log("In ClearBoard", generatingGrid);
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    // console.log("In ClearBoard", isGeneratingGrid);
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
     // alert("Please Select an Algorithm to Visualize");
@@ -339,7 +340,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   addStation = () => {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
     if (stationNodeRow !== -1) {
@@ -500,7 +501,7 @@ export default class PathfindingVisualizer extends Component {
         }
         if (i === nodesInShortestPathOrder.length - 1) {
           isAlgoRunning = 0;
-          updateAlertBox("none", isAlgoRunning, generatingGrid);
+          updateAlertBox("none", isAlgoRunning, isGeneratingGrid);
         }
       }, 30 * i * speed_selected);
 
@@ -509,7 +510,7 @@ export default class PathfindingVisualizer extends Component {
 
   // Visualizing Path Algorithm
   visulalizeAlgorithm = () => {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
     this.removePrevForNextAlgo();
@@ -602,7 +603,7 @@ export default class PathfindingVisualizer extends Component {
       isAlgoRunning = 0;
       return;
     }
-    updateAlertBox("block", isAlgoRunning, generatingGrid);
+    updateAlertBox("block", isAlgoRunning, isGeneratingGrid);
     let nodesInShortestPathOrder = getNodesInShortestPathOrder(finishNode);
 
     if (isStation) {
@@ -618,7 +619,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   selectAnAlgorithm = (algo) => {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
@@ -634,15 +635,33 @@ export default class PathfindingVisualizer extends Component {
     } else if (algo === 4) {
       algoName = "BFS";
     }
-
+    if( (algo === 3 || algo === 4) && isWeightPresent(this.state.grid)) {
+      if(algo === 3) {
+        // buttonElement.innerHTML = `DFS can't run with weighted grid. Remove the weights first`;
+        alert("DFS can't run with weighted grid. Remove the weights first")
+      }
+      else if(algo === 4) {
+        // buttonElement.innerHTML = `BFS can't run with weighted grid. Remove the weights first`;
+        alert("BFS can't run with weighted grid. Remove the weights first")
+      }
+      AlgorithmSelected = 0;
+      return;
+    }
     buttonElement.innerHTML = `Visualise ${algoName}`;
   };
 
   addWeight = (wht) => {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
-
+    if(wht>1 && AlgorithmSelected === 3) {
+      alert("DFS can't run with weighted grid.")
+      return;
+    }
+    if(wht>1 && AlgorithmSelected === 4) {
+      alert("BFS can't run with weighted grid.")
+      return;
+    }
     this.addingWeights = 1;
     this.addingStations = false;
     this.wallNodeChange = false;
@@ -650,7 +669,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   selectSpeedOfVisualization = (speed) => {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
@@ -658,7 +677,7 @@ export default class PathfindingVisualizer extends Component {
   };
 
   clearPath = () => {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
@@ -666,14 +685,14 @@ export default class PathfindingVisualizer extends Component {
   };
 
   mazeGenerate = (mazeAlgo) => {
-    if (isAlgoRunning >= 1 || generatingGrid === 1) {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
     this.clearBoard();
-    generatingGrid = 1;
+    isGeneratingGrid = 1;
     // updateButtonState("text-danger");
-    updateAlertBox("block", isAlgoRunning, generatingGrid);
+    updateAlertBox("block", isAlgoRunning, isGeneratingGrid);
 
     const { grid } = this.state;
     var forWalls;
@@ -690,7 +709,7 @@ export default class PathfindingVisualizer extends Component {
     }
     for (let i = 0; i < forWalls.length; i++) {
       setTimeout(() => {
-        generatingGrid = 1;
+        isGeneratingGrid = 1;
         const node = forWalls[i];
         const element = document.getElementById(`node-${node.row}-${node.col}`);
         if (
@@ -721,8 +740,8 @@ export default class PathfindingVisualizer extends Component {
           }
         }
         if (i === forWalls.length - 1) {
-          generatingGrid = 0;
-          updateAlertBox("none", isAlgoRunning, generatingGrid);
+          isGeneratingGrid = 0;
+          updateAlertBox("none", isAlgoRunning, isGeneratingGrid);
         }
       }, 20 * i);
     }
@@ -838,4 +857,14 @@ const updateAlertBox = (display, algoRun, gridGeneration) => {
     document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. BFS is an unweighted Algorithm."
   }
 
+}
+
+const isWeightPresent = (grid) => {
+  for (let r = 0; r < grid.length; ++r) {
+    for (let c = 0; c < grid[r].length; ++c) {
+      if(grid[r][c].weight > 1)  return true;
+    }
+  }
+
+  return false;
 }
