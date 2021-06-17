@@ -29,6 +29,8 @@ let stationNodeRow = -1;
 let stationNodeCol = -1;
 let allowedDirections = 4;
 let navExtraClassName = "";
+let theme = 1;
+
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
     super(props); //Call Construct To Parent Class
@@ -743,17 +745,17 @@ export default class PathfindingVisualizer extends Component {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
-    
-    if(speed === 1.5){
-      // console.log( document.getElementById("select-speed-toggle-text").innerHTML);
-      document.getElementById("select-speed-toggle-text").innerHTML = "Speed-Slow";
-    }
-    else if(speed === 1.0){
-      document.getElementById("select-speed-toggle-text").innerHTML = "Speed-Avg";
 
-    }
-    else if(speed === 0.5){
-      document.getElementById("select-speed-toggle-text").innerHTML = "Speed-Fast";
+    if (speed === 1.5) {
+      // console.log( document.getElementById("select-speed-toggle-text").innerHTML);
+      document.getElementById("select-speed-toggle-text").innerHTML =
+        "Speed-Slow";
+    } else if (speed === 1.0) {
+      document.getElementById("select-speed-toggle-text").innerHTML =
+        "Speed-Avg";
+    } else if (speed === 0.5) {
+      document.getElementById("select-speed-toggle-text").innerHTML =
+        "Speed-Fast";
     }
     speed_selected = speed;
   };
@@ -779,6 +781,36 @@ export default class PathfindingVisualizer extends Component {
     }
   };
 
+  toggleTheme = () => {
+    if (theme === 1) {
+      theme = 2;
+      this.setState({});
+      document.getElementById("path_find").className = "backg";
+      document.getElementById("cth").style.color = "white";
+      document.getElementById("wn").style.color = "white";
+      document.getElementById("st").style.color = "white";
+      document.getElementById("en").style.color = "white";
+      document.getElementById("sta").style.color = "white";
+      document.getElementById("we").style.color = "white";
+      document.getElementById("uv").style.color = "white";
+      document.getElementById("vis").style.color = "white";
+      document.getElementById("sp").style.color = "white";
+    } else {
+      theme = 1;
+      this.setState({});
+      document.getElementById("path_find").className = "";
+      document.getElementById("wn").style.color = "black";
+      document.getElementById("cth").style.color = "black";
+      document.getElementById("st").style.color = "black";
+      document.getElementById("en").style.color = "black";
+      document.getElementById("sta").style.color = "black";
+      document.getElementById("we").style.color = "black";
+      document.getElementById("uv").style.color = "black";
+      document.getElementById("vis").style.color = "black";
+      document.getElementById("sp").style.color = "black";
+    }
+  };
+
   clearWalls = () => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
@@ -795,11 +827,12 @@ export default class PathfindingVisualizer extends Component {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
-    if(directionCount === 4 ){
-      document.getElementById("select-directions-toggle-text").innerHTML = "Directions-4";
-    }
-    else if(directionCount === 8 ){
-      document.getElementById("select-directions-toggle-text").innerHTML = "Directions-8";
+    if (directionCount === 4) {
+      document.getElementById("select-directions-toggle-text").innerHTML =
+        "Directions-4";
+    } else if (directionCount === 8) {
+      document.getElementById("select-directions-toggle-text").innerHTML =
+        "Directions-8";
     }
     allowedDirections = directionCount;
   };
@@ -871,7 +904,7 @@ export default class PathfindingVisualizer extends Component {
 
   render() {
     return (
-      <div>
+      <div id="path_find" className="">
         <ControlPanel
           onClickClear_={() => this.clearBoard()}
           onClickVisualize_={() => this.visulalizeAlgorithm()}
@@ -888,7 +921,9 @@ export default class PathfindingVisualizer extends Component {
           onClickChangeDirection_={(directionCount) =>
             this.changeDirection(directionCount)
           }
+          onClickToggleTheme_={() => this.toggleTheme()}
           extraNavLinkClassName={navExtraClassName}
+          theme={theme}
         ></ControlPanel>
         <div className="grid">
           {this.state.grid.map((row, rowId) => {

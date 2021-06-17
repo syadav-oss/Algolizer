@@ -1,5 +1,5 @@
 .col-centered {
-  margin-left: 200px;
+  margin-left: 150px;
 }
 
 .col-centered1 {
@@ -18,7 +18,14 @@
   background-color: #212529;
   background-repeat: no-repeat;
   background-size: 2.5%;
-  background-position-y: center;
+  background-position-y: top;
+}
+.ab {
+  margin-top: -20px;
+}
+
+.mar {
+  margin-left: -10px;
 }
 
 .nav-links:hover {

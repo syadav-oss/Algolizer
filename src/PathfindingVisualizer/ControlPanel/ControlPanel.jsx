@@ -4,6 +4,8 @@ import startSvg from "../Styling/start.svg";
 import endSvg from "../Styling/end.svg";
 import weightpng from "../Styling/one.png";
 import stationSvg from "../Styling/station.svg";
+import { HiMoon } from "react-icons/hi";
+import { CgSun } from "react-icons/cg";
 
 import { Navbar, Nav, NavDropdown, Button } from "react-bootstrap";
 let navLinkClassName = "nav-links";
@@ -25,10 +27,15 @@ export default class ControlPanel extends Component {
       onClickAddWeight_,
       onClickGenerateMaze_,
       onClickChangeDirection_,
+      onClickToggleTheme_,
       extraNavLinkClassName,
+      theme,
     } = this.props;
 
     navLinkClassName = "nav-links" + extraNavLinkClassName;
+
+    const icon =
+      theme == 1 ? <CgSun size={20}></CgSun> : <HiMoon size={20}></HiMoon>;
 
     return (
       <div>
@@ -194,7 +201,11 @@ export default class ControlPanel extends Component {
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
-                title={<b id="select-directions-toggle-text" className="text-light">Directions-4</b>}
+                title={
+                  <b id="select-directions-toggle-text" className="text-light">
+                    Directions-4
+                  </b>
+                }
                 id="select-directions-toggle"
                 className={`${navLinkClassName} mr-3`}
               >
@@ -212,7 +223,11 @@ export default class ControlPanel extends Component {
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
-                title={<b id="select-speed-toggle-text" className="text-light">Speed-Avg</b>}
+                title={
+                  <b id="select-speed-toggle-text" className="text-light">
+                    Speed-Avg
+                  </b>
+                }
                 id="select-speed-toggle"
                 className={`${navLinkClassName} mr-3`}
               >
@@ -245,7 +260,7 @@ export default class ControlPanel extends Component {
           </Navbar.Collapse>
         </Navbar>
 
-        <Navbar bg="white" expand="lg" variant="light">
+        <Navbar expand="lg">
           <Navbar.Collapse className="nav" id="basic-navbar-nav">
             <Navbar.Brand className="col-centered">
               <img
@@ -257,7 +272,7 @@ export default class ControlPanel extends Component {
                 style={{ marginRight: "10px" }}
               />
               {""}
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+              <p id="st" style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
                 {" "}
                 Start Node{" "}
               </p>
@@ -271,7 +286,7 @@ export default class ControlPanel extends Component {
                 className="d-inline-block align-top"
                 style={{ marginRight: "10px" }}
               />{" "}
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+              <p id="en" style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
                 {" "}
                 Target Node{" "}
               </p>
@@ -285,7 +300,10 @@ export default class ControlPanel extends Component {
                 className="d-inline-block align-top"
                 style={{ marginRight: "10px" }}
               />{" "}
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+              <p
+                id="sta"
+                style={{ fontFamily: "sans-serif", fontSize: "17px" }}
+              >
                 {" "}
                 Station Node{" "}
               </p>
@@ -299,9 +317,26 @@ export default class ControlPanel extends Component {
                 className="d-inline-block align-top"
                 style={{ marginRight: "10px" }}
               />{" "}
-              <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+              <p id="we" style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
                 {" "}
                 Weight Node{" "}
+              </p>
+            </Navbar.Brand>
+            <Navbar.Brand>
+              <button
+                id="ct"
+                className="btn btn-link ab"
+                onClick={() => onClickToggleTheme_()}
+              >
+                {icon}
+              </button>
+              {""}
+              <p
+                id="cth"
+                style={{ fontFamily: "sans-serif", fontSize: "17px" }}
+              >
+                {" "}
+                Change Theme{" "}
               </p>
             </Navbar.Brand>
             <Navbar.Brand>
@@ -318,7 +353,10 @@ export default class ControlPanel extends Component {
                     borderRadius: "2px",
                   }}
                 />
-                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                <p
+                  id="uv"
+                  style={{ fontFamily: "sans-serif", fontSize: "17px" }}
+                >
                   {" "}
                   Unvisited Node{" "}
                 </p>
@@ -337,7 +375,10 @@ export default class ControlPanel extends Component {
                     borderRadius: "2px",
                   }}
                 />
-                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                <p
+                  id="vis"
+                  style={{ fontFamily: "sans-serif", fontSize: "17px" }}
+                >
                   {" "}
                   Visited Node{" "}
                 </p>
@@ -355,7 +396,10 @@ export default class ControlPanel extends Component {
                     borderRadius: "2px",
                   }}
                 />
-                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                <p
+                  id="sp"
+                  style={{ fontFamily: "sans-serif", fontSize: "17px" }}
+                >
                   {" "}
                   Shortest-path Node{" "}
                 </p>
@@ -373,7 +417,10 @@ export default class ControlPanel extends Component {
                     borderRadius: "2px",
                   }}
                 />
-                <p style={{ fontFamily: "sans-serif", fontSize: "17px" }}>
+                <p
+                  id="wn"
+                  style={{ fontFamily: "sans-serif", fontSize: "17px" }}
+                >
                   {" "}
                   Wall Node{" "}
                 </p>
