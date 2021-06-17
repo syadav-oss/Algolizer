@@ -1,15 +1,15 @@
 import { BinaryHeap } from "./binaryHeap";
 
 let Grid, finishAt;
-//, startAt;
+let allowedDirections = 4;
 let parameterValues = []; //store values for nodes
 
-export function aStar(grid, startNode, finishNode) {
+export function aStar(grid, startNode, finishNode, allowedDir) {
   let visitedNodesForAnimation = [];
   Grid = grid;
   // startAt = startNode;
   finishAt = finishNode;
-
+  allowedDirections = allowedDir;
   var heap = getHeap();
   parameterValues = initializeParameters(grid.length, grid[0].length);
   // var closestNode = startNode;
@@ -89,7 +89,7 @@ function getNeighbors(node) {
   var x = [1, 0, -1, 0, 1, -1, -1, 1];
   var y = [0, 1, 0, -1, 1, -1, 1, -1];
 
-  for (var i = 0; i < x.length; ++i) {
+  for (var i = 0; i < allowedDirections; ++i) {
     if (isValid(r + x[i], c + y[i])) {
       ret.push(Grid[r + x[i]][c + y[i]]);
     }

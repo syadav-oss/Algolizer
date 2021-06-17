@@ -24,6 +24,7 @@ export default class ControlPanel extends Component {
       onClickClearWalls_,
       onClickAddWeight_,
       onClickGenerateMaze_,
+      onClickChangeDirection_,
       extraNavLinkClassName,
     } = this.props;
 
@@ -186,6 +187,24 @@ export default class ControlPanel extends Component {
                   onClick={() => onClickClearPath_()}
                 >
                   Clear Path
+                </NavDropdown.Item>
+              </NavDropdown>
+              <NavDropdown
+                title={<b className="text-light">Select Directions</b>}
+                id="select-directions-toggle"
+                className={`${navLinkClassName} mr-3`}
+              >
+                <NavDropdown.Item
+                  href="#4"
+                  onClick={() => onClickChangeDirection_(4)}
+                >
+                  4
+                </NavDropdown.Item>
+                <NavDropdown.Item
+                  href="#8"
+                  onClick={() => onClickChangeDirection_(8)}
+                >
+                  8
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown

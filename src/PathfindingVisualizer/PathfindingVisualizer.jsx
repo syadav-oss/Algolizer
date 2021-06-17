@@ -27,6 +27,7 @@ let isGeneratingGrid = 0;
 let isGridWeighted = 0;
 let stationNodeRow = -1;
 let stationNodeCol = -1;
+let allowedDirections = 4;
 let navExtraClassName = "";
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -536,66 +537,66 @@ export default class PathfindingVisualizer extends Component {
     if (AlgorithmSelected === 1) {
       isAlgoRunning = 1;
       if (isStation) {
-        visitedNodesInOrderToStation = dijkstra(grid, startNode, stationNode);
+        visitedNodesInOrderToStation = dijkstra(grid, startNode, stationNode, allowedDirections);
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = dijkstra(grid, stationNode, finishNode);
+        visitedNodesInOrder = dijkstra(grid, stationNode, finishNode, allowedDirections);
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = dijkstra(grid, startNode, finishNode);
+        visitedNodesInOrder = dijkstra(grid, startNode, finishNode, allowedDirections);
       }
     } else if (AlgorithmSelected === 2) {
       isAlgoRunning = 2;
       if (isStation) {
-        visitedNodesInOrderToStation = aStar(grid, startNode, stationNode);
+        visitedNodesInOrderToStation = aStar(grid, startNode, stationNode, allowedDirections);
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = aStar(grid, stationNode, finishNode);
+        visitedNodesInOrder = aStar(grid, stationNode, finishNode, allowedDirections);
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = aStar(grid, startNode, finishNode);
+        visitedNodesInOrder = aStar(grid, startNode, finishNode, allowedDirections);
       }
     } else if (AlgorithmSelected === 3) {
       isAlgoRunning = 3;
       if (isStation) {
-        visitedNodesInOrderToStation = dfs(grid, startNode, stationNode);
+        visitedNodesInOrderToStation = dfs(grid, startNode, stationNode, allowedDirections);
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = dfs(grid, stationNode, finishNode);
+        visitedNodesInOrder = dfs(grid, stationNode, finishNode, allowedDirections);
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = dfs(grid, startNode, finishNode);
+        visitedNodesInOrder = dfs(grid, startNode, finishNode, allowedDirections);
       }
     } else if (AlgorithmSelected === 4) {
       isAlgoRunning = 4;
       if (isStation) {
-        visitedNodesInOrderToStation = bfs(grid, startNode, stationNode);
+        visitedNodesInOrderToStation = bfs(grid, startNode, stationNode, allowedDirections);
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = bfs(grid, stationNode, finishNode);
+        visitedNodesInOrder = bfs(grid, stationNode, finishNode, allowedDirections);
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = bfs(grid, startNode, finishNode);
+        visitedNodesInOrder = bfs(grid, startNode, finishNode, allowedDirections);
       }
     } else {
       const buttonElement = document.getElementById("visualise-button");
@@ -721,6 +722,9 @@ export default class PathfindingVisualizer extends Component {
       }
     }
   };
+  changeDirection = (directionCount) => {
+    allowedDirections = directionCount;
+  }
 
   mazeGenerate = (mazeAlgo) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
@@ -803,6 +807,7 @@ export default class PathfindingVisualizer extends Component {
           onClickClearWeight_={() => this.clearWeight()}
           onClickClearWalls_={() => this.clearWalls()}
           onClickGenerateMaze_={(mazeAlgo) => this.mazeGenerate(mazeAlgo)}
+          onClickChangeDirection_ = {(directionCount) => this.changeDirection(directionCount)}
           extraNavLinkClassName={navExtraClassName}
         ></ControlPanel>
         <div className="grid">

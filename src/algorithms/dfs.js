@@ -2,10 +2,12 @@
 // in which they were visited. Also makes nodes point back to their
 // previous node, effectively allowing us to compute the shortest path
 // by backtracking from the finish node.
+let allowedDirections = 4;
 
-export function dfs(grid, startNode, finishNode) {
+export function dfs(grid, startNode, finishNode, allowedDir) {
+  allowedDirections = allowedDir;
   const visitedNodesForAnimation = [];
-
+  
   const nodesStack = [];
   nodesStack.push(startNode);
   // getAllFromGrid(grid);
@@ -26,7 +28,7 @@ export function dfs(grid, startNode, finishNode) {
       let nextNode;
       let nextrow, nextcol;
 
-      for (let i = 0; i < xdir.length; ++i) {
+      for (let i = 0; i < allowedDirections; ++i) {
         nextrow = row + xdir[i];
         nextcol = col + ydir[i];
 

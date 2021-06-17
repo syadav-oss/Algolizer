@@ -5,13 +5,16 @@
 
 import { BinaryHeap } from "./binaryHeap";
 
+let allowedDirections = 4;
+
 function getHeap() {
   return new BinaryHeap(function (node) {
     return node.distance;
   });
 }
 
-export function dijkstra(grid, startNode, finishNode) {
+export function dijkstra(grid, startNode, finishNode, allowedDir) {
+  allowedDirections = allowedDir;
   const visitedNodesForAnimation = [];
   var heap = getHeap();
 
@@ -54,12 +57,12 @@ export function dijkstra(grid, startNode, finishNode) {
 
 function getAllUnvisitedNeighbors(node, grid) {
   const neighbors = [];
-  const xdir = [1, 1, 1, -1, -1, -1, 0, 0];
-  const ydir = [1, -1, 0, 1, -1, 0, 1, -1];
+  const xdir = [ 1, -1, 0, 0, -1, -1, 1, 1,];
+  const ydir = [ 0,  0, 1, -1, 1, -1, 1, -1];
 
   const { col, row } = node;
 
-  for (let i = 0; i < xdir.length; ++i) {
+  for (let i = 0; i < allowedDirections; ++i) {
     let nextrow = row + xdir[i];
     let nextcol = col + ydir[i];
     if (
