@@ -57,8 +57,8 @@ export function dijkstra(grid, startNode, finishNode, allowedDir) {
 
 function getAllUnvisitedNeighbors(node, grid) {
   const neighbors = [];
-  const xdir = [ 1, -1, 0, 0, -1, -1, 1, 1,];
-  const ydir = [ 0,  0, 1, -1, 1, -1, 1, -1];
+  const xdir = [1, -1, 0, 0, -1, -1, 1, 1];
+  const ydir = [0, 0, 1, -1, 1, -1, 1, -1];
 
   const { col, row } = node;
 

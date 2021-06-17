@@ -327,6 +327,9 @@ export default class PathfindingVisualizer extends Component {
 
     stationNodeCol = -1;
     stationNodeRow = -1;
+    const buttonElement = document.getElementById("station-button");
+    buttonElement.innerHTML = "Add Station";
+    this.addingStations = false;
     for (let r = 0; r < this.state.GridRowSize; ++r) {
       for (let c = 0; c < this.state.GridColSize; ++c) {
         if (r === EndNodeRow && c === EndNodeCol) {
@@ -505,7 +508,6 @@ export default class PathfindingVisualizer extends Component {
           updateAlertBox("none", isAlgoRunning, isGeneratingGrid);
         }
       }, 30 * i * speed_selected);
-
     }
   }
 
@@ -537,66 +539,126 @@ export default class PathfindingVisualizer extends Component {
     if (AlgorithmSelected === 1) {
       isAlgoRunning = 1;
       if (isStation) {
-        visitedNodesInOrderToStation = dijkstra(grid, startNode, stationNode, allowedDirections);
+        visitedNodesInOrderToStation = dijkstra(
+          grid,
+          startNode,
+          stationNode,
+          allowedDirections
+        );
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = dijkstra(grid, stationNode, finishNode, allowedDirections);
+        visitedNodesInOrder = dijkstra(
+          grid,
+          stationNode,
+          finishNode,
+          allowedDirections
+        );
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = dijkstra(grid, startNode, finishNode, allowedDirections);
+        visitedNodesInOrder = dijkstra(
+          grid,
+          startNode,
+          finishNode,
+          allowedDirections
+        );
       }
     } else if (AlgorithmSelected === 2) {
       isAlgoRunning = 2;
       if (isStation) {
-        visitedNodesInOrderToStation = aStar(grid, startNode, stationNode, allowedDirections);
+        visitedNodesInOrderToStation = aStar(
+          grid,
+          startNode,
+          stationNode,
+          allowedDirections
+        );
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = aStar(grid, stationNode, finishNode, allowedDirections);
+        visitedNodesInOrder = aStar(
+          grid,
+          stationNode,
+          finishNode,
+          allowedDirections
+        );
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = aStar(grid, startNode, finishNode, allowedDirections);
+        visitedNodesInOrder = aStar(
+          grid,
+          startNode,
+          finishNode,
+          allowedDirections
+        );
       }
     } else if (AlgorithmSelected === 3) {
       isAlgoRunning = 3;
       if (isStation) {
-        visitedNodesInOrderToStation = dfs(grid, startNode, stationNode, allowedDirections);
+        visitedNodesInOrderToStation = dfs(
+          grid,
+          startNode,
+          stationNode,
+          allowedDirections
+        );
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = dfs(grid, stationNode, finishNode, allowedDirections);
+        visitedNodesInOrder = dfs(
+          grid,
+          stationNode,
+          finishNode,
+          allowedDirections
+        );
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = dfs(grid, startNode, finishNode, allowedDirections);
+        visitedNodesInOrder = dfs(
+          grid,
+          startNode,
+          finishNode,
+          allowedDirections
+        );
       }
     } else if (AlgorithmSelected === 4) {
       isAlgoRunning = 4;
       if (isStation) {
-        visitedNodesInOrderToStation = bfs(grid, startNode, stationNode, allowedDirections);
+        visitedNodesInOrderToStation = bfs(
+          grid,
+          startNode,
+          stationNode,
+          allowedDirections
+        );
         nodesInShotestPathOrderToStation =
           getNodesInShortestPathOrder(stationNode);
         startToStation = visitedNodesInOrderToStation.length;
         this.resetForStationPath();
       }
       if (isStation) {
-        visitedNodesInOrder = bfs(grid, stationNode, finishNode, allowedDirections);
+        visitedNodesInOrder = bfs(
+          grid,
+          stationNode,
+          finishNode,
+          allowedDirections
+        );
         visitedNodesInOrder =
           visitedNodesInOrderToStation.concat(visitedNodesInOrder);
       } else {
-        visitedNodesInOrder = bfs(grid, startNode, finishNode, allowedDirections);
+        visitedNodesInOrder = bfs(
+          grid,
+          startNode,
+          finishNode,
+          allowedDirections
+        );
       }
     } else {
       const buttonElement = document.getElementById("visualise-button");
@@ -636,14 +698,13 @@ export default class PathfindingVisualizer extends Component {
     } else if (algo === 4) {
       algoName = "BFS";
     }
-    if( (algo === 3 || algo === 4) && isWeightPresent(this.state.grid)) {
-      if(algo === 3) {
+    if ((algo === 3 || algo === 4) && isWeightPresent(this.state.grid)) {
+      if (algo === 3) {
         // buttonElement.innerHTML = `DFS can't run with weighted grid. Remove the weights first`;
-        alert("DFS can't run with weighted grid. Remove the weights first")
-      }
-      else if(algo === 4) {
+        alert("DFS can't run with weighted grid. Remove the weights first");
+      } else if (algo === 4) {
         // buttonElement.innerHTML = `BFS can't run with weighted grid. Remove the weights first`;
-        alert("BFS can't run with weighted grid. Remove the weights first")
+        alert("BFS can't run with weighted grid. Remove the weights first");
       }
       AlgorithmSelected = 0;
       return;
@@ -655,12 +716,12 @@ export default class PathfindingVisualizer extends Component {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
-    if(wht>1 && AlgorithmSelected === 3) {
-      alert("DFS can't run with weighted grid.")
+    if (wht > 1 && AlgorithmSelected === 3) {
+      alert("DFS can't run with weighted grid.");
       return;
     }
-    if(wht>1 && AlgorithmSelected === 4) {
-      alert("BFS can't run with weighted grid.")
+    if (wht > 1 && AlgorithmSelected === 4) {
+      alert("BFS can't run with weighted grid.");
       return;
     }
     this.addingWeights = 1;
@@ -691,17 +752,8 @@ export default class PathfindingVisualizer extends Component {
     }
     for (let r = 0; r < this.state.grid.length; ++r) {
       for (let c = 0; c < this.state.grid[r].length; ++c) {
-        if(this.state.grid[r][c].weight > 1)  {
-          this.changeState(
-            r,
-            c,
-            false,
-            false,
-            false,
-            "",
-            false,
-            1
-          );
+        if (this.state.grid[r][c].weight > 1) {
+          this.changeState(r, c, false, false, false, "", false, 1);
         }
       }
     }
@@ -713,17 +765,8 @@ export default class PathfindingVisualizer extends Component {
     }
     for (let r = 0; r < this.state.grid.length; ++r) {
       for (let c = 0; c < this.state.grid[r].length; ++c) {
-        if(this.state.grid[r][c].isWall)  {
-          this.changeState(
-            r,
-            c,
-            false,
-            false,
-            false,
-            "",
-            false,
-            1
-          );
+        if (this.state.grid[r][c].isWall) {
+          this.changeState(r, c, false, false, false, "", false, 1);
         }
       }
     }
@@ -733,7 +776,7 @@ export default class PathfindingVisualizer extends Component {
       return;
     }
     allowedDirections = directionCount;
-  }
+  };
 
   mazeGenerate = (mazeAlgo) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
@@ -816,7 +859,9 @@ export default class PathfindingVisualizer extends Component {
           onClickClearWeight_={() => this.clearWeight()}
           onClickClearWalls_={() => this.clearWalls()}
           onClickGenerateMaze_={(mazeAlgo) => this.mazeGenerate(mazeAlgo)}
-          onClickChangeDirection_ = {(directionCount) => this.changeDirection(directionCount)}
+          onClickChangeDirection_={(directionCount) =>
+            this.changeDirection(directionCount)
+          }
           extraNavLinkClassName={navExtraClassName}
         ></ControlPanel>
         <div className="grid">
@@ -895,30 +940,30 @@ const createNode = (row, col) => {
 
 const updateAlertBox = (display, algoRun, gridGeneration) => {
   document.getElementById("alert-box").style.display = display;
-  if(algoRun === 0 && gridGeneration >=1 ) {
-    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. Generating Grid."
+  if (algoRun === 0 && gridGeneration >= 1) {
+    document.getElementById("alert-box-text").innerHTML =
+      "Buttons Disabled. Generating Grid.";
+  } else if (algoRun === 1 && gridGeneration === 0) {
+    document.getElementById("alert-box-text").innerHTML =
+      "Buttons Disabled. Running Djikstra, a weighted algorithm.";
+  } else if (algoRun === 2 && gridGeneration === 0) {
+    document.getElementById("alert-box-text").innerHTML =
+      "Buttons Disabled. Running A*, a weighted algorithm.";
+  } else if (algoRun === 3 && gridGeneration === 0) {
+    document.getElementById("alert-box-text").innerHTML =
+      "Buttons Disabled. DFS is an unweighted algorithm which does not gaurantee shortest path.";
+  } else if (algoRun === 4 && gridGeneration === 0) {
+    document.getElementById("alert-box-text").innerHTML =
+      "Buttons Disabled. BFS is an unweighted Algorithm.";
   }
-  else if(algoRun === 1 && gridGeneration === 0 ) {
-    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. Running Djikstra, a weighted algorithm."
-  }
-  else if(algoRun === 2 && gridGeneration === 0 ) {
-    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. Running A*, a weighted algorithm."
-  }
-  else if(algoRun === 3 && gridGeneration === 0) {
-    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. DFS is an unweighted algorithm which does not gaurantee shortest path."
-  }
-  else if(algoRun === 4 && gridGeneration === 0) {
-    document.getElementById("alert-box-text").innerHTML = "Buttons Disabled. BFS is an unweighted Algorithm."
-  }
-
-}
+};
 
 const isWeightPresent = (grid) => {
   for (let r = 0; r < grid.length; ++r) {
     for (let c = 0; c < grid[r].length; ++c) {
-      if(grid[r][c].weight > 1)  return true;
+      if (grid[r][c].weight > 1) return true;
     }
   }
 
   return false;
-}
+};
