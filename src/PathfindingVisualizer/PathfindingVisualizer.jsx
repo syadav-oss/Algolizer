@@ -686,6 +686,9 @@ export default class PathfindingVisualizer extends Component {
   };
 
   clearWeight = () => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
     for (let r = 0; r < this.state.grid.length; ++r) {
       for (let c = 0; c < this.state.grid[r].length; ++c) {
         if(this.state.grid[r][c].weight > 1)  {
@@ -705,6 +708,9 @@ export default class PathfindingVisualizer extends Component {
   };
 
   clearWalls = () => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
     for (let r = 0; r < this.state.grid.length; ++r) {
       for (let c = 0; c < this.state.grid[r].length; ++c) {
         if(this.state.grid[r][c].isWall)  {
@@ -723,6 +729,9 @@ export default class PathfindingVisualizer extends Component {
     }
   };
   changeDirection = (directionCount) => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
     allowedDirections = directionCount;
   }
 
