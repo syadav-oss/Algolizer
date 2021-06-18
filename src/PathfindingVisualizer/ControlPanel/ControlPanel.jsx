@@ -40,9 +40,7 @@ export default class ControlPanel extends Component {
     return (
       <div>
         <Navbar expand="lg" variant="dark" className="logo">
-          <Navbar.Brand href="#" className="ml-5">
-            {/* <b>PathFindingVisualizer</b> */}
-          </Navbar.Brand>
+          <Navbar.Brand href="#" className="ml-5"></Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="nav" id="basic-navbar-nav">
             <Nav className="mr-auto col-centered1">

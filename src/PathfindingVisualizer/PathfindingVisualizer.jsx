@@ -370,7 +370,7 @@ export default class PathfindingVisualizer extends Component {
     } else {
       this.addingStations = true;
       this.addingWeights = 0;
-      document.getElementById("station-button").style.color = "aquamarine";
+      document.getElementById("station-button").style.color = "#216cf8";
     }
   };
 
@@ -743,7 +743,7 @@ export default class PathfindingVisualizer extends Component {
     this.wallNodeChange = false;
     weight = wht;
     if (wht > 1)
-      document.getElementById("weight-button").style.color = "aquamarine";
+      document.getElementById("weight-button").style.color = "#216cf8";
   };
 
   selectSpeedOfVisualization = (speed) => {
