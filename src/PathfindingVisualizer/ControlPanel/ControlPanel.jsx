@@ -432,7 +432,7 @@ export default class ControlPanel extends Component {
         <Navbar>
           <Navbar.Brand className="col-centered2">
             <div id="alert-box" className="shallow-container">
-              <div className="shallow-bulge">
+              <div id="albx" className="shallow-bulge">
                 <span
                   id="alert-box-text"
                   style={{
@@ -443,6 +443,8 @@ export default class ControlPanel extends Component {
                 >
                   Buttons Disabled
                 </span>
+                {/* </div>
+                 */}
               </div>
             </div>
           </Navbar.Brand>

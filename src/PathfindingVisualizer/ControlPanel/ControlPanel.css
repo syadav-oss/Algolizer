@@ -20,6 +20,11 @@
   background-size: 2.5%;
   background-position-y: top;
 }
+
+.darkmode {
+  background-color: #212529;
+}
+
 .ab {
   margin-top: -20px;
 }
@@ -68,6 +73,24 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
+.shallow-bulge-dark {
+  background: #282c36;
+  padding: 8px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 400ms;
+
+  box-shadow: 7px 7px 10px #141618, -4px -4px 13px rgb(15, 9, 9),
+    inset 4px 4px 8px rgba(209, 217, 230, 0),
+    inset -8px -8px 8px rgba(255, 255, 255, 0);
+
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
 .shallow-bulge span {
   font-size: 15px;
   transition: all 400ms;
@@ -83,6 +106,25 @@
   box-shadow: 4px 2px 18px #bbcfda, -4px -4px 13px #fff,
     inset 6px 6px 16px rgba(209, 217, 230, 0.8),
     inset -8px -8px 8px rgba(255, 255, 255, 0.2);
+
+  transform: translateY(2px);
+}
+
+.shallow-bulge-dark span {
+  font-size: 15px;
+  transition: all 400ms;
+  text-decoration: none;
+}
+
+.shallow-bulge-dark:hover span {
+  transform: scale(0.96);
+  text-decoration: none;
+}
+
+.shallow-bulge-dark:hover {
+  box-shadow: 4px 2px 18px #121414, -4px -4px 13px #fff,
+    inset 6px 6px 16px rgba(209, 217, 230, 0),
+    inset -8px -8px 8px rgba(0, 0, 0, 0.2);
 
   transform: translateY(2px);
 }

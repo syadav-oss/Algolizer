@@ -445,7 +445,7 @@ export default class PathfindingVisualizer extends Component {
             class_name = "node-visited-station";
           }
           if (node.weight > 1) {
-            class_name = "node-visited node-weight";
+            class_name = "node-visited node-weight-s";
             this.changeState(
               node.row,
               node.col,
@@ -787,6 +787,8 @@ export default class PathfindingVisualizer extends Component {
       this.setState({});
       document.getElementById("path_find").className = "backg";
       document.getElementById("cth").style.color = "white";
+      document.getElementById("alert-box-text").style.color = "lightpink";
+      document.getElementById("albx").className = "shallow-bulge-dark";
       document.getElementById("wn").style.color = "white";
       document.getElementById("st").style.color = "white";
       document.getElementById("en").style.color = "white";
@@ -800,6 +802,8 @@ export default class PathfindingVisualizer extends Component {
       this.setState({});
       document.getElementById("path_find").className = "";
       document.getElementById("wn").style.color = "black";
+      document.getElementById("alert-box-text").style.color = "#868b8f";
+      document.getElementById("albx").className = "shallow-bulge";
       document.getElementById("cth").style.color = "black";
       document.getElementById("st").style.color = "black";
       document.getElementById("en").style.color = "black";
