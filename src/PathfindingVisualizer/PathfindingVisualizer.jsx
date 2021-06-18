@@ -147,6 +147,7 @@ export default class PathfindingVisualizer extends Component {
       stationNodeRow = row;
       stationNodeCol = col;
       const buttonElement = document.getElementById("station-button");
+      document.getElementById("station-button").style.color = "white";
       buttonElement.innerHTML = "Remove Station";
       this.changeState(row, col, false, false, false, "node-station", true);
     }
@@ -307,6 +308,7 @@ export default class PathfindingVisualizer extends Component {
       this.wallNodeChange = false;
     } else if (this.addingWeights === 2) {
       this.addingWeights = 0;
+      document.getElementById("weight-button").style.color = "white";
     } else if (this.stationNodeChange === true) {
       this.stationNodeChange = false;
     } else if (
@@ -368,6 +370,7 @@ export default class PathfindingVisualizer extends Component {
     } else {
       this.addingStations = true;
       this.addingWeights = 0;
+      document.getElementById("station-button").style.color = "aquamarine";
     }
   };
 
@@ -739,6 +742,8 @@ export default class PathfindingVisualizer extends Component {
     this.addingStations = false;
     this.wallNodeChange = false;
     weight = wht;
+    if (wht > 1)
+      document.getElementById("weight-button").style.color = "aquamarine";
   };
 
   selectSpeedOfVisualization = (speed) => {

@@ -102,7 +102,11 @@ export default class ControlPanel extends Component {
                 </NavDropdown.Item>
               </NavDropdown>
               <NavDropdown
-                title={<b className="text-light">Add Weight</b>}
+                title={
+                  <b id="weight-button" style={{ color: "white" }}>
+                    Add Weight
+                  </b>
+                }
                 id="add-weight-toggle"
                 className={`${navLinkClassName} mr-3`}
               >
@@ -149,7 +153,7 @@ export default class ControlPanel extends Component {
                 className={`${navLinkClassName} mr-3`}
                 onClick={() => onClickAddStation_()}
               >
-                <b className="text-light" id="station-button">
+                <b id="station-button" style={{ color: "white" }}>
                   Add Station
                 </b>
               </Nav.Link>
