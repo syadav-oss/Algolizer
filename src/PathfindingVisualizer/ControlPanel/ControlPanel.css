@@ -3,7 +3,7 @@
 }
 
 .col-centered1 {
-  margin-left: 10px;
+  margin-left: 100px;
 }
 
 .col-centered2 {
@@ -14,11 +14,11 @@
 }
 
 .logo {
-  background-image: url(../Styling/route.png);
+  background-image: url(../Styling/l.png);
   background-color: #212529;
   background-repeat: no-repeat;
-  background-size: 2.5%;
-  background-position-y: top;
+  background-size: 12%;
+  background-position-y: center;
 }
 
 .darkmode {

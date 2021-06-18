@@ -41,7 +41,7 @@ export default class ControlPanel extends Component {
       <div>
         <Navbar expand="lg" variant="dark" className="logo">
           <Navbar.Brand href="#" className="ml-5">
-            <b>PathFindingVisualizer</b>
+            {/* <b>PathFindingVisualizer</b> */}
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse className="nav" id="basic-navbar-nav">
@@ -144,14 +144,6 @@ export default class ControlPanel extends Component {
                   6
                 </NavDropdown.Item>
               </NavDropdown>
-              <Button
-                id="visualise-button"
-                variant="outline-primary"
-                className="mr-3"
-                onClick={() => onClickVisualize_()}
-              >
-                Visualise
-              </Button>
               <Nav.Link
                 href="#add"
                 className={`${navLinkClassName} mr-3`}
@@ -161,6 +153,14 @@ export default class ControlPanel extends Component {
                   Add Station
                 </b>
               </Nav.Link>
+              <Button
+                id="visualise-button"
+                variant="outline-primary"
+                className="mr-3"
+                onClick={() => onClickVisualize_()}
+              >
+                Visualise
+              </Button>
 
               <NavDropdown
                 title={
