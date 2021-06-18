@@ -787,7 +787,7 @@ export default class PathfindingVisualizer extends Component {
       this.setState({});
       document.getElementById("path_find").className = "backg";
       document.getElementById("cth").style.color = "white";
-      document.getElementById("alert-box-text").style.color = "lightpink";
+      document.getElementById("alert-box-text").style.color = "rgb( 18, 102, 241)";
       document.getElementById("albx").className = "shallow-bulge-dark";
       document.getElementById("wn").style.color = "white";
       document.getElementById("st").style.color = "white";
