@@ -95,7 +95,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Handling Mouse Events 
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
 
   handleMouseDown(row, col) {
@@ -338,7 +338,7 @@ export default class PathfindingVisualizer extends Component {
   }
   /********************************
   Select the algorithm
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
   selectAnAlgorithm = (algo) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
@@ -373,7 +373,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Generate the maze
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
 
   mazeGenerate = (mazeAlgo) => {
@@ -443,7 +443,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Adding Weights
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
 
   addWeight = (wht) => {
@@ -468,7 +468,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Add station functionality
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
   addStation = () => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
@@ -546,7 +546,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Animate the Algorithm
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
   // We have all the visited nodes in order and the path vector just have to animate it using appropriate timing
   animateAlgorithm(
@@ -602,7 +602,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Animate The Path
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
 
   animateShortestPath(nodesInShortestPathOrder) {
@@ -653,7 +653,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Visualise the algorithm
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
 
   visulalizeAlgorithm = () => {
@@ -832,7 +832,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Clear Functionalities 
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
 
   clearBoard = () => {
@@ -895,7 +895,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Change Direction
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
   changeDirection = (directionCount) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
@@ -913,7 +913,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Changing Speed
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
   selectSpeedOfVisualization = (speed) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
@@ -936,7 +936,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Change Theme
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
 
   toggleTheme = () => {
@@ -985,7 +985,7 @@ export default class PathfindingVisualizer extends Component {
 
   /********************************
   Render Function
-  Code By: Pulkit, Tejus, Shashank
+  Code By: Pulkit, Shashank, Tejus
   **********************************/
   render() {
     return (
