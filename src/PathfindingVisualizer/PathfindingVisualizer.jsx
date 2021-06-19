@@ -30,6 +30,7 @@ let stationNodeCol = -1;
 let allowedDirections = 4;
 let navExtraClassName = "";
 let theme = 1;
+let wallClass = "node-wall";
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -167,7 +168,7 @@ export default class PathfindingVisualizer extends Component {
         this.addingWeights
       );
       this.wallNodeChange = true;
-      let className = "node-wall";
+      let className = wallClass;
       if (node.isWall) className = "";
       this.changeState(row, col, false, false, !node.isWall, className);
     }
@@ -245,7 +246,7 @@ export default class PathfindingVisualizer extends Component {
       !this.addingWeights &&
       node.weight < 2
     ) {
-      let className = "node-wall";
+      let className = wallClass;
       if (node.isWall) className = "";
       this.changeState(row, col, false, false, !node.isWall, className);
     }
@@ -389,7 +390,7 @@ export default class PathfindingVisualizer extends Component {
           // const element = document.getElementById(`node-${r}-${c}`);
           let class_name = "";
           if (node.isWall === true) {
-            class_name = "node-wall";
+            class_name = wallClass;
           } else if (node.isStation === true) {
             class_name = "node-station";
           } else if (node.weight > 1) {
@@ -789,6 +790,7 @@ export default class PathfindingVisualizer extends Component {
   toggleTheme = () => {
     if (theme === 1) {
       theme = 2;
+      wallClass = "node-wall-dark";
       this.setState({});
       document.getElementById("path_find").className = "backg";
       document.getElementById("cth").style.color = "white";
@@ -804,6 +806,7 @@ export default class PathfindingVisualizer extends Component {
       document.getElementById("sp").style.color = "white";
     } else {
       theme = 1;
+      wallClass = "node-wall";
       this.setState({});
       document.getElementById("path_find").className = "";
       document.getElementById("wn").style.color = "black";
@@ -897,7 +900,7 @@ export default class PathfindingVisualizer extends Component {
               false,
               false,
               true,
-              "node-wall wall-animate"
+              `${wallClass} wall-animate`
             );
           }
         }
@@ -958,6 +961,7 @@ export default class PathfindingVisualizer extends Component {
                       isStart={isStart}
                       isWall={isWall}
                       isStation={isStation}
+                      theme={theme}
                       onMouseDown_={(row, col) =>
                         this.handleMouseDown(row, col)
                       }

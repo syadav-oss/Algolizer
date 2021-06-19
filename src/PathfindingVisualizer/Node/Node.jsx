@@ -12,19 +12,23 @@ export default class Node extends Component {
       isStart: false,
       isWall: false,
       isStation: false,
+      theme: 1,
       extraClassName: "",
     };
   }
 
   componentDidMount() {
-    const { col, row, isFinish, isStart, isWall, isStation } = this.props;
+    const { col, row, isFinish, isStart, isWall, isStation, theme } =
+      this.props;
 
     const extraClassName = isFinish
       ? "node-finish"
       : isStart
       ? "node-start"
-      : isWall
+      : isWall && theme === 1
       ? "node-wall"
+      : isWall && theme === 2
+      ? "node-wall-dark"
       : isStation
       ? "node-station"
       : "";
@@ -44,8 +48,10 @@ export default class Node extends Component {
       ? "node-finish"
       : nextProps.isStart
       ? "node-start"
-      : nextProps.isWall
+      : nextProps.isWall && nextProps.theme === 1
       ? "node-wall"
+      : nextProps.isWall && nextProps.theme === 2
+      ? "node-wall-dark"
       : nextProps.isStation
       ? "node-station"
       : "";

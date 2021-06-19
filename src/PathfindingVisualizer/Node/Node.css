@@ -24,6 +24,12 @@
   transition: transform 0.0005s ease-out;
 }
 
+.node-wall-dark {
+  background-color: rgb(37, 98, 145);
+  background-repeat: no-repeat;
+  background-size: contain;
+  transition: transform 0.0005s ease-out;
+}
 .node-station {
   background-image: url(../Styling/station.svg);
   background-repeat: no-repeat;
