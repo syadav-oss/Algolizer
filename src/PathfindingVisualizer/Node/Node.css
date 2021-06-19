@@ -1,6 +1,6 @@
 .node {
-  width: 25px;
-  height: 25px;
+  width: 1.62vw; /*100% width for grid, 61 columns, thus 100/61 = 1.62*/
+  height: 3.5vh; /*70%  height for grid,21 rows, thus 100/21 = around 3.5*/
   outline: 1px solid rgb(175, 216, 248);
   display: inline-block;
 }

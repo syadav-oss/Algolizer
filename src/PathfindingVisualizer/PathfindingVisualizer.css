@@ -7,7 +7,9 @@
 }
 
 .mar {
-  margin-bottom: -5px;
+  display: flex;
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .backg {

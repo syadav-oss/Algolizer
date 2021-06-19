@@ -37,7 +37,7 @@ export default class PathfindingVisualizer extends Component {
     this.state = {
       grid: [],
       GridRowSize: 21,
-      GridColSize: 60,
+      GridColSize: 61,
       startNodeChange: false,
       endNodeChange: false,
       mouseIsPressed: false,
