@@ -15,20 +15,18 @@ import { basicWeight } from "../mazes/basicWeight";
 // import { Alert } from "bootstrap";
 // import { dijkstraOld } from "../algorithms/dijkstraOld";
 
-let StartNodeRow = 5;
-let StartNodeCol = 5;
-let EndNodeRow = 15;
-let EndNodeCol = 45;
+let StartNodeRow = 8;
+let StartNodeCol = 10;
+let EndNodeRow = 8;
+let EndNodeCol = 50;
 let AlgorithmSelected = 0;
 let weight = 0;
 let speed_selected = 1;
 let isAlgoRunning = 0;
 let isGeneratingGrid = 0;
-let isGridWeighted = 0;
 let stationNodeRow = -1;
 let stationNodeCol = -1;
 let allowedDirections = 4;
-let navExtraClassName = "";
 let theme = 1;
 let wallClass = "node-wall";
 
@@ -58,6 +56,7 @@ export default class PathfindingVisualizer extends Component {
     this.setState({ grid: grid });
   }
 
+  //This function changes the state of react and DOM element
   changeState = (
     row,
     col,
@@ -94,6 +93,11 @@ export default class PathfindingVisualizer extends Component {
     return;
   };
 
+  /********************************
+  Handling Mouse Events 
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+
   handleMouseDown(row, col) {
     //If algo is running no mouse event will be entertained
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
@@ -105,9 +109,14 @@ export default class PathfindingVisualizer extends Component {
     //Start & End Node Change is only allowed when weights and stations are not being added
     if (node.isStart && !this.addingWeights && !this.addingStations) {
       this.startNodeChange = true;
-    } else if (node.isFinish && !this.addingWeights && !this.addingStations) {
+    }
+    //changing End Node
+    else if (node.isFinish && !this.addingWeights && !this.addingStations) {
       this.endNodeChange = true;
-    } else if (
+    }
+    //Changing Station Node
+    //Adding weights & stations only when the node is not a special node
+    else if (
       node.isStation &&
       !this.addingWeights &&
       !this.addingStations &&
@@ -116,7 +125,7 @@ export default class PathfindingVisualizer extends Component {
     ) {
       this.stationNodeChange = true;
     }
-    //Adding weights & stations only when the node is not a special node
+    //Adding weights
     else if (
       !node.isFinish &&
       !node.isStart &&
@@ -135,7 +144,9 @@ export default class PathfindingVisualizer extends Component {
         false,
         weight
       );
-    } else if (
+    }
+    //Adding Station Nodes
+    else if (
       !node.isFinish &&
       !node.isStart &&
       !node.isStation &&
@@ -160,13 +171,6 @@ export default class PathfindingVisualizer extends Component {
       node.weight < 2
     ) {
       const node = this.state.grid[row][col];
-      console.log(
-        node.isStart,
-        node.isFinish,
-        node.isStation,
-        node.isWall,
-        this.addingWeights
-      );
       this.wallNodeChange = true;
       let className = wallClass;
       if (node.isWall) className = "";
@@ -178,8 +182,9 @@ export default class PathfindingVisualizer extends Component {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
-
     const node = this.state.grid[row][col];
+
+    //StartNode Change
     if (
       this.startNodeChange === true &&
       node.isWall === false &&
@@ -189,7 +194,9 @@ export default class PathfindingVisualizer extends Component {
       this.changeState(row, col, false, true, false, "node-start");
       StartNodeRow = row;
       StartNodeCol = col;
-    } else if (
+    }
+    //End Node Change
+    else if (
       this.endNodeChange === true &&
       node.isWall === false &&
       node.isStation === false &&
@@ -198,7 +205,9 @@ export default class PathfindingVisualizer extends Component {
       this.changeState(row, col, true, false, false, "node-finish");
       EndNodeRow = row;
       EndNodeCol = col;
-    } else if (
+    }
+    //Station Node Change
+    else if (
       this.stationNodeChange === true &&
       node.isWall === false &&
       node.weight < 2
@@ -220,7 +229,9 @@ export default class PathfindingVisualizer extends Component {
         stationNodeCol = col;
         this.changeState(row, col, false, false, false, "node-station", true);
       }
-    } else if (
+    }
+    //Adding weights
+    else if (
       !node.isFinish &&
       !node.isStart &&
       !node.isStation &&
@@ -237,7 +248,10 @@ export default class PathfindingVisualizer extends Component {
         false,
         weight
       );
-    } else if (
+    }
+
+    //Changing wall states
+    else if (
       !node.isFinish &&
       !node.isStart &&
       (row !== stationNodeRow || col !== stationNodeCol) &&
@@ -322,33 +336,140 @@ export default class PathfindingVisualizer extends Component {
       this.addingStations = false;
     }
   }
-
-  clearBoard = () => {
-    document.getElementById("distance").innerHTML = 0;
-    // console.log("In ClearBoard", isGeneratingGrid);
+  /********************************
+  Select the algorithm
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+  selectAnAlgorithm = (algo) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
-    // alert("Please Select an Algorithm to Visualize");
 
-    stationNodeCol = -1;
-    stationNodeRow = -1;
-    const buttonElement = document.getElementById("station-button");
-    buttonElement.innerHTML = "Add Station";
-    this.addingStations = false;
-    for (let r = 0; r < this.state.GridRowSize; ++r) {
-      for (let c = 0; c < this.state.GridColSize; ++c) {
-        if (r === EndNodeRow && c === EndNodeCol) {
-          this.changeState(r, c, true, false, false, "node-finish", false, 1);
-        } else if (r === StartNodeRow && c === StartNodeCol) {
-          this.changeState(r, c, false, true, false, "node-start", false, 1);
-        } else {
-          this.changeState(r, c, false, false, false, "node ", false, 1);
-        }
-      }
+    AlgorithmSelected = algo;
+    const buttonElement = document.getElementById("visualise-button");
+    var algoName = "";
+    if (algo === 1) {
+      algoName = "Djikstra";
+    } else if (algo === 2) {
+      algoName = "A* Star";
+    } else if (algo === 3) {
+      algoName = "DFS";
+    } else if (algo === 4) {
+      algoName = "BFS";
     }
+    if ((algo === 3 || algo === 4) && isWeightPresent(this.state.grid)) {
+      if (algo === 3) {
+        // buttonElement.innerHTML = `DFS can't run with weighted grid. Remove the weights first`;
+        alert("DFS can't run with weighted grid. Remove the weights first");
+      } else if (algo === 4) {
+        // buttonElement.innerHTML = `BFS can't run with weighted grid. Remove the weights first`;
+        alert("BFS can't run with weighted grid. Remove the weights first");
+      }
+      AlgorithmSelected = 0;
+      return;
+    }
+    buttonElement.innerHTML = `Visualise ${algoName}`;
   };
 
+  /********************************
+  Generate the maze
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+
+  mazeGenerate = (mazeAlgo) => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
+
+    this.clearBoard();
+    isGeneratingGrid = 1;
+    // updateButtonState("text-danger");
+    updateAlertBox("block", isAlgoRunning, isGeneratingGrid);
+
+    const { grid } = this.state;
+    var forWalls;
+    if (mazeAlgo === 1) {
+      forWalls = RecursiveDivision(grid);
+    } else if (mazeAlgo === 2) {
+      forWalls = basicRandom(grid);
+    } else if (mazeAlgo === 3) {
+      forWalls = basicWeight(grid);
+    } else if (mazeAlgo === 4) {
+      forWalls = simpleStair(grid);
+    } else {
+      return;
+    }
+    for (let i = 0; i < forWalls.length; i++) {
+      setTimeout(() => {
+        isGeneratingGrid = 1;
+        const node = forWalls[i];
+        const element = document.getElementById(`node-${node.row}-${node.col}`);
+        if (
+          element.className !== "node node-start" &&
+          element.className !== "node node-finish"
+        ) {
+          // element.className = "node node-visited";
+          if (mazeAlgo === 3) {
+            this.changeState(
+              node.row,
+              node.col,
+              false,
+              false,
+              false,
+              "node-weight",
+              false,
+              node.weight
+            );
+          } else {
+            this.changeState(
+              node.row,
+              node.col,
+              false,
+              false,
+              true,
+              `${wallClass} wall-animate`
+            );
+          }
+        }
+        if (i === forWalls.length - 1) {
+          isGeneratingGrid = 0;
+          updateAlertBox("none", isAlgoRunning, isGeneratingGrid);
+        }
+      }, 20 * i);
+    }
+
+    return;
+  };
+
+  /********************************
+  Adding Weights
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+
+  addWeight = (wht) => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
+    if (wht > 1 && AlgorithmSelected === 3) {
+      alert("DFS can't run with weighted grid.");
+      return;
+    }
+    if (wht > 1 && AlgorithmSelected === 4) {
+      alert("BFS can't run with weighted grid.");
+      return;
+    }
+    this.addingWeights = 1;
+    this.addingStations = false;
+    this.wallNodeChange = false;
+    weight = wht;
+    if (wht > 1)
+      document.getElementById("weight-button").style.color = "#216cf8";
+  };
+
+  /********************************
+  Add station functionality
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
   addStation = () => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
@@ -423,6 +544,10 @@ export default class PathfindingVisualizer extends Component {
     }
   };
 
+  /********************************
+  Animate the Algorithm
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
   // We have all the visited nodes in order and the path vector just have to animate it using appropriate timing
   animateAlgorithm(
     visitedNodesInOrder,
@@ -475,6 +600,11 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
+  /********************************
+  Animate The Path
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+
   animateShortestPath(nodesInShortestPathOrder) {
     for (let i = 0; i < nodesInShortestPathOrder.length; i++) {
       setTimeout(() => {
@@ -521,7 +651,11 @@ export default class PathfindingVisualizer extends Component {
     }
   }
 
-  // Visualizing Path Algorithm
+  /********************************
+  Visualise the algorithm
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+
   visulalizeAlgorithm = () => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
@@ -696,57 +830,91 @@ export default class PathfindingVisualizer extends Component {
     );
   };
 
-  selectAnAlgorithm = (algo) => {
+  /********************************
+  Clear Functionalities 
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+
+  clearBoard = () => {
+    document.getElementById("distance").innerHTML = 0;
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
     }
 
-    AlgorithmSelected = algo;
-    const buttonElement = document.getElementById("visualise-button");
-    var algoName = "";
-    if (algo === 1) {
-      algoName = "Djikstra";
-    } else if (algo === 2) {
-      algoName = "A* Star";
-    } else if (algo === 3) {
-      algoName = "DFS";
-    } else if (algo === 4) {
-      algoName = "BFS";
-    }
-    if ((algo === 3 || algo === 4) && isWeightPresent(this.state.grid)) {
-      if (algo === 3) {
-        // buttonElement.innerHTML = `DFS can't run with weighted grid. Remove the weights first`;
-        alert("DFS can't run with weighted grid. Remove the weights first");
-      } else if (algo === 4) {
-        // buttonElement.innerHTML = `BFS can't run with weighted grid. Remove the weights first`;
-        alert("BFS can't run with weighted grid. Remove the weights first");
-      }
-      AlgorithmSelected = 0;
-      return;
-    }
-    buttonElement.innerHTML = `Visualise ${algoName}`;
-  };
-
-  addWeight = (wht) => {
-    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
-      return;
-    }
-    if (wht > 1 && AlgorithmSelected === 3) {
-      alert("DFS can't run with weighted grid.");
-      return;
-    }
-    if (wht > 1 && AlgorithmSelected === 4) {
-      alert("BFS can't run with weighted grid.");
-      return;
-    }
-    this.addingWeights = 1;
+    stationNodeCol = -1;
+    stationNodeRow = -1;
+    const buttonElement = document.getElementById("station-button");
+    buttonElement.innerHTML = "Add Station";
     this.addingStations = false;
-    this.wallNodeChange = false;
-    weight = wht;
-    if (wht > 1)
-      document.getElementById("weight-button").style.color = "#216cf8";
+    for (let r = 0; r < this.state.GridRowSize; ++r) {
+      for (let c = 0; c < this.state.GridColSize; ++c) {
+        if (r === EndNodeRow && c === EndNodeCol) {
+          this.changeState(r, c, true, false, false, "node-finish", false, 1);
+        } else if (r === StartNodeRow && c === StartNodeCol) {
+          this.changeState(r, c, false, true, false, "node-start", false, 1);
+        } else {
+          this.changeState(r, c, false, false, false, "node ", false, 1);
+        }
+      }
+    }
   };
 
+  clearWalls = () => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
+    for (let r = 0; r < this.state.grid.length; ++r) {
+      for (let c = 0; c < this.state.grid[r].length; ++c) {
+        if (this.state.grid[r][c].isWall) {
+          this.changeState(r, c, false, false, false, "", false, 1);
+        }
+      }
+    }
+  };
+
+  clearWeight = () => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
+    for (let r = 0; r < this.state.grid.length; ++r) {
+      for (let c = 0; c < this.state.grid[r].length; ++c) {
+        if (this.state.grid[r][c].weight > 1) {
+          this.changeState(r, c, false, false, false, "", false, 1);
+        }
+      }
+    }
+  };
+
+  clearPath = () => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
+
+    this.removePrevForNextAlgo();
+  };
+
+  /********************************
+  Change Direction
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
+  changeDirection = (directionCount) => {
+    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
+      return;
+    }
+    if (directionCount === 4) {
+      document.getElementById("select-directions-toggle-text").innerHTML =
+        "Directions-4";
+    } else if (directionCount === 8) {
+      document.getElementById("select-directions-toggle-text").innerHTML =
+        "Directions-8";
+    }
+    allowedDirections = directionCount;
+  };
+
+  /********************************
+  Changing Speed
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
   selectSpeedOfVisualization = (speed) => {
     if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
       return;
@@ -766,26 +934,10 @@ export default class PathfindingVisualizer extends Component {
     speed_selected = speed;
   };
 
-  clearPath = () => {
-    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
-      return;
-    }
-
-    this.removePrevForNextAlgo();
-  };
-
-  clearWeight = () => {
-    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
-      return;
-    }
-    for (let r = 0; r < this.state.grid.length; ++r) {
-      for (let c = 0; c < this.state.grid[r].length; ++c) {
-        if (this.state.grid[r][c].weight > 1) {
-          this.changeState(r, c, false, false, false, "", false, 1);
-        }
-      }
-    }
-  };
+  /********************************
+  Change Theme
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
 
   toggleTheme = () => {
     if (theme === 1) {
@@ -823,97 +975,10 @@ export default class PathfindingVisualizer extends Component {
     }
   };
 
-  clearWalls = () => {
-    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
-      return;
-    }
-    for (let r = 0; r < this.state.grid.length; ++r) {
-      for (let c = 0; c < this.state.grid[r].length; ++c) {
-        if (this.state.grid[r][c].isWall) {
-          this.changeState(r, c, false, false, false, "", false, 1);
-        }
-      }
-    }
-  };
-  changeDirection = (directionCount) => {
-    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
-      return;
-    }
-    if (directionCount === 4) {
-      document.getElementById("select-directions-toggle-text").innerHTML =
-        "Directions-4";
-    } else if (directionCount === 8) {
-      document.getElementById("select-directions-toggle-text").innerHTML =
-        "Directions-8";
-    }
-    allowedDirections = directionCount;
-  };
-
-  mazeGenerate = (mazeAlgo) => {
-    if (isAlgoRunning >= 1 || isGeneratingGrid === 1) {
-      return;
-    }
-
-    this.clearBoard();
-    isGeneratingGrid = 1;
-    // updateButtonState("text-danger");
-    updateAlertBox("block", isAlgoRunning, isGeneratingGrid);
-
-    const { grid } = this.state;
-    var forWalls;
-    if (mazeAlgo === 1) {
-      forWalls = RecursiveDivision(grid);
-    } else if (mazeAlgo === 2) {
-      forWalls = basicRandom(grid);
-    } else if (mazeAlgo === 3) {
-      forWalls = basicWeight(grid);
-    } else if (mazeAlgo === 4) {
-      forWalls = simpleStair(grid);
-    } else {
-      return;
-    }
-    for (let i = 0; i < forWalls.length; i++) {
-      setTimeout(() => {
-        isGeneratingGrid = 1;
-        const node = forWalls[i];
-        const element = document.getElementById(`node-${node.row}-${node.col}`);
-        if (
-          element.className !== "node node-start" &&
-          element.className !== "node node-finish"
-        ) {
-          // element.className = "node node-visited";
-          if (mazeAlgo === 3) {
-            this.changeState(
-              node.row,
-              node.col,
-              false,
-              false,
-              false,
-              "node-weight",
-              false,
-              node.weight
-            );
-          } else {
-            this.changeState(
-              node.row,
-              node.col,
-              false,
-              false,
-              true,
-              `${wallClass} wall-animate`
-            );
-          }
-        }
-        if (i === forWalls.length - 1) {
-          isGeneratingGrid = 0;
-          updateAlertBox("none", isAlgoRunning, isGeneratingGrid);
-        }
-      }, 20 * i);
-    }
-
-    return;
-  };
-
+  /********************************
+  Render Function
+  Code By: Pulkit, Tejus, Shashank
+  **********************************/
   render() {
     return (
       <div id="path_find" className="">
@@ -934,7 +999,6 @@ export default class PathfindingVisualizer extends Component {
             this.changeDirection(directionCount)
           }
           onClickToggleTheme_={() => this.toggleTheme()}
-          extraNavLinkClassName={navExtraClassName}
           theme={theme}
         ></ControlPanel>
         <div className="grid">
@@ -1038,6 +1102,5 @@ const isWeightPresent = (grid) => {
       if (grid[r][c].weight > 1) return true;
     }
   }
-
   return false;
 };

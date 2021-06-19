@@ -28,11 +28,8 @@ export default class ControlPanel extends Component {
       onClickGenerateMaze_,
       onClickChangeDirection_,
       onClickToggleTheme_,
-      extraNavLinkClassName,
       theme,
     } = this.props;
-
-    navLinkClassName = "nav-links" + extraNavLinkClassName;
 
     const icon =
       theme == 1 ? <CgSun size={20}></CgSun> : <HiMoon size={20}></HiMoon>;
@@ -55,20 +52,25 @@ export default class ControlPanel extends Component {
                 >
                   Dijkstra's Algorithm
                 </NavDropdown.Item>
+
                 <NavDropdown.Item
                   href="#AStar"
                   onClick={() => onClickSelect_(2)}
                 >
                   A* Algorithm
                 </NavDropdown.Item>
+
                 <NavDropdown.Divider />
+
                 <NavDropdown.Item href="#DFS" onClick={() => onClickSelect_(3)}>
                   Depth-First Search
                 </NavDropdown.Item>
+
                 <NavDropdown.Item href="#BFS" onClick={() => onClickSelect_(4)}>
                   Breadth-First Search
                 </NavDropdown.Item>
               </NavDropdown>
+
               <NavDropdown
                 title={<b className="text-light">Mazes & Patterns</b>}
                 id="maze-generate-toggle"
@@ -99,6 +101,7 @@ export default class ControlPanel extends Component {
                   Simple Stair Pattern
                 </NavDropdown.Item>
               </NavDropdown>
+
               <NavDropdown
                 title={
                   <b id="weight-button" style={{ color: "white" }}>
