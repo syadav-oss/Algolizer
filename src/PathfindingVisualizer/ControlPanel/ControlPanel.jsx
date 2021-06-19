@@ -347,6 +347,7 @@ export default class ControlPanel extends Component {
             <Navbar.Brand>
               <div className="d-flex flex-row">
                 <div
+                  id="unvisited-icon"
                   className="p-2"
                   style={{
                     width: "20px",
@@ -413,6 +414,7 @@ export default class ControlPanel extends Component {
             <Navbar.Brand>
               <div className="d-flex flex-row">
                 <div
+                  id="wall-icon"
                   className="p-2"
                   style={{
                     width: "20px",

@@ -944,6 +944,10 @@ export default class PathfindingVisualizer extends Component {
       theme = 2;
       extraWallClass = "-dark";
       this.setState({});
+      document.getElementById("wall-icon").style.backgroundColor =
+        "rgb(37,98,145)";
+      document.getElementById("unvisited-icon").style.backgroundColor =
+        "#17191f";
       document.getElementById("path_find").className = "backg";
       document.getElementById("cth").style.color = "white";
       document.getElementById("alert-box-text").style.color = "darkgrey";
@@ -960,6 +964,10 @@ export default class PathfindingVisualizer extends Component {
       theme = 1;
       extraWallClass = "";
       this.setState({});
+      document.getElementById("wall-icon").style.backgroundColor =
+        "rgb(12,53,71)";
+      document.getElementById("unvisited-icon").style.backgroundColor =
+        "rgb(255,255,255)";
       document.getElementById("path_find").className = "";
       document.getElementById("wn").style.color = "black";
       document.getElementById("alert-box-text").style.color = "#868b8f";
