@@ -28,7 +28,7 @@ let stationNodeRow = -1;
 let stationNodeCol = -1;
 let allowedDirections = 4;
 let theme = 1;
-let wallClass = "node-wall";
+let extraWallClass = "";
 
 export default class PathfindingVisualizer extends Component {
   constructor(props) {
@@ -172,7 +172,7 @@ export default class PathfindingVisualizer extends Component {
     ) {
       const node = this.state.grid[row][col];
       this.wallNodeChange = true;
-      let className = wallClass;
+      let className = `node-wall${extraWallClass}`;
       if (node.isWall) className = "";
       this.changeState(row, col, false, false, !node.isWall, className);
     }
@@ -260,7 +260,7 @@ export default class PathfindingVisualizer extends Component {
       !this.addingWeights &&
       node.weight < 2
     ) {
-      let className = wallClass;
+      let className = `node-wall${extraWallClass}`;
       if (node.isWall) className = "";
       this.changeState(row, col, false, false, !node.isWall, className);
     }
@@ -427,7 +427,7 @@ export default class PathfindingVisualizer extends Component {
               false,
               false,
               true,
-              `${wallClass} wall-animate`
+              `node-wall${extraWallClass} wall-animate${extraWallClass}`
             );
           }
         }
@@ -511,7 +511,7 @@ export default class PathfindingVisualizer extends Component {
           // const element = document.getElementById(`node-${r}-${c}`);
           let class_name = "";
           if (node.isWall === true) {
-            class_name = wallClass;
+            class_name = `node-wall${extraWallClass}`;
           } else if (node.isStation === true) {
             class_name = "node-station";
           } else if (node.weight > 1) {
@@ -942,7 +942,7 @@ export default class PathfindingVisualizer extends Component {
   toggleTheme = () => {
     if (theme === 1) {
       theme = 2;
-      wallClass = "node-wall-dark";
+      extraWallClass = "-dark";
       this.setState({});
       document.getElementById("path_find").className = "backg";
       document.getElementById("cth").style.color = "white";
@@ -958,7 +958,7 @@ export default class PathfindingVisualizer extends Component {
       document.getElementById("sp").style.color = "white";
     } else {
       theme = 1;
-      wallClass = "node-wall";
+      extraWallClass = "";
       this.setState({});
       document.getElementById("path_find").className = "";
       document.getElementById("wn").style.color = "black";

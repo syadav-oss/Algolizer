@@ -197,7 +197,16 @@
   animation-fill-mode: forwards;
   animation-play-state: running;
 }
-
+.wall-animate-dark {
+  animation-name: wallAnimationDark;
+  animation-duration: 1.5s;
+  animation-timing-function: ease-out;
+  animation-delay: 0;
+  animation-direction: alternate;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+  animation-play-state: running;
+}
 @keyframes visitedAnimation {
   0% {
     transform: scale(0.3);
@@ -267,6 +276,23 @@
   100% {
     transform: scale(1);
     background-color: rgb(12, 53, 71);
+  }
+}
+
+@keyframes wallAnimationDark {
+  0% {
+    transform: scale(0.6);
+    background-color: rgb(112, 156, 175);
+  }
+
+  50% {
+    transform: scale(1.2);
+    background-color: rgb(56, 109, 150);
+  }
+
+  100% {
+    transform: scale(1);
+    background-color: rgb(37, 98, 145);
   }
 }
 
